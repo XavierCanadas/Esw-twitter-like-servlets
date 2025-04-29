@@ -8,9 +8,9 @@ public class DBManager implements AutoCloseable {
 	
 	public DBManager() throws Exception {
 		// WITHOUT POOL
-		String user = "root";
-		String password="root";
-		String db = "lab2s";
+		String user = "mysql";
+		String password="prac";
+		String db = "epaw";
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		connection=DriverManager.getConnection("jdbc:mysql://localhost/"+db+"?serverTimezone=UTC&user="+user+"&password="+password);
 	}
