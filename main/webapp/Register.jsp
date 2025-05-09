@@ -49,6 +49,16 @@
 
 		<button type="submit">Send</button>
 	</form>
+
+	<div class="error-container">
+		<c:if test="${not empty errors}">
+			<ul class="error-list">
+				<c:forEach var="error" items="${errors}">
+					<li class="error-item">${error.value}</li>
+				</c:forEach>
+			</ul>
+		</c:if>
+	</div>
 	
 	<!--  
 	<ul>

@@ -83,6 +83,7 @@ birthdateString.addEventListener('input', () => {
 });
 
 
+
 // Polis validation
 polis.addEventListener('change', () => {
   polis.setCustomValidity(polis.value ? "" : "Please select a polis");
