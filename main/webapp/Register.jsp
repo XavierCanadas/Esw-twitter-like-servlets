@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,6 +13,9 @@
 <body>
 
 	<form id="registerForm" action="Register" method="POST">
+
+		<label for="email">Email:</label>
+		<input type="email" id="email" name="email" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" value="${user.email}" title="Enter a valid email address" />
 
 		<label for="username">Name:</label>
 		<input type="text" id="username" name="username" required minlength="2" value="${user.username}" title="the username must be beetween 2 and 15 characters."/>
@@ -31,15 +35,15 @@
 			<option value="indeterminate" ${user.gender == 'indeterminate' ? 'selected' : ''}>Indeterminate</option>
 		</select>
 
-		<label for="birthdate">Birth Date:</label>
-		<input type="date" id="birthdate" name="birthdate" required value="${user.birthdate}" />
+		<input type="date" id="birthdateString" name="birthdateString" required
+			   value="<c:if test="${not empty user.birthdateString}"><fmt:formatDate pattern="yyyy-MM-dd" value="${user.birthdateString}"/></c:if>" />
 
 		<label for="polis">Polis:</label>
-		<select id="polis" name="polis" required>
+		<select id="polis" name="polisId" required>
 			<option value="" disabled ${empty user.polis ? 'selected' : ''}>Select polis</option>
-			<!-- todo: add polis -->
-			<option value="option1" ${user.polis == 'option1' ? 'selected' : ''}>Option 1</option>
-
+			<c:forEach var="polisOption" items="${polisList}">
+				<option value="${polisOption.id}" ${user.polis.id == polisOption.id ? 'selected' : ''}>${polisOption.name}</option>
+			</c:forEach>
 		</select>
 
 		<button type="submit">Send</button>

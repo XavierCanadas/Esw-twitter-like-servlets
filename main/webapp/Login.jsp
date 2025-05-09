@@ -8,7 +8,7 @@
 </head>
 <body>
 
-User ${user.name} has been correctly registered.
+User ${user.username} has been correctly registered.
 
 </body>
 </html>

@@ -1,7 +1,10 @@
 package service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
+import model.Polis;
 import model.User;
 import repository.UserRepository;
 
@@ -22,8 +25,8 @@ public class UserService {
         String name = user.getUsername();
         if (name == null || name.trim().isEmpty()) {
             errors.put("name", "Username cannot be empty.");
-        } else if (name.length() < 5 || name.length() > 20) {
-            errors.put("name", "Username must be between 5 and 20 characters.");
+        } else if (name.length() < 3 || name.length() > 15) {
+            errors.put("name", "Username must be between 3 and 15 characters.");
         } else if (userRepository.existsByUsername(name)) {
             errors.put("name", "Username already exists.");
         }
@@ -40,40 +43,61 @@ public class UserService {
         }
 
         // Birthdate validation
-        Date birthdate = user.getBirthdate();
-        if (birthdate == null) {
+
+
+        String birthdateStr = user.getBirthdateString();
+        Date birthdate = null;
+
+        if (birthdateStr == null || birthdateStr.trim().isEmpty()) {
             errors.put("birthdate", "Please enter a valid date");
         } else {
-            // Check if birthdate is in the future
-            Date today = new Date();
-            if (birthdate.after(today)) {
-                errors.put("birthdate", "Birth date cannot be in the future");
-            } else {
-                // Calculate age
-                Calendar todayCal = Calendar.getInstance();
-                Calendar birthdateCal = Calendar.getInstance();
-                todayCal.setTime(today);
-                birthdateCal.setTime(birthdate);
+            try {
+                // Parse the string to a Date object using SimpleDateFormat
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                dateFormat.setLenient(false);
+                birthdate = dateFormat.parse(birthdateStr);
 
-                int age = todayCal.get(Calendar.YEAR) - birthdateCal.get(Calendar.YEAR);
+                // Check if birthdate is in the future
+                Date today = new Date();
+                if (birthdate.after(today)) {
+                    errors.put("birthdate", "Birth date cannot be in the future");
+                } else {
+                    // Calculate age
+                    Calendar todayCal = Calendar.getInstance();
+                    Calendar birthdateCal = Calendar.getInstance();
+                    todayCal.setTime(today);
+                    birthdateCal.setTime(birthdate);
 
-                // Adjust age if birthday hasn't occurred yet this year
-                if (todayCal.get(Calendar.MONTH) < birthdateCal.get(Calendar.MONTH) ||
-                        (todayCal.get(Calendar.MONTH) == birthdateCal.get(Calendar.MONTH) &&
-                                todayCal.get(Calendar.DAY_OF_MONTH) < birthdateCal.get(Calendar.DAY_OF_MONTH))) {
-                    age--;
+                    int age = todayCal.get(Calendar.YEAR) - birthdateCal.get(Calendar.YEAR);
+
+                    // Adjust age if birthday hasn't occurred yet this year
+                    if (todayCal.get(Calendar.MONTH) < birthdateCal.get(Calendar.MONTH) ||
+                            (todayCal.get(Calendar.MONTH) == birthdateCal.get(Calendar.MONTH) &&
+                                    todayCal.get(Calendar.DAY_OF_MONTH) < birthdateCal.get(Calendar.DAY_OF_MONTH))) {
+                        age--;
+                    }
+
+                    if (age < 18) {
+                        errors.put("birthdate", "You must be at least 18 years old");
+                    }
                 }
+            } catch (ParseException e) {
+                errors.put("birthdate", "Invalid date format. Please use YYYY-MM-DD");
+            }
+        }
 
-                if (age < 18) {
-                    errors.put("birthdate", "You must be at least 18 years old");
-                }
+        String email = user.getEmail();
+        if (email != null && !email.isEmpty()) {
+            String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+            if (!email.matches(emailRegex)) {
+                errors.put("email", "Please enter a valid email address");
             }
         }
 
         // Polis validation
         // todo: check the polis in the database also.
-        String polis = user.getPolis();
-        if (polis == null || polis.trim().isEmpty()) {
+        Polis polis = user.getPolis();
+        if (polis == null || polis.getId() <= 0) {
             errors.put("polis", "Please select a polis");
         }
 

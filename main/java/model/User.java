@@ -13,13 +13,14 @@ public class User implements Serializable {
 	private String password;
 	private String email;
 	private String gender;
-	private Date birthdate;
-	private String polis;
+	private String birthdateString;
+	private Polis polis;
+	private final int socialCredit = 0;
 
 
-
-	public User() {
+    public User() {
 		super();
+
 	}
 
 	public Integer getId() {
@@ -62,19 +63,19 @@ public class User implements Serializable {
 		this.gender = gender;
 	}
 
-	public Date getBirthdate() {
-		return birthdate;
+	public String getBirthdateString() {
+		return birthdateString;
 	}
 
-	public void setBirthdate(Date birthdate) {
-		this.birthdate = birthdate;
+	public void setBirthdateString(String birthdateString) {
+		this.birthdateString = birthdateString;
 	}
 
-	public String getPolis() {
+	public Polis getPolis() {
 		return polis;
 	}
 
-	public void setPolis(String polis) {
+	public void setPolis(Polis polis) {
 		this.polis = polis;
 	}
 }

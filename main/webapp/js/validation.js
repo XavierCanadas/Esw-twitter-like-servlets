@@ -3,8 +3,18 @@ const username = document.getElementById('username');
 const password = document.getElementById('password');
 const confirmPassword = document.getElementById('confirmPassword');
 const gender = document.getElementById('gender');
-const birthdate = document.getElementById('birthdate');
+const birthdateString = document.getElementById('birthdateString');
 const polis = document.getElementById('polis');
+
+// Email validation
+email.addEventListener('input', () => {
+  const emailPattern = /^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$/;
+  if (!emailPattern.test(email.value)) {
+    email.setCustomValidity("Please enter a valid email address.");
+  } else {
+    email.setCustomValidity("");
+  }
+})
 
 // Username validation
 username.addEventListener('input', () => {
@@ -45,14 +55,16 @@ gender.addEventListener('change', () => {
 });
 
 // Birthdate validation
-birthdate.addEventListener('input', () => {
+birthdateString.addEventListener('input', () => {
   const today = new Date();
-  const selectedDate = new Date(birthdate.value);
+  const selectedDate = new Date(birthdateString.value);
+
+  console.log(`Selected date: ${selectedDate}`);
 
   if (isNaN(selectedDate.getTime())) {
-    birthdate.setCustomValidity("Please enter a valid date");
+    birthdateString.setCustomValidity("Please enter a valid date");
   } else if (selectedDate > today) {
-    birthdate.setCustomValidity("Birth date cannot be in the future");
+    birthdateString.setCustomValidity("Birth date cannot be in the future");
   } else {
     let age = today.getFullYear() - selectedDate.getFullYear();
     const monthDiff = today.getMonth() - selectedDate.getMonth();
@@ -62,9 +74,9 @@ birthdate.addEventListener('input', () => {
     }
 
     if (age < 18) {
-      birthdate.setCustomValidity("You must be at least 18 years old");
+      birthdateString.setCustomValidity("You must be at least 18 years old");
     } else {
-      birthdate.setCustomValidity("");
+      birthdateString.setCustomValidity("");
     }
   }
 });
@@ -87,7 +99,7 @@ Object.entries(serverErrors).forEach(([field, message]) => {
 // Check before submit
 form.addEventListener('submit', event => {
   // Manually trigger validation for all fields
-  [username, password, confirmPassword, gender, birthdate, polis].forEach(input => {
+  [username, password, confirmPassword, gender, birthdateString, polis].forEach(input => {
     const event = new Event('input', { bubbles: true });
     input.dispatchEvent(event);
   });
