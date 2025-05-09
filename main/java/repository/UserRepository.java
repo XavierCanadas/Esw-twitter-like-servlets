@@ -28,7 +28,7 @@ public class UserRepository extends BaseRepository {
 	public void save(User user) {
 		String query = "INSERT INTO users (name,password) VALUES (?,?)";
 		try (PreparedStatement statement = db.prepareStatement(query)) {
-			statement.setString(1, user.getName());
+			statement.setString(1, user.getUsername());
 			statement.setString(2, user.getPassword());
 			statement.executeUpdate();
 		} catch (SQLException e) {
@@ -45,7 +45,7 @@ public class UserRepository extends BaseRepository {
             if (rs.next()) {
                 User user = new User();
                 user.setId(rs.getInt("id"));
-                user.setName(rs.getString("name"));
+                user.setUsername(rs.getString("name"));
                 user.setPassword(rs.getString("password"));
                 return Optional.of(user);
             }
@@ -65,7 +65,7 @@ public class UserRepository extends BaseRepository {
             while (rs.next()) {
                 User user = new User();
                 user.setId(rs.getInt("id"));
-                user.setName(rs.getString("name"));
+                user.setUsername(rs.getString("name"));
                 user.setPassword(rs.getString("password"));
                 users.add(user);
             }

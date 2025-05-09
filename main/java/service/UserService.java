@@ -1,8 +1,6 @@
 package service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import model.User;
 import repository.UserRepository;
@@ -21,7 +19,7 @@ public class UserService {
     public Map<String, String> validate(User user) {
         Map<String, String> errors = new HashMap<>();
 
-        String name = user.getName();
+        String name = user.getUsername();
         if (name == null || name.trim().isEmpty()) {
             errors.put("name", "Username cannot be empty.");
         } else if (name.length() < 5 || name.length() > 20) {
@@ -33,6 +31,50 @@ public class UserService {
         String password = user.getPassword();
         if (password == null || !password.matches(PASSWORD_REGEX)) {
             errors.put("password", "Minimum 8 characters, including uppercase, number, and special character: *[!@#$%^&*]");
+        }
+
+        // Gender validation
+        String gender = user.getGender();
+        if (gender == null || gender.trim().isEmpty()) {
+            errors.put("gender", "Please select a gender");
+        }
+
+        // Birthdate validation
+        Date birthdate = user.getBirthdate();
+        if (birthdate == null) {
+            errors.put("birthdate", "Please enter a valid date");
+        } else {
+            // Check if birthdate is in the future
+            Date today = new Date();
+            if (birthdate.after(today)) {
+                errors.put("birthdate", "Birth date cannot be in the future");
+            } else {
+                // Calculate age
+                Calendar todayCal = Calendar.getInstance();
+                Calendar birthdateCal = Calendar.getInstance();
+                todayCal.setTime(today);
+                birthdateCal.setTime(birthdate);
+
+                int age = todayCal.get(Calendar.YEAR) - birthdateCal.get(Calendar.YEAR);
+
+                // Adjust age if birthday hasn't occurred yet this year
+                if (todayCal.get(Calendar.MONTH) < birthdateCal.get(Calendar.MONTH) ||
+                        (todayCal.get(Calendar.MONTH) == birthdateCal.get(Calendar.MONTH) &&
+                                todayCal.get(Calendar.DAY_OF_MONTH) < birthdateCal.get(Calendar.DAY_OF_MONTH))) {
+                    age--;
+                }
+
+                if (age < 18) {
+                    errors.put("birthdate", "You must be at least 18 years old");
+                }
+            }
+        }
+
+        // Polis validation
+        // todo: check the polis in the database also.
+        String polis = user.getPolis();
+        if (polis == null || polis.trim().isEmpty()) {
+            errors.put("polis", "Please select a polis");
         }
 
         return errors;
