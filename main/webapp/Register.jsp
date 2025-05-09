@@ -35,8 +35,9 @@
 			<option value="indeterminate" ${user.gender == 'indeterminate' ? 'selected' : ''}>Indeterminate</option>
 		</select>
 
+		<label for="birthdateString">Birthdate:</label>
 		<input type="date" id="birthdateString" name="birthdateString" required
-			   value="<c:if test="${not empty user.birthdateString}"><fmt:formatDate pattern="yyyy-MM-dd" value="${user.birthdateString}"/></c:if>" />
+			   value="${not empty user.birthdateString ? user.birthdateString : ''}" />
 
 		<label for="polis">Polis:</label>
 		<select id="polis" name="polisId" required>

@@ -15,6 +15,7 @@ public class User implements Serializable {
 	private String gender;
 	private String birthdateString;
 	private Polis polis;
+	private int polisId;
 	private final int socialCredit = 0;
 
 
@@ -77,5 +78,13 @@ public class User implements Serializable {
 
 	public void setPolis(Polis polis) {
 		this.polis = polis;
+	}
+
+	public int getPolisId() {
+		return polisId;
+	}
+
+	public void setPolisId(int polisId) {
+		this.polisId = polisId;
 	}
 }

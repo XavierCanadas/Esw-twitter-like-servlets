@@ -55,6 +55,7 @@ gender.addEventListener('change', () => {
 });
 
 // Birthdate validation
+
 birthdateString.addEventListener('input', () => {
   const today = new Date();
   const selectedDate = new Date(birthdateString.value);
@@ -80,6 +81,7 @@ birthdateString.addEventListener('input', () => {
     }
   }
 });
+
 
 // Polis validation
 polis.addEventListener('change', () => {
