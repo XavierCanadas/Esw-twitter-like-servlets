@@ -14,6 +14,7 @@ public class User implements Serializable {
 	private String email;
 	private String gender;
 	private String birthdateString;
+	private String picture;
 	private Polis polis;
 	private int polisId;
 	private final int socialCredit = 0;
@@ -86,5 +87,13 @@ public class User implements Serializable {
 
 	public void setPolisId(int polisId) {
 		this.polisId = polisId;
+	}
+
+	public String getPicture() {
+		return picture;
+	}
+
+	public void setPicture(String picture) {
+		this.picture = picture;
 	}
 }

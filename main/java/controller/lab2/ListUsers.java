@@ -1,4 +1,4 @@
-package controller;
+package controller.lab2;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,21 +10,20 @@ import repository.UserRepository;
 import service.UserService;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.Gson;
-
 /**
- * Servlet implementation class ListUsersAJAX
+ * Servlet implementation class ListUsers
  */
-@WebServlet("/ListUsersAJAX")
-public class ListUsersAJAX extends HttpServlet {
+@WebServlet("/ListUsers")
+public class ListUsers extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ListUsersAJAX() {
+    public ListUsers() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,23 +32,17 @@ public class ListUsersAJAX extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			
-		response.setContentType("application/json");
-	    response.setCharacterEncoding("UTF-8");
-
-	    try (UserRepository userRepository = new UserRepository()) {
-	        UserService userService = new UserService(userRepository);
-	        List<User> users = userService.getAllUsers();
-
-	        // Convert to JSON
-	        String json = new Gson().toJson(users);
-	        response.getWriter().write(json);
-
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-	        response.getWriter().write("{\"error\":\"Unable to fetch users.\"}");
-	    }
+		
+		List<User> users = new ArrayList<>();
+		
+		try (UserRepository userRepository = new UserRepository()) {
+			UserService userService = new UserService(userRepository);
+			users = userService.getAllUsers();
+			request.setAttribute("users",users);
+		}
+		
+		request.getRequestDispatcher("ListUsers.jsp").forward(request, response);
+		
 	}
 
 	/**

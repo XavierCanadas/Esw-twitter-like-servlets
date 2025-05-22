@@ -1,9 +1,16 @@
 package service;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import jakarta.servlet.http.Part;
 import model.Polis;
 import model.User;
 import repository.UserRepository;
@@ -15,9 +22,32 @@ public class UserService {
 	public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-	
+
+    private static final String UPLOAD_DIRECTORY = "C:\\Users\\EPAW 2023\\eclipse-workspace_2025\\images";
 	private static final String PASSWORD_REGEX = 
 	        "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*]).{8,}$";
+
+    public void savePicture(User user, Part filePart) throws IOException {
+
+        if (filePart == null || filePart.getSize() == 0) {
+            user.setPicture("default.png");
+            return;
+        }
+
+        String originalName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+        String extension = "";
+        String repositoryName = "";
+        int dotIndex = originalName.lastIndexOf('.');
+        if (dotIndex > 0) {
+            extension = originalName.substring(dotIndex);
+            repositoryName = user.getUsername() + extension;
+        }
+        File file = new File(UPLOAD_DIRECTORY + File.separator + repositoryName);
+        try (InputStream fileContent = filePart.getInputStream()) {
+            Files.copy(fileContent, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            user.setPicture(repositoryName);
+        }
+    }
 	
     public Map<String, String> validate(User user) {
         Map<String, String> errors = new HashMap<>();
@@ -104,10 +134,19 @@ public class UserService {
         return errors;
     }
 
-    public Map<String, String> register(User user) {
+    public Map<String, String> register(User user, Part filePart) throws IOException {
         Map<String, String> errors = validate(user);
         if (errors.isEmpty()) {
+            savePicture(user,filePart);
             userRepository.save(user);
+        }
+        return errors;
+    }
+
+    public Map<String, String> login(User user) throws IOException {
+        Map<String, String> errors = new HashMap<>();
+        if (!userRepository.checkLogin(user)) {
+            errors.put("password","The combination of name and password does not match in our dataabase");
         }
         return errors;
     }

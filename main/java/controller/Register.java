@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import model.Polis;
 import model.User;
 import repository.PolisRepository;
@@ -66,6 +67,9 @@ public class Register extends HttpServlet {
 			e.printStackTrace();
 		}
 
+		// profile picture
+		Part filePart = request.getPart("picture");
+
 		try (UserRepository userRepository = new UserRepository();
 			 PolisRepository polisRepository = new PolisRepository()) {
 
@@ -75,7 +79,8 @@ public class Register extends HttpServlet {
 			request.setAttribute("polisList", polisList);
 
 			UserService userService = new UserService(userRepository);
-			Map<String, String> errors = userService.register(user);
+			Map<String, String> errors = userService.register(user, filePart);
+
 			if (errors.isEmpty()) {
 				request.setAttribute("user", user);
 				request.getRequestDispatcher("Login.jsp").forward(request, response);
@@ -84,6 +89,10 @@ public class Register extends HttpServlet {
 				request.setAttribute("errors", errors);
 				request.getRequestDispatcher("Register.jsp").forward(request, response);
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			request.setAttribute("error", "An error occurred while processing your request.\n" + e.getMessage());
+			request.getRequestDispatcher("Register.jsp").forward(request, response);
 		}
 		
 	}

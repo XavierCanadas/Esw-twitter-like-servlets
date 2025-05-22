@@ -1,31 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" session="false"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
-<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<link rel="stylesheet" href="css/style.css">
-<title>Register Form</title>
-</head>
-<body>
+<form id="registerForm" action="Register" method="POST" enctype="multipart/form-data">
 
-	<form id="registerForm" action="Register" method="POST">
+	<div>
+		<label for="name" class="w3-text-theme">Name:</label> 
+		<input type="text" class="w3-input w3-border w3-light-grey" 
+			id="name"
+			name="name" required minlength="5" maxlength="20" value="${user.name}"
+			title="Username must be beetween 5 and 20 characters." />
+	</div>
+	<div>
+		<label for="password" class="w3-text-theme">Password:</label> 
+		<input type="password" class="w3-input w3-border w3-light-grey"
+			id="password" name="password" required
+			pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$"
+			value="${user.password}"
+			title="Minimum 8 characters, including uppercase, number, and special character: *[!@#$%^&*]" />
 
-		<label for="email">Email:</label>
-		<input type="email" id="email" name="email" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" value="${user.email}" title="Enter a valid email address" />
+		<label for="confirmPassword" class="w3-text-theme">Repeat password:</label> 
+		<input type="password" class="w3-input w3-border w3-light-grey"
+		    id="confirmPassword" name="confirmPassword" required
+			value="${user.password}" title="Passwords must match" />
+	</div>
 
-		<label for="username">Name:</label>
-		<input type="text" id="username" name="username" required minlength="2" value="${user.username}" title="the username must be beetween 2 and 15 characters."/>
-
-		<label for="password">Password:</label> 
-		<input type="password" id="password" name="password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$" value="${user.password}" title="Minimum 8 characters, including uppercase, number, and special character: *[!@#$%^&*]" />
-
-		<label for="confirmPassword">Repeat password:</label> 
-		<input type="password" id="confirmPassword" name="confirmPassword" required value="${user.password}" title="Passwords must match" />
-
+	<div>
 		<label for="gender">Gender:</label>
 		<select id="gender" name="gender" required>
 			<option value="" disabled ${empty user.gender ? 'selected' : ''}>Select gender</option>
@@ -47,8 +47,26 @@
 			</c:forEach>
 		</select>
 
-		<button type="submit">Send</button>
-	</form>
+	</div>
+
+	<div>
+		<label for="picture" class="w3-text-theme">Upload a profile picture (optional)</label>
+		<input type="file" class="w3-input w3-border w3-light-grey"
+			id="picture" name="picture" accept="image/*" />
+		<label for="webcamCapture" class="w3-text-theme"> ... or take a picture using your webcam:</label>
+		<div class="video-container w3-center">
+		    <select id="cameraSelect"></select> <br/>
+		    <div style="position: relative; display: inline-block;">
+		        <video id="webcam" width="300" height="200" autoplay muted></video>
+		        <canvas id="overlay" width="300" height="200"></canvas>
+		    </div>
+		    <canvas id="canvas" style="display: none;"></canvas>
+			<br/>
+			<button type="button" class="w3-btn w3-theme" id="captureBtn">Capture Image</button>
+		</div>
+	</div>
+	<br/>
+	<button type="submit" class="w3-btn w3-theme"> Register </button>
 
 	<div class="error-container">
 		<c:if test="${not empty errors}">
@@ -59,25 +77,17 @@
 			</ul>
 		</c:if>
 	</div>
-	
-	<!--  
-	<ul>
-		<c:forEach var="error" items="${errors}">
-			<li>${error.key} -> ${error.value}</li>
-		</c:forEach>
-	</ul>
-	-->
-	
-	<script>
-		// Server errors to JS object
-	    const serverErrors = {
-	      <c:forEach var="error" items="${errors}">
-	        "${error.key}": "${error.value}",
-	      </c:forEach>
-	    };
-	</script>
-	<script src="js/validation.js"></script>
 
+</form>
 
-</body>
-</html>
+<script src="js/webcam.js"></script>
+<script src="js/RegisterValidation.js"></script>
+<script>
+	window.App.Errors = {
+		  <c:forEach var="error" items="${errors}">
+		    "${error.key}": "${error.value}",
+		  </c:forEach>
+	};
+	initValidation(window.App.Errors);
+	initCamera();
+</script>
