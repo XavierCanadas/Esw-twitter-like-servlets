@@ -5,6 +5,6 @@
   <h4>My Profile</h4>
   <p><img src="/images/${user.picture}" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
   <hr>
-  <p class="w3-left-align"> <i class="fa fa-id-card fa-fw w3-margin-right"></i> ${user.name} </p>
+  <p class="w3-left-align"> <i class="fa fa-id-card fa-fw w3-margin-right"></i> ${user.username} </p>
  </div>
 <br>
