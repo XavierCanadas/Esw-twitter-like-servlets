@@ -57,15 +57,15 @@
 	<div>
 		<label for="picture" class="w3-text-theme">Upload a profile picture (optional)</label>
 		<input type="file" class="w3-input w3-border w3-light-grey"
-			id="picture" name="picture" accept="image/*" />
-		<label for="webcam" class="w3-text-theme"> ... or take a picture using your webcam:</label>
+			   id="picture" name="picture" accept="image/*" />
+		<label for="webcamCapture" class="w3-text-theme"> ... or take a picture using your webcam:</label>
 		<div class="video-container w3-center">
-		    <select id="cameraSelect"></select> <br/>
-		    <div style="position: relative; display: inline-block;">
-		        <video id="webcam" width="300" height="200" autoplay muted></video>
-		        <canvas id="overlay" width="300" height="200"></canvas>
-		    </div>
-		    <canvas id="canvas" style="display: none;"></canvas>
+			<select id="cameraSelect"></select> <br/>
+			<div style="position: relative; display: inline-block;">
+				<video id="webcam" width="300" height="200" autoplay muted></video>
+				<canvas id="overlay" width="300" height="200" style="position: absolute; top: 0; left: 0;"></canvas>
+			</div>
+			<canvas id="canvas" style="display: none;"></canvas>
 			<br/>
 			<button type="button" class="w3-btn w3-theme" id="captureBtn">Capture Image</button>
 		</div>
@@ -97,3 +97,4 @@
 	initValidation(window.App.Errors);
 	initCamera();
 </script>
+

@@ -38,6 +38,9 @@ public class Login extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("Login.jsp").forward(request, response);
+
+        // Use System.out for immediate console output
+        System.out.println("===== DEBUG: Login servlet accessed =====");
     }
 
     /**

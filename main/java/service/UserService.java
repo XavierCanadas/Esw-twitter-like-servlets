@@ -137,7 +137,12 @@ public class UserService {
     public Map<String, String> register(User user, Part filePart) throws IOException {
         Map<String, String> errors = validate(user);
         if (errors.isEmpty()) {
-            savePicture(user,filePart);
+            try {
+                savePicture(user,filePart);
+            } catch (IOException e) {
+                errors.put("picture", "Error saving the picture: " + e.getMessage());
+            }
+
             userRepository.save(user);
         }
         return errors;
