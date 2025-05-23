@@ -94,44 +94,37 @@ public class UserService {
         // Birthdate validation
 
 
-        String birthdateStr = user.getBirthdateString();
+        java.sql.Date birthdateSql = user.getBirthdate();
         Date birthdate = null;
 
-        if (birthdateStr == null || birthdateStr.trim().isEmpty()) {
+        if (birthdateSql == null) {
             errors.put("birthdate", "Please enter a valid date");
         } else {
-            try {
-                // Parse the string to a Date object using SimpleDateFormat
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                dateFormat.setLenient(false);
-                birthdate = dateFormat.parse(birthdateStr);
+            birthdate = new Date(birthdateSql.getTime()); // Convertimos a java.util.Date
 
-                // Check if birthdate is in the future
-                Date today = new Date();
-                if (birthdate.after(today)) {
-                    errors.put("birthdate", "Birth date cannot be in the future");
-                } else {
-                    // Calculate age
-                    Calendar todayCal = Calendar.getInstance();
-                    Calendar birthdateCal = Calendar.getInstance();
-                    todayCal.setTime(today);
-                    birthdateCal.setTime(birthdate);
+            // Verificar que no sea una fecha futura
+            Date today = new Date();
+            if (birthdate.after(today)) {
+                errors.put("birthdate", "Birth date cannot be in the future");
+            } else {
+                // Calcular edad
+                Calendar todayCal = Calendar.getInstance();
+                Calendar birthdateCal = Calendar.getInstance();
+                todayCal.setTime(today);
+                birthdateCal.setTime(birthdate);
 
-                    int age = todayCal.get(Calendar.YEAR) - birthdateCal.get(Calendar.YEAR);
+                int age = todayCal.get(Calendar.YEAR) - birthdateCal.get(Calendar.YEAR);
 
-                    // Adjust age if birthday hasn't occurred yet this year
-                    if (todayCal.get(Calendar.MONTH) < birthdateCal.get(Calendar.MONTH) ||
-                            (todayCal.get(Calendar.MONTH) == birthdateCal.get(Calendar.MONTH) &&
-                                    todayCal.get(Calendar.DAY_OF_MONTH) < birthdateCal.get(Calendar.DAY_OF_MONTH))) {
-                        age--;
-                    }
-
-                    if (age < 18) {
-                        errors.put("birthdate", "You must be at least 18 years old");
-                    }
+                // Ajustar edad si el cumpleaños aún no ha ocurrido este año
+                if (todayCal.get(Calendar.MONTH) < birthdateCal.get(Calendar.MONTH) ||
+                    (todayCal.get(Calendar.MONTH) == birthdateCal.get(Calendar.MONTH) &&
+                     todayCal.get(Calendar.DAY_OF_MONTH) < birthdateCal.get(Calendar.DAY_OF_MONTH))) {
+                    age--;
                 }
-            } catch (ParseException e) {
-                errors.put("birthdate", "Invalid date format. Please use YYYY-MM-DD");
+
+                if (age < 18) {
+                    errors.put("birthdate", "You must be at least 18 years old");
+                }
             }
         }
 

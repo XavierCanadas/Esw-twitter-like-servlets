@@ -13,7 +13,7 @@ public class User implements Serializable {
 	private String password;
 	private String email;
 	private String gender;
-	private String birthdateString;
+	private java.sql.Date birthdate;
 	private String picture;
 	private Polis polis;
 	private int polisId;
@@ -65,12 +65,12 @@ public class User implements Serializable {
 		this.gender = gender;
 	}
 
-	public String getBirthdateString() {
-		return birthdateString;
+	public java.sql.Date getBirthdate() {
+		return birthdate;
 	}
 
-	public void setBirthdateString(String birthdateString) {
-		this.birthdateString = birthdateString;
+	public void setBirthdate(java.sql.Date birthdate) {
+		this.birthdate = birthdate;
 	}
 
 	public Polis getPolis() {

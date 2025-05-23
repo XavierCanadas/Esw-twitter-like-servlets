@@ -40,9 +40,9 @@
 			<option value="indeterminate" ${user.gender == 'indeterminate' ? 'selected' : ''}>Indeterminate</option>
 		</select>
 
-		<label for="birthdateString">Birthdate:</label>
-		<input type="date" id="birthdateString" name="birthdateString" required
-			   value="${not empty user.birthdateString ? user.birthdateString : ''}" />
+		<label for="birthdate">Birthdate:</label>
+		<input type="date" id="birthdate" name="birthdate" required
+			   value="${not empty user.birthdate ? user.birthdate : ''}" />
 
 		<label for="polis">Polis:</label>
 		<select id="polis" name="polisId" required>
