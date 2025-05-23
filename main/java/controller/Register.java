@@ -80,7 +80,7 @@ public class Register extends HttpServlet {
 			List<Polis> polisList = polisService.getAllPolis();
 			request.setAttribute("polisList", polisList);
 
-			UserService userService = new UserService(userRepository);
+			UserService userService = new UserService(userRepository, getServletContext());
 			Map<String, String> errors = userService.register(user, filePart);
 
 			if (errors.isEmpty()) {

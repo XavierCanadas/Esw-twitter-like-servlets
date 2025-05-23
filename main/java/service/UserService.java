@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.Part;
 import model.Polis;
 import model.User;
@@ -18,13 +19,19 @@ import repository.UserRepository;
 public class UserService {
 	
 	private UserRepository userRepository;
-	
+	private ServletContext servletContext;
+
 	public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    private static final String UPLOAD_DIRECTORY = "C:\\Users\\EPAW 2023\\eclipse-workspace_2025\\images";
-	private static final String PASSWORD_REGEX = 
+    public UserService(UserRepository userRepository, ServletContext servletContext) {
+        this.userRepository = userRepository;
+        this.servletContext = servletContext;
+    }
+
+    private static final String UPLOAD_DIRECTORY = "uploads";
+	private static final String PASSWORD_REGEX =
 	        "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*]).{8,}$";
 
     public void savePicture(User user, Part filePart) throws IOException {
@@ -32,6 +39,18 @@ public class UserService {
         if (filePart == null || filePart.getSize() == 0) {
             user.setPicture("default.png");
             return;
+        }
+
+        // Use a fixed relative path from the project root directory
+        String projectRoot = System.getProperty("user.dir");
+        String uploadPath = projectRoot + File.separator + "images" + File.separator + UPLOAD_DIRECTORY;
+
+        uploadPath = servletContext.getRealPath("");
+
+        // Ensure directory exists
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs(); // Use mkdirs() to create parent directories if needed
         }
 
         String originalName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
@@ -42,7 +61,7 @@ public class UserService {
             extension = originalName.substring(dotIndex);
             repositoryName = user.getUsername() + extension;
         }
-        File file = new File(UPLOAD_DIRECTORY + File.separator + repositoryName);
+        File file = new File(uploadPath + File.separator + repositoryName);
         try (InputStream fileContent = filePart.getInputStream()) {
             Files.copy(fileContent, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
             user.setPicture(repositoryName);
@@ -137,11 +156,13 @@ public class UserService {
     public Map<String, String> register(User user, Part filePart) throws IOException {
         Map<String, String> errors = validate(user);
         if (errors.isEmpty()) {
+            /*
             try {
                 savePicture(user,filePart);
             } catch (IOException e) {
                 errors.put("picture", "Error saving the picture: " + e.getMessage());
             }
+            */
 
             userRepository.save(user);
         }
@@ -162,3 +183,4 @@ public class UserService {
     }
 
 }
+

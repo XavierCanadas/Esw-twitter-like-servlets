@@ -53,7 +53,7 @@
 		</select>
 
 	</div>
-
+	<!--
 	<div>
 		<label for="picture" class="w3-text-theme">Upload a profile picture (optional)</label>
 		<input type="file" class="w3-input w3-border w3-light-grey"
@@ -70,6 +70,7 @@
 			<button type="button" class="w3-btn w3-theme" id="captureBtn">Capture Image</button>
 		</div>
 	</div>
+	-->
 	<br/>
 	<button type="submit" class="w3-btn w3-theme"> Register </button>
 
