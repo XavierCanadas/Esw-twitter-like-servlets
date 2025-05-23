@@ -40,7 +40,13 @@ public class Login extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("Login.jsp").forward(request, response);
+    	HttpSession session = request.getSession(false);
+
+        if (session!=null && session.getAttribute("user")!=null) {
+        	request.getRequestDispatcher("Welcome.jsp").forward(request, response);
+        } else {
+        	request.getRequestDispatcher("Login.jsp").forward(request, response);
+        }
 
         // Use System.out for immediate console output
         System.out.println("===== DEBUG: Login servlet accessed =====");
