@@ -174,6 +174,13 @@ public class UserService {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+ // Get followed users
+    public List<User> getFollowedUsers(Integer id, Integer start, Integer end) {
+    	Optional<List<User>> users = userRepository.findFollowed(id,start,end);
+    	if (users.isPresent())
+    	    return users.get();
+        return null;
+    }
 
 }
 

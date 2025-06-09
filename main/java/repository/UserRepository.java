@@ -135,5 +135,28 @@ public class UserRepository extends BaseRepository {
 
         return users;
     }
+    
+    public Optional<List<User>> findFollowed(Integer id, Integer start, Integer end) {
+		String query = "SELECT u.id, u.username ,u.picture FROM users,follows WHERE id = fid AND uid = ? ORDER BY name LIMIT ?,?;";
+		try (PreparedStatement statement = db.prepareStatement(query)) {
+			statement.setInt(1, id);
+			statement.setInt(2, start);
+			statement.setInt(3, end);
+			try (ResultSet rs = statement.executeQuery()) {
+				List<User> users = new ArrayList<User>();
+				while (rs.next()) {
+					User user = new User();
+					user.setId(rs.getInt("id"));
+					user.setUsername(rs.getString("username"));
+					user.setPicture(rs.getString("picture"));
+					users.add(user);
+				}
+				return Optional.of(users);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return Optional.empty();
+	}
 
 }

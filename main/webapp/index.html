@@ -22,7 +22,7 @@ App.init = function() {
     $.ajaxSetup({ cache: false });
     // Load initial content
     $('#navigation').load("Menu");
-    $('#content').load("Login");
+    $('#content').load("Content");
     $('#lcolumn').html("<p/>");
     $('#rcolumn').html("<p/>");
     // Attach global events
@@ -35,9 +35,8 @@ App.bindEvents = function() {
 	// Deal with menu clicks
     $(document).on("click", ".menu", function(event) {
     	event.preventDefault();
-        $('#content').load($(this).attr('href'), function() {
-        	$('#navigation').load("Menu");
-        });
+        $('#content').load($(this).attr('href'))
+        App.stack();
     });
 
 	// Deal with form submission via AJAX
