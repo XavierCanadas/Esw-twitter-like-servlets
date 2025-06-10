@@ -174,6 +174,14 @@ public class UserService {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+    
+    public void follow(Integer uid,Integer fid) {
+    	userRepository.followUser(uid, fid);
+    }
+ // Unfollow User
+    public void unfollow(Integer uid,Integer fid) {
+    	userRepository.unfollowUser(uid, fid);
+    }
  // Get followed users
     public List<User> getFollowedUsers(Integer id, Integer start, Integer end) {
     	Optional<List<User>> users = userRepository.findFollowed(id,start,end);

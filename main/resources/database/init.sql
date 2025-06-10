@@ -2,11 +2,16 @@ CREATE DATABASE IF NOT EXISTS epaw;
 
 USE epaw;
 
+SET FOREIGN_KEY_CHECKS = 0;
+
+DROP TABLE IF EXISTS LikeTweet;
+DROP TABLE IF EXISTS `follows`;
+DROP TABLE IF EXISTS `tweets`;
 DROP TABLE IF EXISTS Users;
 DROP TABLE IF EXISTS Polis;
-DROP TABLE IF EXISTS Tweet;
-DROP TABLE IF EXISTS Follow;
-DROP TABLE IF EXISTS LikeTweet;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
 
 CREATE TABLE IF NOT EXISTS Polis
 (
@@ -23,7 +28,7 @@ CREATE TABLE IF NOT EXISTS Users
     password       VARCHAR(30)                                            NOT NULL,
     email          VARCHAR(20)                                            NOT NULL,
     gender         ENUM ('male', 'female', 'non-binary', 'undeterminate') NOT NULL,
-    birthdayString VARCHAR(20)                                            NOT NULL,
+    birthday 	   DATE                                                   NOT NULL,
     socialCredit   INT          DEFAULT 0,
     is_admin       BOOLEAN      DEFAULT FALSE,
     picture        VARCHAR(100) DEFAULT 'https://www.w3schools.com/w3images/avatar2.png', -- default image set by copilot
@@ -33,27 +38,26 @@ CREATE TABLE IF NOT EXISTS Users
     FOREIGN KEY (polis_id) REFERENCES Polis (id)
 );
 
-CREATE TABLE IF NOT EXISTS Tweet
-(
-    id         INT          NOT NULL AUTO_INCREMENT,
-    content    VARCHAR(140) NOT NULL,
-    created_at DATETIME     NOT NULL,
-    user_id    INT          NOT NULL,
-    parent_id  INT,
-
-    PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES Users (id),
-    FOREIGN KEY (parent_id) REFERENCES Tweet (id)
+CREATE TABLE IF NOT EXISTS `tweets` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `uid` int DEFAULT NULL,
+  `postdatetime` timestamp NULL DEFAULT NULL,
+  `content` varchar(100) DEFAULT NULL,
+  `pid` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tweets_users_fk` (`uid`),
+  KEY `tweets_tweets_fk` (`pid`),
+  CONSTRAINT `tweets_tweets_fk` FOREIGN KEY (`pid`) REFERENCES `tweets` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `tweets_users_fk` FOREIGN KEY (`uid`) REFERENCES Users (`id`) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS Follow
-(
-    follower_id INT NOT NULL,
-    followed_id INT NOT NULL,
-
-    PRIMARY KEY (follower_id, followed_id),
-    FOREIGN KEY (follower_id) REFERENCES Users (id),
-    FOREIGN KEY (followed_id) REFERENCES Users (id)
+CREATE TABLE IF NOT EXISTS `follows` (
+  `uid` int NOT NULL,
+  `fid` int NOT NULL,
+  PRIMARY KEY (`uid`,`fid`),
+  KEY `fid_users_fk` (`fid`),
+  CONSTRAINT `fid_users_fk` FOREIGN KEY (`fid`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `uid_users_fk` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS LikeTweet
@@ -63,7 +67,7 @@ CREATE TABLE IF NOT EXISTS LikeTweet
 
     PRIMARY KEY (user_id, tweet_id),
     FOREIGN KEY (user_id) REFERENCES Users (id),
-    FOREIGN KEY (tweet_id) REFERENCES Tweet (id)
+    FOREIGN KEY (tweet_id) REFERENCES `tweets` (id)
 );
 
 

@@ -23,8 +23,8 @@ App.init = function() {
     // Load initial content
     $('#navigation').load("Menu");
     $('#content').load("Content");
-    $('#lcolumn').html("<p/>");
-    $('#rcolumn').html("<p/>");
+    $('#lcolumn').html("NotFollowed");
+    $('#rcolumn').html("Profile");
     // Attach global events
     App.bindEvents();
     
@@ -56,6 +56,47 @@ App.bindEvents = function() {
         	$('#navigation').load("Menu");
         	$("#content").html(html);
         });
+       /* Follow user */
+   	$(document).on("click", ".followUser", function(event) {
+   		var user = $(this).parent();
+   		$.post("Follow", {
+   			id : $(this).parent().attr("id")
+   		}, function(event) {
+   			$("#content").load("Followed");
+   			$("#lcolumn").load("NotFollowed");
+   		});
+   		event.preventDefault();
+   	});
+   	/* UnFollow user */
+	$(document).on("click", ".unfollowUser", function(event) {
+		var user = $(this).parent();
+		$.post("Unfollow", {
+			id : $(this).parent().attr("id")
+		}, function(event) {
+			$("#content").load("Followed");
+			$("#lcolumn").load("NotFollowed");
+		});
+		event.preventDefault();
+	});
+   	/* Add tweet */
+	$(document).on("click", "#addTweet", function(event) {
+		$.post("AddTweet", {
+			content : $("#tweetContent").text()
+		}, function(event) {
+			$("#content").load("Timeline");
+		});
+		event.preventDefault();
+	});
+	/* Delete tweet */
+	$(document).on("click", ".delTweet", function(event) {
+		var tweet = $(this).parent();
+		$.post("DelTweet", {
+			id : $(this).parent().attr("id")
+		}, function(event) {
+			$("#content").load("Timeline");
+		});
+		event.preventDefault();
+	});
     });
 };
 

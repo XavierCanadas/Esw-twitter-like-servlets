@@ -136,6 +136,28 @@ public class UserRepository extends BaseRepository {
         return users;
     }
     
+ // Follow a user
+ 	public void followUser(Integer uid, Integer fid) {
+ 		String query = "INSERT INTO follows (uid,fid) VALUES (?,?)";
+ 		try (PreparedStatement statement = db.prepareStatement(query)) {
+ 			statement.setInt(1, uid);
+ 			statement.setInt(2, fid);
+ 			statement.executeUpdate();
+ 		} catch (SQLException e) {
+ 			e.printStackTrace();
+ 		}
+ 	}
+ // Unfollow a user
+ 	public void unfollowUser(Integer uid, Integer fid) {
+ 		String query = "DELETE FROM follows WHERE uid = ? AND fid = ?";
+ 		try (PreparedStatement statement = db.prepareStatement(query)) {
+ 			statement.setInt(1, uid);
+ 			statement.setInt(2, fid);
+ 			statement.executeUpdate();
+ 		} catch (SQLException e) {
+ 			e.printStackTrace();
+ 		}
+ 	} 
     public Optional<List<User>> findFollowed(Integer id, Integer start, Integer end) {
 		String query = "SELECT u.id, u.username ,u.picture FROM users,follows WHERE id = fid AND uid = ? ORDER BY name LIMIT ?,?;";
 		try (PreparedStatement statement = db.prepareStatement(query)) {
