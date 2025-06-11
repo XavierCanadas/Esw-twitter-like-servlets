@@ -13,7 +13,7 @@ public class PolisRepository extends BaseRepository {
 
     public List<Polis> findAll() {
         List<Polis> polisList = new ArrayList<>();
-        String query = "SELECT id, name FROM polis";
+        String query = "SELECT id, name FROM Polis";
 
         try (PreparedStatement statement = db.prepareStatement(query)) {
             ResultSet rs = statement.executeQuery();
@@ -32,7 +32,10 @@ public class PolisRepository extends BaseRepository {
     }
 
     public Optional<Polis> findById(int id) {
-        String query = "SELECT id, name FROM polis WHERE id = ?";
+        String query = "SELECT id, name " +
+                       "FROM Polis " +
+                       "WHERE id = ?";
+
         try (PreparedStatement statement = db.prepareStatement(query)) {
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();

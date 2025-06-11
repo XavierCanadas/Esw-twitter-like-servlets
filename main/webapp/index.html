@@ -22,9 +22,9 @@ App.init = function() {
     $.ajaxSetup({ cache: false });
     // Load initial content
     $('#navigation').load("Menu");
-    $('#content').load("Login");
-    $('#lcolumn').html("<p/>");
-    $('#rcolumn').html("<p/>");
+    $('#content').load("Content");
+    $('#lcolumn').html("NotFollowed");
+    $('#rcolumn').html("Profile");
     // Attach global events
     App.bindEvents();
     
@@ -35,9 +35,8 @@ App.bindEvents = function() {
 	// Deal with menu clicks
     $(document).on("click", ".menu", function(event) {
     	event.preventDefault();
-        $('#content').load($(this).attr('href'), function() {
-        	$('#navigation').load("Menu");
-        });
+        $('#content').load($(this).attr('href'))
+        App.stack();
     });
 
 	// Deal with form submission via AJAX
@@ -57,6 +56,47 @@ App.bindEvents = function() {
         	$('#navigation').load("Menu");
         	$("#content").html(html);
         });
+       /* Follow user */
+   	$(document).on("click", ".followUser", function(event) {
+   		var user = $(this).parent();
+   		$.post("Follow", {
+   			id : $(this).parent().attr("id")
+   		}, function(event) {
+   			$("#content").load("Followed");
+   			$("#lcolumn").load("NotFollowed");
+   		});
+   		event.preventDefault();
+   	});
+   	/* UnFollow user */
+	$(document).on("click", ".unfollowUser", function(event) {
+		var user = $(this).parent();
+		$.post("Unfollow", {
+			id : $(this).parent().attr("id")
+		}, function(event) {
+			$("#content").load("Followed");
+			$("#lcolumn").load("NotFollowed");
+		});
+		event.preventDefault();
+	});
+   	/* Add tweet */
+	$(document).on("click", "#addTweet", function(event) {
+		$.post("AddTweet", {
+			content : $("#tweetContent").text()
+		}, function(event) {
+			$("#content").load("Timeline");
+		});
+		event.preventDefault();
+	});
+	/* Delete tweet */
+	$(document).on("click", ".delTweet", function(event) {
+		var tweet = $(this).parent();
+		$.post("DelTweet", {
+			id : $(this).parent().attr("id")
+		}, function(event) {
+			$("#content").load("Timeline");
+		});
+		event.preventDefault();
+	});
     });
 };
 

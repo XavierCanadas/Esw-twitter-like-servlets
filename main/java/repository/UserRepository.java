@@ -13,7 +13,12 @@ import model.User;
 public class UserRepository extends BaseRepository {
 	
 	public boolean existsByUsername(String username) {
-		try (PreparedStatement statement = db.prepareStatement("SELECT COUNT(*) FROM users WHERE name = ?")) {
+
+        String query = "SELECT COUNT(*) " +
+                       "FROM Users u " +
+                       "WHERE u.username = ?";
+
+		try (PreparedStatement statement = db.prepareStatement(query)) {
             statement.setString(1, username);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
@@ -27,7 +32,10 @@ public class UserRepository extends BaseRepository {
 
     public boolean checkLogin(User user) {
 
-        String query = "SELECT id,picture from users where username=? AND password=?";
+        String query = "SELECT id, picture " +
+                       "FROM Users u " +
+                        "WHERE u.username=? AND u.password=?";
+
         try (PreparedStatement statement = db.prepareStatement(query)) {
             statement.setString(1, user.getUsername());
             statement.setString(2, user.getPassword());
@@ -48,7 +56,13 @@ public class UserRepository extends BaseRepository {
 	
     // Save a new user into the database
     public void save(User user) {
-        String query = "INSERT INTO users (username, password, email, gender, birthday, is_admin, picture, polis_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Users (username, password, email, gender, birthday, is_admin, polis_id) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        if (user.getPicture() != null) {
+            query = "INSERT INTO Users (username, password, email, gender, birthday, is_admin, polis_id, picture) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        }
+
         try (PreparedStatement statement = db.prepareStatement(query)) {
             statement.setString(1, user.getUsername());
             statement.setString(2, user.getPassword());
@@ -56,8 +70,12 @@ public class UserRepository extends BaseRepository {
             statement.setString(4, user.getGender());
             statement.setDate(5, user.getBirthdate());
             statement.setBoolean(6, false); // todo: modify this to set the correct value
-            statement.setString(7, user.getPicture() != null ? user.getPicture() : "");
-            statement.setInt(8, user.getPolis() != null ? user.getPolis().getId() : 1); // Default to ID 1 if null
+            statement.setInt(7, user.getPolis() != null ? user.getPolis().getId() : 1); // Default to ID 1 if null
+
+            if (user.getPicture() != null) {
+                statement.setString(8, user.getPicture());
+            }
+
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -66,8 +84,11 @@ public class UserRepository extends BaseRepository {
 	
 	// Find a user by their name
     public Optional<User> findByName(String name) {
-        String query = "SELECT u.id, u.username, u.password, u.email, u.gender, u.birthdayString, u.socialCredit, u.is_admin, u.picture, u.polis_id, p.name as polis_name " +
-                "FROM users u JOIN polis p ON u.polis_id = p.id WHERE u.name = ?";
+        String query = "SELECT u.id, u.username, u.password, u.email, u.gender, u.birthday, u.socialCredit, u.is_admin, u.picture, u.polis_id, p.name as polis_name " +
+                       "FROM Users u " +
+                       "JOIN Polis p ON u.polis_id = p.id " +
+                       "WHERE u.username = ?";
+
         try (PreparedStatement statement = db.prepareStatement(query)) {
             statement.setString(1, name);
             ResultSet rs = statement.executeQuery();
@@ -104,7 +125,8 @@ public class UserRepository extends BaseRepository {
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
         String query = "SELECT u.id, u.username, u.password, u.email, u.gender, u.birthday, u.socialCredit, u.is_admin, u.picture, u.polis_id, p.name as polis_name " +
-                "FROM users u JOIN polis p ON u.polis_id = p.id";
+                        "FROM Users u " +
+                        "JOIN Polis p ON u.polis_id = p.id";
 
         try (PreparedStatement statement = db.prepareStatement(query)) {
             ResultSet rs = statement.executeQuery();
@@ -135,5 +157,59 @@ public class UserRepository extends BaseRepository {
 
         return users;
     }
+    
+ // Follow a user
+ 	public void followUser(Integer uid, Integer fid) {
+ 		String query = "INSERT INTO FollowUser (user_id, followed_id) " +
+                       "VALUES (?, ?)";
+
+ 		try (PreparedStatement statement = db.prepareStatement(query)) {
+ 			statement.setInt(1, uid);
+ 			statement.setInt(2, fid);
+ 			statement.executeUpdate();
+ 		} catch (SQLException e) {
+ 			e.printStackTrace();
+ 		}
+ 	}
+ // Unfollow a user
+ 	public void unfollowUser(Integer uid, Integer fid) {
+ 		String query = "DELETE FROM FollowUser " +
+                       "WHERE user_id = ? AND followed_id = ?";
+
+ 		try (PreparedStatement statement = db.prepareStatement(query)) {
+ 			statement.setInt(1, uid);
+ 			statement.setInt(2, fid);
+ 			statement.executeUpdate();
+ 		} catch (SQLException e) {
+ 			e.printStackTrace();
+ 		}
+ 	} 
+    public Optional<List<User>> findFollowed(Integer id, Integer start, Integer end) {
+		String query = "SELECT u.id, u.username ,u.picture " +
+                       "FROM Users u, FollowUser f " +
+                       "WHERE u.id = f.followed_id AND f.user_id = ? " +
+                       "ORDER BY u.username LIMIT ?,?;";
+
+
+		try (PreparedStatement statement = db.prepareStatement(query)) {
+			statement.setInt(1, id);
+			statement.setInt(2, start);
+			statement.setInt(3, end);
+			try (ResultSet rs = statement.executeQuery()) {
+				List<User> users = new ArrayList<User>();
+				while (rs.next()) {
+					User user = new User();
+					user.setId(rs.getInt("id"));
+					user.setUsername(rs.getString("username"));
+					user.setPicture(rs.getString("picture"));
+					users.add(user);
+				}
+				return Optional.of(users);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return Optional.empty();
+	}
 
 }

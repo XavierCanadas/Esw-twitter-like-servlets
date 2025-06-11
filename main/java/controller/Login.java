@@ -43,7 +43,7 @@ public class Login extends HttpServlet {
     	HttpSession session = request.getSession(false);
 
         if (session!=null && session.getAttribute("user")!=null) {
-        	request.getRequestDispatcher("Welcome.jsp").forward(request, response);
+        	request.getRequestDispatcher("Timeline.jsp").forward(request, response);
         } else {
         	request.getRequestDispatcher("Login.jsp").forward(request, response);
         }
@@ -68,6 +68,19 @@ public class Login extends HttpServlet {
                 Map<String, String> errors = userService.login(user);
                 if (errors.isEmpty()) {
                     HttpSession session = request.getSession();
+
+
+                    String imagesUrl = request.getScheme() + "://" +
+                                     request.getServerName() +
+                                     (request.getServerPort() == 80 || request.getServerPort() == 443 ? "" : ":" + request.getServerPort()) +
+                                     request.getContextPath() + "/images/";
+
+
+
+                    if (user.getPicture() != null && !user.getPicture().isEmpty()) {
+                        user.setPicture(imagesUrl + user.getPicture());
+                    }
+
                     session.setAttribute("user", user);
 
                     // Check if it's an AJAX request
@@ -78,10 +91,10 @@ public class Login extends HttpServlet {
 
                     if (isAjax) {
                         // For AJAX requests, load the welcome page content
-                        request.getRequestDispatcher("Welcome.jsp").forward(request, response);
+                        request.getRequestDispatcher("Timeline.jsp").forward(request, response);
                     } else {
                         // For direct browser requests
-                        response.sendRedirect("Welcome.jsp");
+                        response.sendRedirect("Timeline.jsp");
                     }
                 } else {
                     request.setAttribute("user", user);

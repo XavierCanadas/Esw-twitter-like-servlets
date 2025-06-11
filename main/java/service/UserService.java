@@ -37,7 +37,7 @@ public class UserService {
     public void savePicture(User user, Part filePart) throws IOException {
 
         if (filePart == null || filePart.getSize() == 0) {
-            user.setPicture("default.png");
+            user.setPicture("default.jpg");
             return;
         }
 
@@ -165,7 +165,7 @@ public class UserService {
     public Map<String, String> login(User user) throws IOException {
         Map<String, String> errors = new HashMap<>();
         if (!userRepository.checkLogin(user)) {
-            errors.put("password","The combination of name and password does not match in our dataabase");
+            errors.put("password","The combination of name and password does not match in our database");
         }
         return errors;
     }
@@ -173,6 +173,21 @@ public class UserService {
     // Get all users
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+    
+    public void follow(Integer uid,Integer fid) {
+    	userRepository.followUser(uid, fid);
+    }
+ // Unfollow User
+    public void unfollow(Integer uid,Integer fid) {
+    	userRepository.unfollowUser(uid, fid);
+    }
+ // Get followed users
+    public List<User> getFollowedUsers(Integer id, Integer start, Integer end) {
+    	Optional<List<User>> users = userRepository.findFollowed(id,start,end);
+    	if (users.isPresent())
+    	    return users.get();
+        return null;
     }
 
 }
