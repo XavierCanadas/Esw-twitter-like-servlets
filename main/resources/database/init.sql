@@ -23,16 +23,16 @@ CREATE TABLE IF NOT EXISTS Polis
 
 CREATE TABLE IF NOT EXISTS Users
 (
-    id           INT                                                    NOT NULL AUTO_INCREMENT,
-    username     VARCHAR(20)                                            NOT NULL,
-    password     VARCHAR(255)                                           NOT NULL,
-    email        VARCHAR(100)                                           NOT NULL,
+    id           INT                                                   NOT NULL AUTO_INCREMENT,
+    username     VARCHAR(20)                                           NOT NULL,
+    password     VARCHAR(255)                                          NOT NULL,
+    email        VARCHAR(100)                                          NOT NULL,
     gender       ENUM ('male', 'female', 'non-binary', 'undetermined') NOT NULL,
-    birthday     DATE                                                   NOT NULL,
+    birthday     DATE                                                  NOT NULL,
     socialCredit INT          DEFAULT 0,
     is_admin     BOOLEAN      DEFAULT FALSE,
-    picture      VARCHAR(100) DEFAULT 'https://www.w3schools.com/w3images/avatar2.png', -- default image set by copilot
-    polis_id     INT                                                    NOT NULL,
+    picture      VARCHAR(100) DEFAULT 'default.jpg',
+    polis_id     INT                                                   NOT NULL,
 
     PRIMARY KEY (id),
     FOREIGN KEY (polis_id) REFERENCES Polis (id)
@@ -78,7 +78,8 @@ INSERT INTO Polis (name)
 VALUES ('Atenas');
 
 INSERT INTO Users (username, password, email, gender, birthday, polis_id)
-Values ('olivia.rodrigo', 'Aaee1122@', 'olivia.rodrigo@example.com', 'female', '2002-02-18', 1);
+Values ('olivia.rodrigo', 'Aaee1122@', 'olivia.rodrigo@example.com', 'female', '2002-02-18', 1),
+       ('gracie.abrams', 'Aaee1122@', 'gracie.abrams@example.com', 'female', '1999-09-07', 1);
 
 SELECT *
 FROM Polis;

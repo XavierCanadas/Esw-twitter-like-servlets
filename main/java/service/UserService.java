@@ -37,7 +37,7 @@ public class UserService {
     public void savePicture(User user, Part filePart) throws IOException {
 
         if (filePart == null || filePart.getSize() == 0) {
-            user.setPicture("default.png");
+            user.setPicture("default.jpg");
             return;
         }
 
@@ -165,7 +165,7 @@ public class UserService {
     public Map<String, String> login(User user) throws IOException {
         Map<String, String> errors = new HashMap<>();
         if (!userRepository.checkLogin(user)) {
-            errors.put("password","The combination of name and password does not match in our dataabase");
+            errors.put("password","The combination of name and password does not match in our database");
         }
         return errors;
     }

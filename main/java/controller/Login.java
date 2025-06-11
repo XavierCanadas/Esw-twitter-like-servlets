@@ -68,6 +68,19 @@ public class Login extends HttpServlet {
                 Map<String, String> errors = userService.login(user);
                 if (errors.isEmpty()) {
                     HttpSession session = request.getSession();
+
+
+                    String imagesUrl = request.getScheme() + "://" +
+                                     request.getServerName() +
+                                     (request.getServerPort() == 80 || request.getServerPort() == 443 ? "" : ":" + request.getServerPort()) +
+                                     request.getContextPath() + "/images/";
+
+
+
+                    if (user.getPicture() != null && !user.getPicture().isEmpty()) {
+                        user.setPicture(imagesUrl + user.getPicture());
+                    }
+
                     session.setAttribute("user", user);
 
                     // Check if it's an AJAX request

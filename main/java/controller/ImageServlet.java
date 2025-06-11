@@ -13,13 +13,12 @@ import java.nio.file.Files;
 public class ImageServlet extends HttpServlet {
 
     // Define absolute path to your images folder
-    private static final String IMAGES_DIRECTORY = "images";
+    private static final String IMAGES_DIRECTORY = "assets";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String requestedImage = request.getPathInfo();
 
-        String a = this.getServletContext().getRealPath("WEB-INF/nodes.txt");
 
         // Security check to prevent directory traversal attacks
         if (requestedImage == null || requestedImage.contains("..") || requestedImage.contains("//")) {
@@ -31,8 +30,7 @@ public class ImageServlet extends HttpServlet {
         if (requestedImage.startsWith("/")) {
             requestedImage = requestedImage.substring(1);
         }
-
-        String imagesDirectory = getServletContext().getRealPath("images");
+        String imagesDirectory = this.getServletContext().getRealPath(IMAGES_DIRECTORY);
         File imageFile = new File(imagesDirectory, requestedImage);
 
         if (!imageFile.exists() || imageFile.isDirectory()) {
