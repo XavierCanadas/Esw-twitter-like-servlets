@@ -43,7 +43,7 @@ public class Login extends HttpServlet {
     	HttpSession session = request.getSession(false);
 
         if (session!=null && session.getAttribute("user")!=null) {
-        	request.getRequestDispatcher("Welcome.jsp").forward(request, response);
+        	request.getRequestDispatcher("Timeline.jsp").forward(request, response);
         } else {
         	request.getRequestDispatcher("Login.jsp").forward(request, response);
         }
@@ -78,10 +78,10 @@ public class Login extends HttpServlet {
 
                     if (isAjax) {
                         // For AJAX requests, load the welcome page content
-                        request.getRequestDispatcher("Welcome.jsp").forward(request, response);
+                        request.getRequestDispatcher("Timeline.jsp").forward(request, response);
                     } else {
                         // For direct browser requests
-                        response.sendRedirect("Welcome.jsp");
+                        response.sendRedirect("Timeline.jsp");
                     }
                 } else {
                     request.setAttribute("user", user);
