@@ -13,7 +13,12 @@ import model.User;
 public class UserRepository extends BaseRepository {
 	
 	public boolean existsByUsername(String username) {
-		try (PreparedStatement statement = db.prepareStatement("SELECT COUNT(*) FROM users WHERE name = ?")) {
+
+        String query = "SELECT COUNT(*) " +
+                       "FROM Users u " +
+                       "WHERE u.username = ?";
+
+		try (PreparedStatement statement = db.prepareStatement(query)) {
             statement.setString(1, username);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
@@ -27,7 +32,10 @@ public class UserRepository extends BaseRepository {
 
     public boolean checkLogin(User user) {
 
-        String query = "SELECT id,picture from users where username=? AND password=?";
+        String query = "SELECT id, picture " +
+                       "FROM Users u " +
+                        "WHERE u.username=? AND u.password=?";
+
         try (PreparedStatement statement = db.prepareStatement(query)) {
             statement.setString(1, user.getUsername());
             statement.setString(2, user.getPassword());
@@ -48,7 +56,8 @@ public class UserRepository extends BaseRepository {
 	
     // Save a new user into the database
     public void save(User user) {
-        String query = "INSERT INTO users (username, password, email, gender, birthday, is_admin, picture, polis_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Users (username, password, email, gender, birthday, is_admin, picture, polis_id) " +
+                       "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = db.prepareStatement(query)) {
             statement.setString(1, user.getUsername());
             statement.setString(2, user.getPassword());
@@ -66,8 +75,11 @@ public class UserRepository extends BaseRepository {
 	
 	// Find a user by their name
     public Optional<User> findByName(String name) {
-        String query = "SELECT u.id, u.username, u.password, u.email, u.gender, u.birthdayString, u.socialCredit, u.is_admin, u.picture, u.polis_id, p.name as polis_name " +
-                "FROM users u JOIN polis p ON u.polis_id = p.id WHERE u.name = ?";
+        String query = "SELECT u.id, u.username, u.password, u.email, u.gender, u.birthday, u.socialCredit, u.is_admin, u.picture, u.polis_id, p.name as polis_name " +
+                       "FROM Users u " +
+                       "JOIN Polis p ON u.polis_id = p.id " +
+                       "WHERE u.username = ?";
+
         try (PreparedStatement statement = db.prepareStatement(query)) {
             statement.setString(1, name);
             ResultSet rs = statement.executeQuery();
@@ -104,7 +116,8 @@ public class UserRepository extends BaseRepository {
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
         String query = "SELECT u.id, u.username, u.password, u.email, u.gender, u.birthday, u.socialCredit, u.is_admin, u.picture, u.polis_id, p.name as polis_name " +
-                "FROM users u JOIN polis p ON u.polis_id = p.id";
+                        "FROM Users u " +
+                        "JOIN Polis p ON u.polis_id = p.id";
 
         try (PreparedStatement statement = db.prepareStatement(query)) {
             ResultSet rs = statement.executeQuery();
@@ -138,7 +151,9 @@ public class UserRepository extends BaseRepository {
     
  // Follow a user
  	public void followUser(Integer uid, Integer fid) {
- 		String query = "INSERT INTO follows (uid,fid) VALUES (?,?)";
+ 		String query = "INSERT INTO FollowUser (user_id, followed_id) " +
+                       "VALUES (?, ?)";
+
  		try (PreparedStatement statement = db.prepareStatement(query)) {
  			statement.setInt(1, uid);
  			statement.setInt(2, fid);
@@ -149,7 +164,9 @@ public class UserRepository extends BaseRepository {
  	}
  // Unfollow a user
  	public void unfollowUser(Integer uid, Integer fid) {
- 		String query = "DELETE FROM follows WHERE uid = ? AND fid = ?";
+ 		String query = "DELETE FROM FollowUser " +
+                       "WHERE user_id = ? AND followed_id = ?";
+
  		try (PreparedStatement statement = db.prepareStatement(query)) {
  			statement.setInt(1, uid);
  			statement.setInt(2, fid);
@@ -159,7 +176,12 @@ public class UserRepository extends BaseRepository {
  		}
  	} 
     public Optional<List<User>> findFollowed(Integer id, Integer start, Integer end) {
-		String query = "SELECT u.id, u.username ,u.picture FROM users,follows WHERE id = fid AND uid = ? ORDER BY name LIMIT ?,?;";
+		String query = "SELECT u.id, u.username ,u.picture " +
+                       "FROM Users u, FollowUser f " +
+                       "WHERE u.id = f.followed_id AND f.user_id = ? " +
+                       "ORDER BY u.username LIMIT ?,?;";
+
+
 		try (PreparedStatement statement = db.prepareStatement(query)) {
 			statement.setInt(1, id);
 			statement.setInt(2, start);

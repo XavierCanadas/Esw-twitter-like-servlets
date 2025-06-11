@@ -12,7 +12,7 @@ import model.Tweet;
 public class TweetRepository extends BaseRepository {
 	
 	public void save(Tweet tweet) {
-		String query = "INSERT INTO tweets (uid,postdatetime,content) VALUES (?,?,?)";
+		String query = "INSERT INTO Tweet (user_id, post_datetime, content) VALUES (?,?,?)";
 		try (PreparedStatement statement = db.prepareStatement(query)) {
 			statement.setInt(1, tweet.getUid());
 			statement.setTimestamp(2, tweet.getPostDateTime());
@@ -25,7 +25,7 @@ public class TweetRepository extends BaseRepository {
 
 	/* Delete existing tweet */
 	public void delete(Integer id, Integer uid) {
-		String query = "DELETE FROM tweets WHERE id = ? AND uid=?";
+		String query = "DELETE FROM Tweet WHERE id = ? AND user_id=?";
 		try (PreparedStatement statement = db.prepareStatement(query)) {
 			statement.setInt(1, id);
 			statement.setInt(2, uid);
@@ -38,7 +38,13 @@ public class TweetRepository extends BaseRepository {
 	/* Get tweets from a user given start and end */
 	public Optional<List<Tweet>> findByUser(Integer uid, Integer start, Integer end) {
 		List<Tweet> tweets = new ArrayList<Tweet>();
-		String query = "SELECT tweets.id,tweets.uid,tweets.postdatetime,tweets.content,users.name FROM tweets INNER JOIN users ON tweets.uid = users.id where tweets.uid = ? ORDER BY tweets.postdatetime DESC LIMIT ?,? ;";
+		String query = "SELECT t.id, t.user_id, t.post_datetime, t.content, u.username " +
+						"FROM Tweet t " +
+						"INNER JOIN Users u ON t.user_id = u.id " +
+						"WHERE t.user_id = ? " +
+						"ORDER BY t.post_datetime DESC " +
+						"LIMIT ?,?;";
+
 		try (PreparedStatement statement = db.prepareStatement(query)) {
 			statement.setInt(1, uid);
 			statement.setInt(2, start);
@@ -47,10 +53,10 @@ public class TweetRepository extends BaseRepository {
 				while (rs.next()) {
 					Tweet tweet = new Tweet();
 					tweet.setId(rs.getInt("id"));
-					tweet.setUid(rs.getInt("uid"));
-					tweet.setPostDateTime(rs.getTimestamp("postdatetime"));
+					tweet.setUid(rs.getInt("user_id"));
+					tweet.setPostDateTime(rs.getTimestamp("post_datetime"));
 					tweet.setContent(rs.getString("content"));
-					tweet.setUname(rs.getString("name"));
+					tweet.setUname(rs.getString("username"));
 					tweets.add(tweet);
 				}
 				return Optional.of(tweets);
