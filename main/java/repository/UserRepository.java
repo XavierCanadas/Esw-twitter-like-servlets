@@ -56,8 +56,13 @@ public class UserRepository extends BaseRepository {
 	
     // Save a new user into the database
     public void save(User user) {
-        String query = "INSERT INTO Users (username, password, email, gender, birthday, is_admin, picture, polis_id) " +
-                       "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Users (username, password, email, gender, birthday, is_admin, polis_id) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        if (user.getPicture() != null) {
+            query = "INSERT INTO Users (username, password, email, gender, birthday, is_admin, polis_id, picture) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        }
+
         try (PreparedStatement statement = db.prepareStatement(query)) {
             statement.setString(1, user.getUsername());
             statement.setString(2, user.getPassword());
@@ -65,8 +70,12 @@ public class UserRepository extends BaseRepository {
             statement.setString(4, user.getGender());
             statement.setDate(5, user.getBirthdate());
             statement.setBoolean(6, false); // todo: modify this to set the correct value
-            statement.setString(7, user.getPicture() != null ? user.getPicture() : "");
-            statement.setInt(8, user.getPolis() != null ? user.getPolis().getId() : 1); // Default to ID 1 if null
+            statement.setInt(7, user.getPolis() != null ? user.getPolis().getId() : 1); // Default to ID 1 if null
+
+            if (user.getPicture() != null) {
+                statement.setString(8, user.getPicture());
+            }
+
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

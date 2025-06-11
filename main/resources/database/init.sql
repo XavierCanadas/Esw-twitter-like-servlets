@@ -85,4 +85,3 @@ FROM Polis;
 
 SELECT *
 FROM Users;
-
