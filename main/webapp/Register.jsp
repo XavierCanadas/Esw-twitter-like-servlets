@@ -10,7 +10,7 @@
 	</div>
 
 	<div>
-		<label for="username" class="w3-text-theme">Name:</label>
+		<label for="username" class="w3-text-theme">Username:</label>
 		<input type="text" class="w3-input w3-border w3-light-grey" 
 			id="username"
 			name="username" required minlength="2" maxlength="15" value="${user.username}"
