@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
 import model.Polis;
 import model.User;
@@ -188,6 +189,21 @@ public class UserService {
     	if (users.isPresent())
     	    return users.get();
         return null;
+    }
+ // Get unfollowed users
+    public List<User> getNotFollowedUsers(Integer id, Integer start, Integer end) {
+    	Optional<List<User>> users = userRepository.findNotFollowed(id,start,end);
+    	if (users.isPresent())
+    	    return users.get();
+        return null;
+    }
+    
+    public String getURLpicture(String picture, HttpServletRequest request) {
+    	String imagesUrl = request.getScheme() + "://" +
+                request.getServerName() +
+                (request.getServerPort() == 80 || request.getServerPort() == 443 ? "" : ":" + request.getServerPort()) +
+                request.getContextPath() + "/images/";	
+    	return imagesUrl;
     }
 
 }
