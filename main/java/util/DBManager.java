@@ -8,7 +8,6 @@ public class DBManager implements AutoCloseable {
 	
 	public DBManager() throws Exception {
 		// WITHOUT POOL
-		System.out.println("Entrando en la conexion");
 		String user = "mysql";
 		String password="prac";
 		String db = "epaw";

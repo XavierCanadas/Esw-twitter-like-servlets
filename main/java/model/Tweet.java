@@ -7,9 +7,11 @@ public class Tweet implements java.io.Serializable {
 
 	 private int id;
 	 private int uid;
-	 private String uname;
+	 private String username;
 	 private Timestamp postDateTime;
 	 private String content;
+	 private Integer likesCount;
+	 private boolean isLikedByCurrentUser;
 
 	 public Tweet() {
 	 }
@@ -30,12 +32,12 @@ public class Tweet implements java.io.Serializable {
 		 this.uid = uid;
 	 }
 	 
-	 public String getUname() {
-		 return this.uname;
+	 public String getUsername() {
+		 return this.username;
 	 }
 	 
-	 public void setUname(String uname) {
-		 this.uname = uname;
+	 public void setUsername(String username) {
+		 this.username = username;
 	 }
 	 
 	 public Timestamp getPostDateTime() {
@@ -52,4 +54,19 @@ public class Tweet implements java.io.Serializable {
 		 this.content = content;
 	 }
 
+	public Integer getLikesCount() {
+		return likesCount;
+	}
+
+	public void setLikesCount(Integer likesCount) {
+		this.likesCount = likesCount;
+	}
+
+	public boolean isLikedByCurrentUser() {
+		return isLikedByCurrentUser;
+	}
+
+	public void setLikedByCurrentUser(boolean likedByCurrentUser) {
+		isLikedByCurrentUser = likedByCurrentUser;
+	}
 }

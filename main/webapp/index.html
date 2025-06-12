@@ -97,6 +97,17 @@ App.bindEvents = function() {
 		});
 		event.preventDefault();
 	});
+
+	/* Like tweet */
+	$(document).on("click", ".likeTweet", function(event) {
+		var tweet = $(this).parent();
+		$.post("LikeTweet", {
+			id : $(this).parent().attr("id")
+		}, function(event) {
+			$("#content").load("Timeline");
+		});
+		event.preventDefault();
+	});
     });
 };
 

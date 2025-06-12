@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 import model.Tweet;
+import service.LikeTweetService;
 
 public class TweetRepository extends BaseRepository {
 	
@@ -38,17 +39,21 @@ public class TweetRepository extends BaseRepository {
 	/* Get tweets from a user given start and end */
 	public Optional<List<Tweet>> findByUser(Integer uid, Integer start, Integer end) {
 		List<Tweet> tweets = new ArrayList<Tweet>();
-		String query = "SELECT t.id, t.user_id, t.post_datetime, t.content, u.username " +
+		String query = "SELECT t.id, t.user_id, t.post_datetime, t.content, u.username, COUNT(lt.user_id) AS like_count, " +
+						"EXISTS (SELECT 1 FROM LikeTweet ltu WHERE ltu.tweet_id = t.id AND ltu.user_id = ?) AS liked_by_current_user " +
 						"FROM Tweet t " +
 						"INNER JOIN Users u ON t.user_id = u.id " +
+						"LEFT JOIN LikeTweet lt ON t.id = lt.tweet_id " +
 						"WHERE t.user_id = ? " +
+						"GROUP BY t.id " +
 						"ORDER BY t.post_datetime DESC " +
 						"LIMIT ?,?;";
 
 		try (PreparedStatement statement = db.prepareStatement(query)) {
 			statement.setInt(1, uid);
-			statement.setInt(2, start);
-			statement.setInt(3, end);
+			statement.setInt(2, uid);
+			statement.setInt(3, start);
+			statement.setInt(4, end);
 			try (ResultSet rs = statement.executeQuery()) {
 				while (rs.next()) {
 					Tweet tweet = new Tweet();
@@ -56,7 +61,10 @@ public class TweetRepository extends BaseRepository {
 					tweet.setUid(rs.getInt("user_id"));
 					tweet.setPostDateTime(rs.getTimestamp("post_datetime"));
 					tweet.setContent(rs.getString("content"));
-					tweet.setUname(rs.getString("username"));
+					tweet.setUsername(rs.getString("username"));
+					tweet.setLikesCount(rs.getInt("like_count"));
+					tweet.setLikedByCurrentUser(rs.getBoolean("liked_by_current_user"));
+
 					tweets.add(tweet);
 				}
 				return Optional.of(tweets);
@@ -66,5 +74,4 @@ public class TweetRepository extends BaseRepository {
 		}
 		return Optional.empty();
 	}
-
 }
