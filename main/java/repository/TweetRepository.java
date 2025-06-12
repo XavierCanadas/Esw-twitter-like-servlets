@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 import model.Tweet;
+import service.LikeTweetService;
 
 public class TweetRepository extends BaseRepository {
 	
@@ -38,10 +39,12 @@ public class TweetRepository extends BaseRepository {
 	/* Get tweets from a user given start and end */
 	public Optional<List<Tweet>> findByUser(Integer uid, Integer start, Integer end) {
 		List<Tweet> tweets = new ArrayList<Tweet>();
-		String query = "SELECT t.id, t.user_id, t.post_datetime, t.content, u.username " +
+		String query = "SELECT t.id, t.user_id, t.post_datetime, t.content, u.username, COUNT(lt.user_id) AS like_count " +
 						"FROM Tweet t " +
 						"INNER JOIN Users u ON t.user_id = u.id " +
+						"LEFT JOIN LikeTweet lt ON t.id = lt.tweet_id " +
 						"WHERE t.user_id = ? " +
+						"GROUP BY t.id " +
 						"ORDER BY t.post_datetime DESC " +
 						"LIMIT ?,?;";
 
@@ -57,6 +60,8 @@ public class TweetRepository extends BaseRepository {
 					tweet.setPostDateTime(rs.getTimestamp("post_datetime"));
 					tweet.setContent(rs.getString("content"));
 					tweet.setUsername(rs.getString("username"));
+					tweet.setLikesCount(rs.getInt("like_count"));
+
 					tweets.add(tweet);
 				}
 				return Optional.of(tweets);
@@ -66,5 +71,4 @@ public class TweetRepository extends BaseRepository {
 		}
 		return Optional.empty();
 	}
-
 }

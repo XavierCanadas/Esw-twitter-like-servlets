@@ -68,8 +68,8 @@ CREATE TABLE IF NOT EXISTS LikeTweet
     user_id  INT NOT NULL,
 
     PRIMARY KEY (user_id, tweet_id),
-    FOREIGN KEY (user_id) REFERENCES Users (id),
-    FOREIGN KEY (tweet_id) REFERENCES Tweet (id)
+    FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE,
+    FOREIGN KEY (tweet_id) REFERENCES Tweet (id) ON DELETE CASCADE
 );
 
 
@@ -89,3 +89,7 @@ FROM Users;
 
 SELECT *
 FROM Tweet;
+
+SELECT *
+FROM LikeTweet;
+
