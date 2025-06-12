@@ -8,8 +8,16 @@
         <h4> ${t.username} </h4><br>
         <hr class="w3-clear">
         <p> ${t.content} </p>
-        <button type="button" class="likeTweet w3-button w3-theme w3-margin-bottom">
-            <i class="fa fa-thumbs-up"></i> &nbsp;Like
+        <button type="button" class="likeTweet w3-button w3-theme w3-margin-bottom${t.likedByCurrentUser ? ' liked' : ''}">
+            <i class="fa fa-thumbs-up"></i> &nbsp;
+            <c:choose>
+                <c:when test="${t.likedByCurrentUser}">
+                    Liked
+                </c:when>
+                <c:otherwise>
+                    Like
+                </c:otherwise>
+            </c:choose>
             <span>(${t.likesCount})</span>
         </button>
         <button type="button" class="delTweet w3-button w3-red w3-margin-bottom"><i class="fa fa-trash"></i> &nbsp;Delete

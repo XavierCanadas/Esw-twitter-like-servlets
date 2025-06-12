@@ -93,3 +93,5 @@ FROM Tweet;
 SELECT *
 FROM LikeTweet;
 
+EXIST (SELECT 1 FROM LikeTweet lt WHERE lt.tweet_id = )
+

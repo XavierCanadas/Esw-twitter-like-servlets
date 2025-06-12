@@ -11,6 +11,7 @@ public class Tweet implements java.io.Serializable {
 	 private Timestamp postDateTime;
 	 private String content;
 	 private Integer likesCount;
+	 private boolean isLikedByCurrentUser;
 
 	 public Tweet() {
 	 }
@@ -59,5 +60,13 @@ public class Tweet implements java.io.Serializable {
 
 	public void setLikesCount(Integer likesCount) {
 		this.likesCount = likesCount;
+	}
+
+	public boolean isLikedByCurrentUser() {
+		return isLikedByCurrentUser;
+	}
+
+	public void setLikedByCurrentUser(boolean likedByCurrentUser) {
+		isLikedByCurrentUser = likedByCurrentUser;
 	}
 }
