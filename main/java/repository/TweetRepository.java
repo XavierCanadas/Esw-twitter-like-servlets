@@ -56,7 +56,7 @@ public class TweetRepository extends BaseRepository {
 					tweet.setUid(rs.getInt("user_id"));
 					tweet.setPostDateTime(rs.getTimestamp("post_datetime"));
 					tweet.setContent(rs.getString("content"));
-					tweet.setUname(rs.getString("username"));
+					tweet.setUsername(rs.getString("username"));
 					tweets.add(tweet);
 				}
 				return Optional.of(tweets);

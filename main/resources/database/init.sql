@@ -86,3 +86,6 @@ FROM Polis;
 
 SELECT *
 FROM Users;
+
+SELECT *
+FROM Tweet;
