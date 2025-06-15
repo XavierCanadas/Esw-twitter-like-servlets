@@ -51,34 +51,27 @@ public class Register extends HttpServlet {
 
 		User user = new User();
 
-		try {
+		try (PolisRepository polisRepository = new PolisRepository();
+			 UserRepository userRepository = new UserRepository()) {
+
 			BeanUtils.populate(user, request.getParameterMap());
 
 			String polisIdParam = request.getParameter("polisId");
 			if (polisIdParam != null && !polisIdParam.isEmpty()) {
 				int polisId = Integer.parseInt(polisIdParam);
-				try (PolisRepository polisRepo = new PolisRepository()) {
-					Optional<Polis> polis = polisRepo.findById(polisId);
-					if (polis.isPresent()) {
-						user.setPolis(polis.get());
-					}
+				Optional<Polis> polis = polisRepository.findById(polisId);
+				if (polis.isPresent()) {
+					user.setPolis(polis.get());
 				}
 			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		// profile picture
-		Part filePart = request.getPart("picture");
-
-		try (UserRepository userRepository = new UserRepository();
-			 PolisRepository polisRepository = new PolisRepository()) {
 
 			// Load polisList for the form in case of validation errors
 			PolisService polisService = new PolisService(polisRepository);
 			List<Polis> polisList = polisService.getAllPolis();
 			request.setAttribute("polisList", polisList);
+
+			// profile picture
+			Part filePart = request.getPart("picture");
 
 			UserService userService = new UserService(userRepository, getServletContext());
 			Map<String, String> errors = userService.register(user, filePart);
