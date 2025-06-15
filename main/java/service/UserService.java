@@ -189,6 +189,14 @@ public class UserService {
     	    return users.get();
         return null;
     }
+//shows 20 most popular users
+    public List<User> getMostPopularUsers(){
+    	Optional<List<User>> users = userRepository.getMostPopularUsers();
+    	if (users.isPresent()) {
+    	    return users.get();
+    	}
+        return null;
+    }
 
 }
 

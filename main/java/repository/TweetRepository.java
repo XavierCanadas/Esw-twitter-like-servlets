@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 import model.Tweet;
-import service.LikeTweetService;
+//import service.LikeTweetService;
 
 public class TweetRepository extends BaseRepository {
 	
@@ -74,4 +74,39 @@ public class TweetRepository extends BaseRepository {
 		}
 		return Optional.empty();
 	}
+	
+	/*gets latest 20 tweets*/
+	public Optional<List<Tweet>> getLatestTweets(){
+		
+		List<Tweet> tweets = new ArrayList<Tweet>();
+	    String query = "SELECT t.id, t.user_id, t.post_datetime, t.content, u.username, " +
+                "COUNT(lt.tweet_id) AS like_count " +
+                "FROM Tweet t " +
+                "JOIN Users u ON t.user_id = u.id " +
+                "LEFT JOIN LikeTweet lt ON t.id = lt.tweet_id " +
+                "GROUP BY t.id, t.user_id, t.post_datetime, t.content, u.username " +
+                "ORDER BY t.post_datetime DESC LIMIT 20";
+	    
+		try (PreparedStatement statement = db.prepareStatement(query)) {
+			try (ResultSet rs = statement.executeQuery()) {
+				while (rs.next()) {
+					Tweet tweet = new Tweet();
+					tweet.setId(rs.getInt("id"));
+					tweet.setUid(rs.getInt("user_id"));
+					tweet.setPostDateTime(rs.getTimestamp("post_datetime"));
+					tweet.setContent(rs.getString("content"));
+					tweet.setUsername(rs.getString("username"));
+					tweet.setLikesCount(rs.getInt("like_count"));
+					tweet.setLikedByCurrentUser(false);
+
+					tweets.add(tweet);
+				}
+				return Optional.of(tweets);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return Optional.empty();
+	}
+
 }
