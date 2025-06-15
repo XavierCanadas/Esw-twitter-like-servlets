@@ -43,13 +43,9 @@ public class NotFollowed extends HttpServlet {
 				try (UserRepository userRepository = new UserRepository()) {
 					UserService userService = new UserService(userRepository);
 					users = userService.getNotFollowedUsers(user.getId(),0,4);
-					for(int i = 0; i<users.size(); i++) {
-						String imagesUrl = userService.getURLpicture(users.get(i).getPicture(), request);
-
-	                    if (users.get(i).getPicture() != null && !users.get(i).getPicture().isEmpty()) {
-	                        users.get(i).setPicture(imagesUrl + users.get(i).getPicture());
-	                    }
-					}
+                    for (User currentUser : users) {
+                        userService.setPictureUrl(currentUser, request);
+                    }
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

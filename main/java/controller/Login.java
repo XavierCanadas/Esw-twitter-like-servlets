@@ -69,11 +69,7 @@ public class Login extends HttpServlet {
                 if (errors.isEmpty()) {
                     HttpSession session = request.getSession();
 
-                    String imagesUrl = userService.getURLpicture(user.getPicture(), request);
-
-                    if (user.getPicture() != null && !user.getPicture().isEmpty()) {
-                        user.setPicture(imagesUrl + user.getPicture());
-                    }
+                    userService.setPictureUrl(user, request);
 
                     session.setAttribute("user", user);
 

@@ -6,8 +6,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import jakarta.servlet.ServletContext;
@@ -35,6 +33,7 @@ public class UserService {
 	private static final String PASSWORD_REGEX =
 	        "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*]).{8,}$";
 
+    // Is not in use
     public void savePicture(User user, Part filePart) throws IOException {
 
         if (filePart == null || filePart.getSize() == 0) {
@@ -186,24 +185,29 @@ public class UserService {
  // Get followed users
     public List<User> getFollowedUsers(Integer id, Integer start, Integer end) {
     	Optional<List<User>> users = userRepository.findFollowed(id,start,end);
-    	if (users.isPresent())
-    	    return users.get();
-        return null;
+        return users.orElse(Collections.emptyList());
     }
  // Get unfollowed users
     public List<User> getNotFollowedUsers(Integer id, Integer start, Integer end) {
     	Optional<List<User>> users = userRepository.findNotFollowed(id,start,end);
-    	if (users.isPresent())
-    	    return users.get();
-        return null;
+        return users.orElse(Collections.emptyList());
     }
     
-    public String getURLpicture(String picture, HttpServletRequest request) {
-    	String imagesUrl = request.getScheme() + "://" +
+    public void setPictureUrl(User user, HttpServletRequest request) {
+        if (user == null) return;
+
+        String baseUrl = request.getScheme() + "://" +
                 request.getServerName() +
                 (request.getServerPort() == 80 || request.getServerPort() == 443 ? "" : ":" + request.getServerPort()) +
-                request.getContextPath() + "/images/";	
-    	return imagesUrl;
+                request.getContextPath() + "/assets/";
+
+        if (user.getPicture() != null && !user.getPicture().isEmpty()) {
+            String pictureUrl = baseUrl + user.getPicture();
+            user.setPicture(pictureUrl);
+        } else {
+            user.setPicture(baseUrl + "default.jpg");
+        }
+
     }
 
 }
