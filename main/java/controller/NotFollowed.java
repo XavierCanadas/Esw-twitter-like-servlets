@@ -13,18 +13,17 @@ import service.UserService;
 import java.io.IOException;
 import java.util.List;
 
-
 /**
- * Servlet implementation class GetFollowed
+ * Servlet implementation class GetUnfollowed
  */
-@WebServlet("/Followed")
-public class Followed extends HttpServlet {
+@WebServlet("/NotFollowed")
+public class NotFollowed extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Followed() {
+    public NotFollowed() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -43,19 +42,17 @@ public class Followed extends HttpServlet {
 			if (user!= null) {
 				try (UserRepository userRepository = new UserRepository()) {
 					UserService userService = new UserService(userRepository);
-					users = userService.getFollowedUsers(user.getId(),0,4);
-
-					for (User currentUser : users) {
-						userService.setPictureUrl(currentUser, request);
-					}
-
+					users = userService.getNotFollowedUsers(user.getId(),0,4);
+                    for (User currentUser : users) {
+                        userService.setPictureUrl(currentUser, request);
+                    }
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		}
 		request.setAttribute("users",users);
-		request.getRequestDispatcher("Followed.jsp").forward(request, response);
+		request.getRequestDispatcher("NotFollowed.jsp").forward(request, response);
 	}
 
 	/**

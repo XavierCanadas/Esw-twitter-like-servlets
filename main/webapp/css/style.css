@@ -21,3 +21,23 @@ video, canvas {
     border: 2px solid #ccc;
     margin-top: 10px;
 }
+
+/*Fuentes de letra*/
+@font-face {
+    font-family: 'Cinzel';
+    src: url('../fonts/Cinzel.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Greek-Freak';
+    src: url('../fonts/Greek-Freak.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+body, h1, h2, h3, h4, h5, h6, p, span, div  {
+    font-family: 'Cinzel', sans-serif;
+    /*font-size: 16px;*/
+}
+
+
