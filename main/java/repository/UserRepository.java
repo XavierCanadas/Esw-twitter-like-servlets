@@ -211,5 +211,28 @@ public class UserRepository extends BaseRepository {
 		}
 		return Optional.empty();
 	}
+    public Optional<List<User>> findNotFollowed(Integer id, Integer start, Integer end) {
+		String query = "SELECT id,username,picture FROM Users WHERE id NOT IN (SELECT id FROM Users,FollowUser WHERE id = followed_id AND user_id = ?) AND id <> ? ORDER BY username LIMIT ?,?;";
+		try (PreparedStatement statement = db.prepareStatement(query)) {
+			statement.setInt(1, id);
+			statement.setInt(2, id);
+			statement.setInt(3, start);
+			statement.setInt(4, end);
+			try (ResultSet rs = statement.executeQuery()) {
+				List<User> users = new ArrayList<User>();
+				while (rs.next()) {
+					User user = new User();
+					user.setId(rs.getInt("id"));
+					user.setUsername(rs.getString("username"));
+					user.setPicture(rs.getString("picture"));
+					users.add(user);
+				}
+				return Optional.of(users);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return Optional.empty();
+	}
 
 }

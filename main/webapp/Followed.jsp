@@ -8,7 +8,7 @@
 <c:otherwise>
 <c:forEach var="u" items="${users}">      
  <div id="${u.id}" class="w3-container w3-card w3-section w3-white w3-round w3-animate-opacity"><br>
-   <img src="/images/${u.picture}" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+   <img src="${u.picture}" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
    <h4> ${u.username} </h4><br>
    <hr class="w3-clear">
    <button type="button" class="userInfo w3-button w3-theme w3-margin-bottom"><i class="fa fa-info-circle"></i> &nbsp;Info</button>
