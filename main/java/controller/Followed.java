@@ -44,6 +44,11 @@ public class Followed extends HttpServlet {
 				try (UserRepository userRepository = new UserRepository()) {
 					UserService userService = new UserService(userRepository);
 					users = userService.getFollowedUsers(user.getId(),0,4);
+
+					for (User currentUser : users) {
+						userService.setPictureUrl(currentUser, request);
+					}
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
