@@ -32,7 +32,7 @@ public class UserRepository extends BaseRepository {
 
     public boolean checkLogin(User user) {
 
-        String query = "SELECT u.id, u.username, u.picture " +
+        String query = "SELECT u.id, u.username, u.picture, p.name as polis_name, p.id as polis_id " +
                         "FROM Users u " +
                         "WHERE u.username=? AND u.password=?;";
 
@@ -45,6 +45,12 @@ public class UserRepository extends BaseRepository {
                     user.setId(rs.getInt("id"));
                     user.setUsername(rs.getString("username"));
                     user.setPicture(rs.getString("picture"));
+
+                    // polis
+                    Polis polis = new Polis();
+                    polis.setId(rs.getInt("polis_id"));
+                    polis.setName(rs.getString("polis_name"));
+                    user.setPolis(polis);
 
                     return true;
                 }

@@ -136,7 +136,7 @@ public class EditUser extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("error", "An error occurred while processing your request.\n" + e.getMessage());
-            request.getRequestDispatcher("Profile").forward(request, response);
+            request.getRequestDispatcher("Profile.jsp").forward(request, response);
         }
     }
 }

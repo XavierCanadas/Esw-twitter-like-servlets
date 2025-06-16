@@ -68,7 +68,6 @@ public class Login extends HttpServlet {
 
                     userService.setPictureUrl(user, request);
 
-                    // get polis name
 
 
                     session.setAttribute("user", user);
