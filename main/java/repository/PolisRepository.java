@@ -22,7 +22,6 @@ public class PolisRepository extends BaseRepository {
                 polis.setId(rs.getInt("id"));
                 polis.setName(rs.getString("name"));
                 polisList.add(polis);
-        		System.out.println("Si hay conexion");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -50,4 +49,5 @@ public class PolisRepository extends BaseRepository {
         }
         return Optional.empty();
     }
+
 }

@@ -32,20 +32,24 @@ public class UserRepository extends BaseRepository {
 
     public boolean checkLogin(User user) {
 
-        String query = "SELECT id, picture " +
-                       "FROM Users u " +
-                        "WHERE u.username=? AND u.password=?";
+        String query = "SELECT u.id, u.username, u.picture " +
+                        "FROM Users u " +
+                        "WHERE u.username=? AND u.password=?;";
 
         try (PreparedStatement statement = db.prepareStatement(query)) {
             statement.setString(1, user.getUsername());
             statement.setString(2, user.getPassword());
+
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
                     user.setId(rs.getInt("id"));
+                    user.setUsername(rs.getString("username"));
                     user.setPicture(rs.getString("picture"));
+
                     return true;
                 }
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -53,11 +57,14 @@ public class UserRepository extends BaseRepository {
         return false;
 
     }
+
+
 	
     // Save a new user into the database
     public void save(User user) {
         String query = "INSERT INTO Users (username, password, email, gender, birthday, is_admin, polis_id) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
         if (user.getPicture() != null) {
             query = "INSERT INTO Users (username, password, email, gender, birthday, is_admin, polis_id, picture) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -81,10 +88,34 @@ public class UserRepository extends BaseRepository {
             e.printStackTrace();
         }
     }
+
+    // Update an existing user in the database
+    // TODO: handle the picture update
+    public void update(User user) {
+        String query = "UPDATE Users " +
+                        "SET username = ?, password = ?, email = ?, gender = ?, birthday = ?, polis_id = ? " +
+                        "WHERE id = ?";
+
+        try (PreparedStatement statement = db.prepareStatement(query)) {
+            statement.setString(1, user.getUsername());
+            statement.setString(2, user.getPassword());
+            statement.setString(3, user.getEmail());
+            statement.setString(4, user.getGender());
+            statement.setDate(5, user.getBirthdate());
+            statement.setInt(6, user.getPolis().getId());
+            //statement.setString(7, user.getPicture());
+            statement.setInt(7, user.getId());
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 	
 	// Find a user by their name
-    public Optional<User> findByName(String name) {
-        String query = "SELECT u.id, u.username, u.password, u.email, u.gender, u.birthday, u.socialCredit, u.is_admin, u.picture, u.polis_id, p.name as polis_name " +
+    public Optional<User> findByUsername(String name) {
+        String query = "SELECT u.*, p.name as polis_name " +
                        "FROM Users u " +
                        "JOIN Polis p ON u.polis_id = p.id " +
                        "WHERE u.username = ?";
@@ -101,13 +132,46 @@ public class UserRepository extends BaseRepository {
                 user.setGender(rs.getString("gender"));
                 user.setBirthdate(rs.getDate("birthday"));
                 user.setPicture(rs.getString("picture"));
-
-                // todo: implement this
-                // user.setSocialCredit(rs.getInt("socialCredit"));
-                // user.setAdmin(rs.getBoolean("is_admin"));
+                user.setSocialCredit(rs.getInt("socialCredit"));
 
 
+                // polis
+                Polis polis = new Polis();
+                polis.setId(rs.getInt("polis_id"));
+                polis.setName(rs.getString("polis_name"));
+                user.setPolis(polis);
 
+                return Optional.of(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
+    // Find a user by their ID
+    public Optional<User> findById(Integer userId) {
+        String query = "SELECT u.*, p.name as polis_name " +
+                "FROM Users u " +
+                "JOIN Polis p ON u.polis_id = p.id " +
+                "WHERE u.id = ?";
+
+        try (PreparedStatement statement = db.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setEmail(rs.getString("email"));
+                user.setGender(rs.getString("gender"));
+                user.setBirthdate(rs.getDate("birthday"));
+                user.setPicture(rs.getString("picture"));
+                user.setSocialCredit(rs.getInt("socialCredit"));
+
+
+                // polis
                 Polis polis = new Polis();
                 polis.setId(rs.getInt("polis_id"));
                 polis.setName(rs.getString("polis_name"));
