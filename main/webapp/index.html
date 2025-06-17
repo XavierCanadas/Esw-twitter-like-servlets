@@ -33,11 +33,21 @@ App.init = function() {
 App.bindEvents = function() {
 	
 	// Deal with menu clicks
-    $(document).on("click", ".menu", function(event) {
-    	event.preventDefault();
-        $('#content').load($(this).attr('href'))
-        App.stack();
-    });
+	$(document).on("click", ".menu", function(event) {
+	    event.preventDefault();
+	    const href = $(this).attr('href');
+	   
+	    if (href === "DiscoverNotLogged") {
+	        $("#content").load("Users");
+	        $("#rcolumn").load("TweetsNotLogged");
+	    } 
+
+	    else {
+	        $('#content').load(href);
+	    }
+	    
+	    App.stack();
+	});
 
 	// Deal with form submission via AJAX
     $(document).on("submit", "form", function(event) {
