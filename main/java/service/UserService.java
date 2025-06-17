@@ -6,22 +6,21 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
 import model.Polis;
 import model.User;
 import repository.UserRepository;
 
 public class UserService {
-	
-	private UserRepository userRepository;
-	private ServletContext servletContext;
 
-	public UserService(UserRepository userRepository) {
+    private UserRepository userRepository;
+    private ServletContext servletContext;
+
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -31,9 +30,10 @@ public class UserService {
     }
 
     private static final String UPLOAD_DIRECTORY = "uploads";
-	private static final String PASSWORD_REGEX =
-	        "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*]).{8,}$";
+    private static final String PASSWORD_REGEX =
+            "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*]).{8,}$";
 
+    // Is not in use
     public void savePicture(User user, Part filePart) throws IOException {
 
         if (filePart == null || filePart.getSize() == 0) {
@@ -67,17 +67,21 @@ public class UserService {
             user.setPicture(repositoryName);
         }
     }
-	
-    public Map<String, String> validate(User user) {
+
+    public Map<String, String> validate(User user, String currentUsername) {
         Map<String, String> errors = new HashMap<>();
 
-        String name = user.getUsername();
-        if (name == null || name.trim().isEmpty()) {
-            errors.put("name", "Username cannot be empty.");
-        } else if (name.length() < 3 || name.length() > 15) {
-            errors.put("name", "Username must be between 3 and 15 characters.");
-        } else if (userRepository.existsByUsername(name)) {
-            errors.put("name", "Username already exists.");
+        String username = user.getUsername();
+        if (!Objects.equals(currentUsername, username)) {
+            if (username == null || username.trim().isEmpty()) {
+                errors.put("username", "Username cannot be empty.");
+
+            } else if (username.length() < 3 || username.length() > 15) {
+                errors.put("username", "Username must be between 3 and 15 characters.");
+
+            } else if (userRepository.existsByUsername(username)) {
+                errors.put("username", "Username already exists.");
+            }
         }
 
         String password = user.getPassword();
@@ -117,8 +121,8 @@ public class UserService {
 
                 // Ajustar edad si el cumpleaños aún no ha ocurrido este año
                 if (todayCal.get(Calendar.MONTH) < birthdateCal.get(Calendar.MONTH) ||
-                    (todayCal.get(Calendar.MONTH) == birthdateCal.get(Calendar.MONTH) &&
-                     todayCal.get(Calendar.DAY_OF_MONTH) < birthdateCal.get(Calendar.DAY_OF_MONTH))) {
+                        (todayCal.get(Calendar.MONTH) == birthdateCal.get(Calendar.MONTH) &&
+                                todayCal.get(Calendar.DAY_OF_MONTH) < birthdateCal.get(Calendar.DAY_OF_MONTH))) {
                     age--;
                 }
 
@@ -146,17 +150,13 @@ public class UserService {
         return errors;
     }
 
+    public Map<String, String> validate(User user) {
+        return validate(user, null);
+    }
+
     public Map<String, String> register(User user, Part filePart) throws IOException {
         Map<String, String> errors = validate(user);
         if (errors.isEmpty()) {
-            /*
-            try {
-                savePicture(user,filePart);
-            } catch (IOException e) {
-                errors.put("picture", "Error saving the picture: " + e.getMessage());
-            }
-            */
-
             userRepository.save(user);
         }
         return errors;
@@ -165,30 +165,71 @@ public class UserService {
     public Map<String, String> login(User user) throws IOException {
         Map<String, String> errors = new HashMap<>();
         if (!userRepository.checkLogin(user)) {
-            errors.put("password","The combination of name and password does not match in our database");
+            errors.put("password", "The combination of name and password does not match in our database");
         }
         return errors;
     }
-    
+
+    public Map<String, String> update(User updatedUser, String currentUsername) throws IOException {
+        Map<String, String> errors = validate(updatedUser, currentUsername);
+        if (errors.isEmpty()) {
+            // Update the user in the repository
+            userRepository.update(updatedUser);
+        }
+
+        return errors;
+    }
+
+
+
+    public Optional<User> getUserById(Integer id) {
+        return userRepository.findById(id);
+    }
+
+    public Optional<User> getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
     // Get all users
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
-    
-    public void follow(Integer uid,Integer fid) {
-    	userRepository.followUser(uid, fid);
-    }
- // Unfollow User
-    public void unfollow(Integer uid,Integer fid) {
-    	userRepository.unfollowUser(uid, fid);
-    }
- // Get followed users
-    public List<User> getFollowedUsers(Integer id, Integer start, Integer end) {
-    	Optional<List<User>> users = userRepository.findFollowed(id,start,end);
-    	if (users.isPresent())
-    	    return users.get();
-        return null;
+
+    public void follow(Integer uid, Integer fid) {
+        userRepository.followUser(uid, fid);
     }
 
+    // Unfollow User
+    public void unfollow(Integer uid, Integer fid) {
+        userRepository.unfollowUser(uid, fid);
+    }
+
+    // Get followed users
+    public List<User> getFollowedUsers(Integer id, Integer start, Integer end) {
+        Optional<List<User>> users = userRepository.findFollowed(id, start, end);
+        return users.orElse(Collections.emptyList());
+    }
+
+    // Get unfollowed users
+    public List<User> getNotFollowedUsers(Integer id, Integer start, Integer end) {
+        Optional<List<User>> users = userRepository.findNotFollowed(id, start, end);
+        return users.orElse(Collections.emptyList());
+    }
+
+    public void setPictureUrl(User user, HttpServletRequest request) {
+        if (user == null) return;
+
+        String baseUrl = request.getScheme() + "://" +
+                request.getServerName() +
+                (request.getServerPort() == 80 || request.getServerPort() == 443 ? "" : ":" + request.getServerPort()) +
+                request.getContextPath() + "/assets/";
+
+        if (user.getPicture() != null && !user.getPicture().isEmpty()) {
+            String pictureUrl = baseUrl + user.getPicture();
+            user.setPicture(pictureUrl);
+        } else {
+            user.setPicture(baseUrl + "default.jpg");
+        }
+    }
 }
 

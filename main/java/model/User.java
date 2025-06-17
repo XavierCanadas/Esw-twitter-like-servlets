@@ -16,8 +16,8 @@ public class User implements Serializable {
 	private java.sql.Date birthdate;
 	private String picture;
 	private Polis polis;
-	private int polisId;
-	private final int socialCredit = 0;
+	private Integer polisId;
+	private Integer socialCredit = 0;
 
 
     public User() {
@@ -95,5 +95,13 @@ public class User implements Serializable {
 
 	public void setPicture(String picture) {
 		this.picture = picture;
+	}
+
+	public Integer getSocialCredit() {
+		return socialCredit;
+	}
+
+	public void setSocialCredit(Integer socialCredit) {
+		this.socialCredit = socialCredit;
 	}
 }

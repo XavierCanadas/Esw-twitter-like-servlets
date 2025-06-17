@@ -1,29 +1,29 @@
-package controller.lab2;
+package controller;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.User;
 import repository.UserRepository;
 import service.UserService;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Servlet implementation class ListUsers
+ * Servlet implementation class GetUnfollowed
  */
-@WebServlet("/ListUsers")
-public class ListUsers extends HttpServlet {
+@WebServlet("/NotFollowed")
+public class NotFollowed extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ListUsers() {
+    public NotFollowed() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,16 +33,26 @@ public class ListUsers extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		List<User> users = new ArrayList<>();
+		List<User> users = null;
 		
-		try (UserRepository userRepository = new UserRepository()) {
-			UserService userService = new UserService(userRepository);
-			users = userService.getAllUsers();
-			request.setAttribute("users",users);
+		HttpSession session = request.getSession(false);
+		
+		if (session != null) {
+			User user = (User) session.getAttribute("user");
+			if (user!= null) {
+				try (UserRepository userRepository = new UserRepository()) {
+					UserService userService = new UserService(userRepository);
+					users = userService.getNotFollowedUsers(user.getId(),0,4);
+                    for (User currentUser : users) {
+                        userService.setPictureUrl(currentUser, request);
+                    }
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
-		
-		request.getRequestDispatcher("ListUsers.jsp").forward(request, response);
-		
+		request.setAttribute("users",users);
+		request.getRequestDispatcher("NotFollowed.jsp").forward(request, response);
 	}
 
 	/**

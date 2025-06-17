@@ -33,8 +33,10 @@ public class Profile extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		
 		
-		if (session != null)
+		if (session != null) {
 			user = (User) session.getAttribute("user");
+			request.setAttribute("enableEdit", true);
+		}
 
 		request.setAttribute("user",user);
 		request.getRequestDispatcher("Profile.jsp").forward(request, response);

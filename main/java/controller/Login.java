@@ -47,9 +47,6 @@ public class Login extends HttpServlet {
         } else {
         	request.getRequestDispatcher("Login.jsp").forward(request, response);
         }
-
-        // Use System.out for immediate console output
-        System.out.println("===== DEBUG: Login servlet accessed =====");
     }
 
     /**
@@ -69,17 +66,9 @@ public class Login extends HttpServlet {
                 if (errors.isEmpty()) {
                     HttpSession session = request.getSession();
 
-
-                    String imagesUrl = request.getScheme() + "://" +
-                                     request.getServerName() +
-                                     (request.getServerPort() == 80 || request.getServerPort() == 443 ? "" : ":" + request.getServerPort()) +
-                                     request.getContextPath() + "/images/";
+                    userService.setPictureUrl(user, request);
 
 
-
-                    if (user.getPicture() != null && !user.getPicture().isEmpty()) {
-                        user.setPicture(imagesUrl + user.getPicture());
-                    }
 
                     session.setAttribute("user", user);
 
