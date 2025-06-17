@@ -21,3 +21,39 @@ video, canvas {
     border: 2px solid #ccc;
     margin-top: 10px;
 }
+
+/*Fuentes de letra*/
+@font-face {
+    font-family: 'Cinzel';
+    src: url('../fonts/Cinzel.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Greek-Freak';
+    src: url('../fonts/Greek-Freak.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+body, h1, h2, h3, h4, h5, h6, p, span, div  {
+    font-family: 'Cinzel', sans-serif;
+    background-color: #EEF7FE;
+    color: #103957;
+}
+
+/*Icono Home*/
+.icono-navbar {
+  padding: 0px !important;
+  margin-left: 8px;
+  height: 65x;
+  width: 65px;
+  vertical-align: middle;
+}
+
+.btn-bar{
+	padding: 21px 16px !important;
+}
+
+.w3-bar {
+  background-color: #FFFFFF !important;
+}
