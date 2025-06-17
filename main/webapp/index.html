@@ -127,8 +127,12 @@ App.bindEvents = function() {
 		$.post("TweetsNotLogged", {
 			id : $(this).parent().attr("username")
 		}, function(event) {
-			$("#Users").load("TweetsNotLogged");
+			$("#content").load("TweetsNotLogged");
 		});
+	    event.preventDefault();
+	    console.log("Username enviado:", username); // Verifica en consola
+	});
+
     });
 };
 
