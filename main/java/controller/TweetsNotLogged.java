@@ -33,6 +33,7 @@ public class TweetsNotLogged extends HttpServlet {
 	@Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
+		System.out.print("a");
 	    List<Tweet> tweets = null;
         User user = null;
     	String username = request.getParameter("username");  // Ahora recibimos username por AJAX
@@ -58,4 +59,14 @@ public class TweetsNotLogged extends HttpServlet {
     	} catch (Exception e) {
     	    e.printStackTrace();
     	}
+	}
+	
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(jakarta.servlet.http.HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+
+		doGet(request, response);
+	}
 }

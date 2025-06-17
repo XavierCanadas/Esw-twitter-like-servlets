@@ -118,6 +118,17 @@ App.bindEvents = function() {
 		});
 		event.preventDefault();
 	});
+	
+
+	$(document).on("click", ".showTweets", function(event) {
+
+	    var username = $(this).data("username");
+	    
+		$.post("TweetsNotLogged", {
+			id : $(this).parent().attr("username")
+		}, function(event) {
+			$("#Users").load("TweetsNotLogged");
+		});
     });
 };
 
