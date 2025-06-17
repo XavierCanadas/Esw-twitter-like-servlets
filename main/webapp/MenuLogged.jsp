@@ -3,11 +3,11 @@
 
 		<div class="w3-bar">
 			<a class="w3-bar-item w3-button icono-navbar" href="index.html"> <img src="assets/Netopolis.png" alt="Home"class="icono-navbar"></img> </a>		
-			<a class="menu w3-bar-item w3-button w3-hide-small " href="Profile" style="margin-left: 295px">
+			<a class="menu w3-bar-item w3-button w3-hide-small " href="Profile"">
 			  <img src="${user.picture}" class="w3-circle" style="height:40px;width:40px;vertical-align:middle;" alt="Avatar">
 			  <span style="margin-left: 5px; font-weight: bold">${user.username}</span>
 			</a>
-			<a class="menu w3-bar-item w3-hide-small" style="margin-left: 315px"> <i class="fa fa-star fa-fw"></i> ${user.socialCredit} </a>
+			<a class="menu w3-bar-item w3-hide-small" style="margin-left: auto"> <i class="fa fa-star fa-fw"></i> ${user.socialCredit} </a>
 			<a class="menu w3-bar-item w3-hide-small ">Clase Social
 			  <img src="${pageContext.request.contextPath}/assets/esclavo.png" class="w3-circle" style="height:45px;width:45px;vertical-align:middle;" alt="Avatar"></img>
 			</a>
@@ -16,7 +16,7 @@
 			</a>
 			<a class="menu w3-bar-item w3-button w3-hide-small " href="Timeline"> MyPosts </a>
 			<a class="menu w3-bar-item w3-button w3-hide-small " href="Followed"> Buddies </a>
-			<a class="menu w3-bar-item w3-button w3-hide-small w3-right " href="Logout" style="margin-left: auto"> <i
+			<a class="menu w3-bar-item w3-button w3-hide-small w3-right " href="Logout"> <i
 					class="fa fa-sign-out"></i> </a>
 			<a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium"
 				onclick="App.stack()">&#9776;</a>
