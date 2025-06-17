@@ -33,11 +33,11 @@ public class TweetsNotLogged extends HttpServlet {
 	@Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-		System.out.print("a");
 	    List<Tweet> tweets = null;
         User user = null;
     	String username = request.getParameter("username");  // Ahora recibimos username por AJAX
-
+    	if (username != null && !username.isEmpty())
+    		System.out.print(username);
     	try (TweetRepository tweetRepo = new TweetRepository();
     	     UserRepository userRepo = new UserRepository();) {
     		
@@ -47,11 +47,11 @@ public class TweetsNotLogged extends HttpServlet {
     	        user = userService.findByName(username);  
     	            // Obtenemos tweets del usuario usando su ID
     	        tweets = tweetService.getTweetsByUser(user.getId(), 0, 20);
-    	        request.setAttribute("user", user);  // enviamos el user al JSP
   
     	    } else {
     	        tweets = tweetService.getLatestTweets();  // Tweets generales
     	    }
+   	        request.setAttribute("user", user);  
     	    request.setAttribute("tweets", tweets);
     	    RequestDispatcher dispatcher = request.getRequestDispatcher("TweetsNotLogged.jsp");
     	    dispatcher.forward(request, response);

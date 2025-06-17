@@ -96,4 +96,9 @@ public class User implements Serializable {
 	public void setPicture(String picture) {
 		this.picture = picture;
 	}
+	
+	public int getSocialCredit() {
+		return socialCredit;
+	}
+	
 }

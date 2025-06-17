@@ -36,14 +36,7 @@
             $(document).on("click", ".menu", function (event) {
                 event.preventDefault();
                 const href = $(this).attr('href');
-
-                if (href === "DiscoverNotLogged") {
-                    $("#content").load("Users");
-                    $("#rcolumn").load("TweetsNotLogged");
-                } else {
                     $('#content').load(href);
-                }
-
                 App.stack();
             });
 
@@ -119,20 +112,22 @@
             });
 
 
-            $(document).on("click", ".showTweets", function (event) {
-
-                var username = $(this).data("username");
-
-                $.post("TweetsNotLogged", {
-                    id: $(this).parent().attr("username")
-                }, function (event) {
-                    $("#lcolumn").load("TweetsNotLogged");
-                });
+            $(document).on("click", ".showTweets", function(event) {
                 event.preventDefault();
-
-                console.log("Username enviado:", username); // Verifica en consola
-
+                var username = $(this).data("username");
+                
+                console.log("Enviando username:", username); // Debug
+                
+                // Usa GET con parámetros en la URL
+                $.get("TweetsNotLogged?username=" + encodeURIComponent(username), function(data) {
+                    // Reemplaza TODO el contenido de #lcolumn
+                    $("#content").html(data); 
+                }).fail(function(error) {
+                    console.error("Error:", error);
+                });
             });
+            
+            
 
 
         };
