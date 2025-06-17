@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 import model.Polis;
+import model.Tweet;
 import model.User;
 
 public class UserRepository extends BaseRepository {
@@ -305,5 +306,27 @@ public class UserRepository extends BaseRepository {
 		}
 		return Optional.empty();
 	}
+
+    
+    public Optional<List<User>> getMostPopularUsers(){
+		String query = "SELECT * FROM Users ORDER BY socialCredit DESC LIMIT 20;";
+		try (PreparedStatement statement = db.prepareStatement(query)) {
+			try (ResultSet rs = statement.executeQuery()) {
+				List<User> users = new ArrayList<User>();
+				while (rs.next()) {
+					User user = new User();
+					user.setId(rs.getInt("id"));
+					user.setUsername(rs.getString("username"));
+					user.setPicture(rs.getString("picture"));
+					users.add(user);
+				}
+				return Optional.of(users);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return Optional.empty();
+    }
+    
 
 }

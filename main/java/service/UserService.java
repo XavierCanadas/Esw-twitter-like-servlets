@@ -231,5 +231,27 @@ public class UserService {
             user.setPicture(baseUrl + "default.jpg");
         }
     }
+
+//shows 20 most popular users
+    public List<User> getMostPopularUsers(){
+    	Optional<List<User>> users = userRepository.getMostPopularUsers();
+    	if (users.isPresent()) {
+    	    return users.get();
+    	}
+        return null;
+    }
+    
+//find a user by its name
+    public User findByName(String name) {
+    	Optional<User> user = userRepository.findByName(name);
+    	if (user.isPresent()) {
+    		return user.get();
+    	}
+    	return null;
+    }
+    
+    
+
+
 }
 

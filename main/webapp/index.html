@@ -35,7 +35,9 @@
             // Deal with menu clicks
             $(document).on("click", ".menu", function (event) {
                 event.preventDefault();
+
                 $('#content').load($(this).attr('href'))
+
                 App.stack();
             });
 
@@ -114,6 +116,27 @@
                 event.preventDefault();
             });
 
+
+
+            $(document).on("click", ".showTweets", function(event) {
+                event.preventDefault();
+                var username = $(this).data("username");
+                
+                console.log("Enviando username:", username); // Debug
+                
+                // Usa GET con parámetros en la URL
+                $.get("TweetsNotLogged?username=" + encodeURIComponent(username), function(data) {
+                    // Reemplaza TODO el contenido de #lcolumn
+                    $("#content").html(data); 
+                }).fail(function(error) {
+                    console.error("Error:", error);
+                });
+            });
+            
+            
+
+
+
             /* Edit user */
             $(document).on("click", ".editUser", function (event) {
                 var user = $(this).parent();
@@ -130,6 +153,7 @@
                 event.preventDefault();
                 $('#content').load("Content");
             });
+
         };
 
 
@@ -170,6 +194,7 @@
 </div>
 <!-- End Content -->
 <!-- Footer -->
+
 
 </body>
 </html>

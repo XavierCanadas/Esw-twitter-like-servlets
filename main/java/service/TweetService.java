@@ -27,6 +27,14 @@ public class TweetService {
     	    return tweets.get();
         return null;
 	}
+	
+	public List<Tweet> getLatestTweets(){
+		Optional<List<Tweet>> tweets = tweetRepository.getLatestTweets();
+    	if (tweets.isPresent())
+    	    return tweets.get();
+        return null;
+	}
+
 
 
 }

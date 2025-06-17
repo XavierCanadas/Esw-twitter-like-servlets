@@ -20,6 +20,6 @@
 <br>
 </c:when>
 <c:otherwise>
-<p/>
+<p></p>
 </c:otherwise>
 </c:choose>

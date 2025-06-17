@@ -104,4 +104,5 @@ public class User implements Serializable {
 	public void setSocialCredit(Integer socialCredit) {
 		this.socialCredit = socialCredit;
 	}
+
 }
