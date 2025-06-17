@@ -44,7 +44,7 @@ public class TweetsNotLogged extends HttpServlet {
    		 TweetService tweetService = new TweetService(tweetRepo);
    		 UserService userService= new UserService(userRepo);
     	    if (username != null && !username.isEmpty()) {
-    	        user = userService.findByName(username);  
+    	        user = userService.findByName(username);
     	            // Obtenemos tweets del usuario usando su ID
     	        tweets = tweetService.getTweetsByUser(user.getId(), 0, 20);
   

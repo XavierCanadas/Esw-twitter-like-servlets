@@ -243,7 +243,7 @@ public class UserService {
     
 //find a user by its name
     public User findByName(String name) {
-    	Optional<User> user = userRepository.findByName(name);
+    	Optional<User> user = userRepository.findByUsername(name);
     	if (user.isPresent()) {
     		return user.get();
     	}
