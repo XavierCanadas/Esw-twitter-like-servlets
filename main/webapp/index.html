@@ -35,8 +35,9 @@
             // Deal with menu clicks
             $(document).on("click", ".menu", function (event) {
                 event.preventDefault();
-                const href = $(this).attr('href');
-                    $('#content').load(href);
+
+                $('#content').load($(this).attr('href'))
+
                 App.stack();
             });
 
@@ -58,6 +59,7 @@
                     $("#content").html(html);
                 });
             });
+
             /* Follow user */
             $(document).on("click", ".followUser", function (event) {
                 var user = $(this).parent();
@@ -69,6 +71,7 @@
                 });
                 event.preventDefault();
             });
+
             /* UnFollow user */
             $(document).on("click", ".unfollowUser", function (event) {
                 var user = $(this).parent();
@@ -80,6 +83,7 @@
                 });
                 event.preventDefault();
             });
+
             /* Add tweet */
             $(document).on("click", "#addTweet", function (event) {
                 $.post("AddTweet", {
@@ -89,6 +93,7 @@
                 });
                 event.preventDefault();
             });
+
             /* Delete tweet */
             $(document).on("click", ".delTweet", function (event) {
                 var tweet = $(this).parent();
@@ -112,6 +117,7 @@
             });
 
 
+
             $(document).on("click", ".showTweets", function(event) {
                 event.preventDefault();
                 var username = $(this).data("username");
@@ -129,6 +135,24 @@
             
             
 
+
+
+            /* Edit user */
+            $(document).on("click", ".editUser", function (event) {
+                var user = $(this).parent();
+                $.get("EditUser", {
+                    id: $(this).parent().attr("id")
+                }, function (event) {
+                    $("#content").load("EditUser");
+                });
+                event.preventDefault();
+            });
+
+            /* Return Home */
+            $(document).on("click", ".returnHome", function (event) {
+                event.preventDefault();
+                $('#content').load("Content");
+            });
 
         };
 
@@ -170,9 +194,7 @@
 </div>
 <!-- End Content -->
 <!-- Footer -->
-<footer class="w3-container w3-theme w3-bottom">
-    <p>Universitat Pompeu Fabra @2025</p>
-</footer>
+
 
 </body>
 </html>

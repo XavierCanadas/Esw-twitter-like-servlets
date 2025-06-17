@@ -37,7 +37,36 @@ video, canvas {
 }
 body, h1, h2, h3, h4, h5, h6, p, span, div  {
     font-family: 'Cinzel', sans-serif;
-    /*font-size: 16px;*/
+    background-color: #EEF7FE;
+    color: #103957;
 }
 
+/*Icono Home*/
+.icono-navbar {
+  padding: 0px !important;
+  margin-left: 8px;
+  height: 65x;
+  width: 65px;
+  vertical-align: middle;
+}
 
+.w3-bar {
+  background-color: #FFFFFF !important;
+}
+
+.w3-bar {
+    width: 100%;
+    overflow: hidden;
+    height: 100%;
+    align-items: center;
+    display: flex;
+}
+
+.w3-bar .w3-bar-item {
+    padding: 8px 8px;
+    float: left;
+    width: auto;
+    border: none;
+    display: block;
+    outline: 0
+}

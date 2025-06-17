@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.User;
 
 import java.io.IOException;
 
@@ -28,13 +29,15 @@ public class Menu extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    	User user = null;
         HttpSession session = request.getSession(false);
         String view = "MenuNotLogged.html";
 
-        if (session != null && session.getAttribute("user")!=null)
-            view = "MenuLogged.html";
-
+        if (session != null && session.getAttribute("user")!=null) {
+        	user = (User) session.getAttribute("user");
+            view = "MenuLogged.jsp";
+        }
+        request.setAttribute("user",user);
         request.getRequestDispatcher(view).forward(request, response);
     }
 

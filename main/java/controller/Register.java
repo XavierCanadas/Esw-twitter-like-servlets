@@ -65,11 +65,6 @@ public class Register extends HttpServlet {
 				}
 			}
 
-			// Load polisList for the form in case of validation errors
-			PolisService polisService = new PolisService(polisRepository);
-			List<Polis> polisList = polisService.getAllPolis();
-			request.setAttribute("polisList", polisList);
-
 			// profile picture
 			Part filePart = request.getPart("picture");
 
@@ -80,6 +75,10 @@ public class Register extends HttpServlet {
 				request.setAttribute("user", user);
 				request.getRequestDispatcher("Login.jsp").forward(request, response);
 			} else {
+				PolisService polisService = new PolisService(polisRepository);
+				List<Polis> polisList = polisService.getAllPolis();
+				request.setAttribute("polisList", polisList);
+
 				request.setAttribute("user", user);
 				request.setAttribute("errors", errors);
 				request.getRequestDispatcher("Register.jsp").forward(request, response);

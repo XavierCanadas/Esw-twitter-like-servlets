@@ -6,7 +6,7 @@ function initValidation(serverErrors)  {
   const password = document.getElementById('password');
   const confirmPassword = document.getElementById('confirmPassword');
   const gender = document.getElementById('gender');
-  const birthdateString = document.getElementById('birthdateString');
+  const birthdateString = document.getElementById('birthdateString'); // TODO: change to handle date input instead of string
   const polis = document.getElementById('polis');
 
   // Email validation

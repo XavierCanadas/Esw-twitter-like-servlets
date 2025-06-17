@@ -47,9 +47,6 @@ public class Login extends HttpServlet {
         } else {
         	request.getRequestDispatcher("Login.jsp").forward(request, response);
         }
-
-        // Use System.out for immediate console output
-        System.out.println("===== DEBUG: Login servlet accessed =====");
     }
 
     /**
@@ -70,6 +67,8 @@ public class Login extends HttpServlet {
                     HttpSession session = request.getSession();
 
                     userService.setPictureUrl(user, request);
+
+
 
                     session.setAttribute("user", user);
 
