@@ -50,10 +50,23 @@ body, h1, h2, h3, h4, h5, h6, p, span, div  {
   vertical-align: middle;
 }
 
-.btn-bar{
-	padding: 21px 16px !important;
+.w3-bar {
+  background-color: #FFFFFF !important;
 }
 
 .w3-bar {
-  background-color: #FFFFFF !important;
+    width: 100%;
+    overflow: hidden;
+    height: 100%;
+    align-items: center;
+    display: flex;
+}
+
+.w3-bar .w3-bar-item {
+    padding: 8px 8px;
+    float: left;
+    width: auto;
+    border: none;
+    display: block;
+    outline: 0
 }
