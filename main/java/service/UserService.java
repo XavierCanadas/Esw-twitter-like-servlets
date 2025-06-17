@@ -217,6 +217,17 @@ public class UserService {
     	}
         return null;
     }
+    
+//find a user by its name
+    public User findByName(String name) {
+    	Optional<User> user = userRepository.findByName(name);
+    	if (user.isPresent()) {
+    		return user.get();
+    	}
+    	return null;
+    }
+    
+    
 
 }
 

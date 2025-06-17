@@ -28,14 +28,14 @@ import service.UserService;
 /**
  * Servlet implementation class DiscoverNotLogged
  */
-@WebServlet("/DiscoverNotLogged")
-public class DiscoverNotLogged extends HttpServlet {
+@WebServlet("/Users")
+public class Users extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * Default constructor. 
      */
-    public DiscoverNotLogged() {
+    public Users() {
         // TODO Auto-generated constructor stub
     }
 
@@ -44,7 +44,12 @@ public class DiscoverNotLogged extends HttpServlet {
 	 */
 	protected void doGet(jakarta.servlet.http.HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		request.getRequestDispatcher("DiscoverNotLogged.jsp").forward(request, response);
+		UserRepository userRepo = new UserRepository();
+		UserService userService = new UserService(userRepo);
+		List<User> users = userService.getMostPopularUsers();
+		
+		request.setAttribute("users", users);
+		request.getRequestDispatcher("Users.jsp").forward(request, response);
 
 	}
 
