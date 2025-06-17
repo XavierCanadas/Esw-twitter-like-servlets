@@ -34,6 +34,7 @@ public class UserRepository extends BaseRepository {
 
         String query = "SELECT u.id, u.username, u.picture, p.name as polis_name, p.id as polis_id " +
                         "FROM Users u " +
+                        "JOIN Polis p ON u.polis_id = p.id " +
                         "WHERE u.username=? AND u.password=?;";
 
         try (PreparedStatement statement = db.prepareStatement(query)) {
