@@ -11,7 +11,7 @@
             <c:forEach var="user" items="${users}">
                 <button 
                     type="button" 
-                    class="w3-button w3-theme w3-margin-bottom showTweets" 
+                    class="showTweets w3-button w3-theme w3-margin-bottom"
                     data-username="${user.username}">
                     ${user.username}
                 </button>
