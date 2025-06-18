@@ -70,3 +70,10 @@ body, h1, h2, h3, h4, h5, h6, p, span, div  {
     display: block;
     outline: 0
 }
+
+.lista-botones-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+

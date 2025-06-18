@@ -4,7 +4,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	$('#lcolumn').load('NotFollowed');
-	$('#rcolumn').load('Profile');
+	$('#rcolumn').load('Navegation');
 	$('#iterator').load('Tweets');
 });
 </script>
