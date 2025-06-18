@@ -16,7 +16,7 @@
 			</a>
 			<a class="menu w3-bar-item w3-button w3-hide-small " href="Timeline"> MyPosts </a>
 			<a class="menu w3-bar-item w3-button w3-hide-small " href="Followed"> Buddies </a>
-			<a class="menu w3-bar-item w3-button w3-hide-small w3-right " href="Logout"> <i
+			<a class="menu w3-bar-item w3-button w3-hide-small w3-right " href="Logout" style="margin-right: 8px"> <i
 					class="fa fa-sign-out"></i> </a>
 			<a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium"
 				onclick="App.stack()">&#9776;</a>
