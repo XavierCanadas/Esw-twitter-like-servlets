@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import model.User;
+import repository.UserRepository;
+import service.UserService;
 
 /**
  * Servlet implementation class User
@@ -29,17 +31,39 @@ public class Profile extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		User user = null;
 		HttpSession session = request.getSession(false);
-		
-		
-		if (session != null) {
-			user = (User) session.getAttribute("user");
-			request.setAttribute("enableEdit", true);
+
+		// get username from request parameter
+		String username = request.getParameter("username");
+		User currentUser = (User) session.getAttribute("user");
+
+		if (currentUser == null) {
+			response.sendRedirect("login.jsp");
+			return;
 		}
 
-		request.setAttribute("user", user);
-		request.getRequestDispatcher("Profile.jsp").forward(request, response);
+		try (UserRepository userRepository = new UserRepository()) {
+			UserService userService = new UserService(userRepository);
+
+			User user = userService.findByUsername(username);
+			if (user == null) {
+				response.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found.");
+				return;
+			}
+
+			// TODO: if the user is an admin or the user itself, allow editing
+			boolean enableEdit = (/*currentUser.isAdmin() || */  currentUser.getUsername().equals(username));
+			request.setAttribute("enableEdit", enableEdit);
+
+			userService.setPictureUrl(user, request);
+			request.setAttribute("user", user);
+			request.getRequestDispatcher("Profile.jsp").forward(request, response);
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error accessing user data.");
+		}
 	}
 
 	/**

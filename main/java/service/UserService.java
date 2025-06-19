@@ -216,6 +216,7 @@ public class UserService {
         return users.orElse(Collections.emptyList());
     }
 
+    // TODO: refactor to use this method only in the service, for simplicity.
     public void setPictureUrl(User user, HttpServletRequest request) {
         if (user == null) return;
 

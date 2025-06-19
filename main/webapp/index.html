@@ -35,8 +35,14 @@
             // Deal with menu clicks
             $(document).on("click", ".menu", function (event) {
                 event.preventDefault();
+                var tabReference = $(this).attr('href');
+                var username = $(this).data("username");
+                if (tabReference === "Profile") {
+                    $('#content').load('Profile?username=' + encodeURIComponent(username));
+                } else {
+                    $('#content').load($(this).attr('href'));
+                }
 
-                $('#content').load($(this).attr('href'))
 
                 App.stack();
             });
@@ -136,14 +142,24 @@
 
             /* Edit user */
             $(document).on("click", ".editUser", function (event) {
+                event.preventDefault();
+
                 var username = $(this).data("username");
 
-                $.get("EditUser", {
-                    username: username
-                }, function (event) {
-                    $("#content").load("EditUser");
-                });
+                $('#content').load('EditUser?username=' + encodeURIComponent(username));
+
+
+            });
+
+            /* Show user info */
+            $(document).on("click", ".userInfo", function (event) {
                 event.preventDefault();
+
+                var username = $(this).data("username");
+
+                $('#content').load('Profile?username=' + encodeURIComponent(username));
+
+
             });
 
             /* Return Home */
