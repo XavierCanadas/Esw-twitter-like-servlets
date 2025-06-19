@@ -328,5 +328,20 @@ public class UserRepository extends BaseRepository {
 		return Optional.empty();
     }
     
+    public boolean isUserAdmin(String Username) {
+
+		String query ="SELECT is_admin FROM Users WHERE username = ?;";
+		try (PreparedStatement statement = db.prepareStatement(query)) {
+            statement.setString(1, Username);
+            ResultSet rs = statement.executeQuery();
+            return rs.getBoolean("is_admin");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+				
+    }
+    
+    
 
 }

@@ -67,7 +67,8 @@ public class Login extends HttpServlet {
                     HttpSession session = request.getSession();
 
                     userService.setPictureUrl(user, request);
-
+                    
+                    user.setIsAdmin(userService.isAdmin(user.getUsername()));
 
 
                     session.setAttribute("user", user);
