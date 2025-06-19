@@ -34,6 +34,14 @@ public class TweetService {
     	    return tweets.get();
         return null;
 	}
+	
+	public List<Tweet> getFollowingTweets(Integer uid, Integer start, Integer end){
+		Optional<List<Tweet>> tweets = tweetRepository.getFollowingTweets(uid,start,end);
+    	if (tweets.isPresent())
+    	    return tweets.get();
+        return null;
+		
+	}
 
 
 
