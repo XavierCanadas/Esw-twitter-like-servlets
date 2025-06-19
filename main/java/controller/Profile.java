@@ -8,7 +8,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import model.User;
+import repository.TweetRepository;
 import repository.UserRepository;
+import service.TweetService;
 import service.UserService;
 
 /**
@@ -47,8 +49,10 @@ public class Profile extends HttpServlet {
 			return;
 		}
 
-		try (UserRepository userRepository = new UserRepository()) {
+		try (UserRepository userRepository = new UserRepository();
+			 TweetRepository tweetRepository = new TweetRepository()) {
 			UserService userService = new UserService(userRepository);
+			TweetService tweetService = new TweetService(tweetRepository);
 
 			User user = userService.findByUsername(username);
 			if (user == null) {
