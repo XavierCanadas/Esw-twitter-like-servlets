@@ -42,6 +42,14 @@ public class TweetService {
         return null;
 		
 	}
+	
+	public List<Tweet> getPolisTweets(Integer uid, Integer start, Integer end){
+		Optional<List<Tweet>> tweets = tweetRepository.getPolisTweets(uid,start,end);
+    	if (tweets.isPresent())
+    	    return tweets.get();
+        return null;
+		
+	}
 
 
 

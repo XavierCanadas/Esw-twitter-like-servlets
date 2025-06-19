@@ -12,7 +12,7 @@
     $('#boton1').on('click', function () {
       $(this).addClass('active');
       $('#boton2').removeClass('active');
-      $('#iterator').load('Tweets');
+      $('#iterator').load('TweetsPolis');
     });
 
     // Botón derecho (siguiendo)
