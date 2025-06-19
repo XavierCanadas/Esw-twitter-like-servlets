@@ -33,8 +33,7 @@ public class TweetsNotLogged extends HttpServlet {
 	    List<Tweet> tweets = null;
         User user = null;
     	String username = request.getParameter("username");  // Ahora recibimos username por AJAX
-    	if (username != null && !username.isEmpty())
-    		System.out.print(username);
+
     	try (TweetRepository tweetRepo = new TweetRepository();
     	     UserRepository userRepo = new UserRepository();) {
     		

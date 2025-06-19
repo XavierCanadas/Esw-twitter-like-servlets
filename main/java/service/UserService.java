@@ -251,6 +251,11 @@ public class UserService {
     	return null;
     }
     
+    //given a username returns if it is admin or not
+    public boolean isAdmin(String username) {
+    	return userRepository.isUserAdmin(username);
+    }
+    
     
 
 
