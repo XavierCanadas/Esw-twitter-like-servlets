@@ -92,4 +92,3 @@ FROM Tweet;
 
 SELECT *
 FROM LikeTweet;
-

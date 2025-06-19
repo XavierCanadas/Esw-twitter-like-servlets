@@ -8,6 +8,7 @@ public class Tweet implements java.io.Serializable {
 	 private int id;
 	 private int uid;
 	 private String username;
+	 private String profilePictureUrl;
 	 private Timestamp postDateTime;
 	 private String content;
 	 private Integer likesCount;
@@ -68,5 +69,12 @@ public class Tweet implements java.io.Serializable {
 
 	public void setLikedByCurrentUser(boolean likedByCurrentUser) {
 		isLikedByCurrentUser = likedByCurrentUser;
+	}
+
+	public String getProfilePictureUrl() {
+		return profilePictureUrl;
+	}
+	public void setProfilePictureUrl(String profilePictureUrl) {
+		this.profilePictureUrl = profilePictureUrl;
 	}
 }

@@ -162,6 +162,25 @@
 
             });
 
+            /* Show user profile when clicks username in a tweet */
+            $(document).on("click", ".tweet-username", function (event) {
+                event.preventDefault();
+
+                var username = $(this).data("username"); // Get the username from the tweet
+
+                $('#content').load('Profile?username=' + encodeURIComponent(username));
+            });
+
+            /* click in a tweet to see more their comments and more */
+            $(document).on("click", ".tweet-container", function (event) {
+                event.preventDefault();
+                var tweetId = $(this).attr("id");
+
+                console.log("Tweet ID:", tweetId); // Debug
+
+                $('#content').load('TweetView?tweetId=' + encodeURIComponent(tweetId));
+            });
+
             /* Return Home */
             $(document).on("click", ".returnHome", function (event) {
                 event.preventDefault();

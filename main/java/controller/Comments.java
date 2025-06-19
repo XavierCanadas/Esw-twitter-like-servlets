@@ -1,5 +1,6 @@
 package controller;
 
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -9,24 +10,22 @@ import jakarta.servlet.http.HttpSession;
 import model.Tweet;
 import model.User;
 import repository.TweetRepository;
-import repository.UserRepository;
 import service.TweetService;
-import service.UserService;
 
 import java.io.IOException;
 import java.util.List;
 
+
 /**
  * Servlet implementation class Tweets
  */
-@WebServlet("/Tweets")
-public class Tweets extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+@WebServlet("/Comments")
+public class Comments extends HttpServlet {
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Tweets() {
+    public Comments() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -35,8 +34,7 @@ public class Tweets extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        List<Tweet> tweets = null;
+        List<Tweet> comments = null;
 
         HttpSession session = request.getSession(false);
         if (session == null) {
@@ -45,43 +43,33 @@ public class Tweets extends HttpServlet {
         }
 
         User currentUser = (User) session.getAttribute("user");
-        User userTweets = null;
-
         if (currentUser == null) {
             response.sendRedirect("login.jsp");
             return;
         }
 
-        // get the userid to get the tweets
-        String username = request.getParameter("username");
-
-        if (username == null || username.isEmpty()) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Username parameter is required.");
+        // get the tweet id to get the comments
+        String parentIdString = request.getParameter("parentId");
+        if (parentIdString == null || parentIdString.isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Tweet ID parameter is required.");
             return;
         }
 
-        try (UserRepository userRepository = new UserRepository()) {
-            UserService userService = new UserService(userRepository);
-            userTweets = userService.findByUsername(username);
-            userService.setPictureUrl(userTweets, request);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // get the comments
+        Integer parentId = Integer.valueOf(parentIdString);
 
-        if (userTweets == null) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found.");
-            return;
-        }
-
-        try(TweetRepository tweetRepository = new TweetRepository()) {
+        try (TweetRepository tweetRepository = new TweetRepository()) {
             TweetService tweetService = new TweetService(tweetRepository);
+            comments = tweetService.getCommentsByTweetId(parentId, currentUser.getId(), 0, 10); // TODO: pagination
 
-            tweets = tweetService.getTweetsByUser(userTweets.getId(),0,10); // TODO: add pagination
         } catch (Exception e) {
             e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while retrieving comments.");
+            return;
         }
 
-        request.setAttribute("tweets",tweets);
+        // send
+        request.setAttribute("tweets", comments);
         request.setAttribute("user", currentUser);
         request.getRequestDispatcher("Tweets.jsp").forward(request, response);
     }
@@ -93,5 +81,4 @@ public class Tweets extends HttpServlet {
         // TODO Auto-generated method stub
         doGet(request, response);
     }
-
 }
