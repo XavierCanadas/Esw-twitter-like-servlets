@@ -150,30 +150,28 @@ public class TweetRepository extends BaseRepository {
 	
 	public Optional<List<Tweet>> getPolisTweets(Integer uid, Integer start, Integer end) {
 	    List<Tweet> tweets = new ArrayList<>();
-	    String query = """
-	        SELECT 
-	            t.id, 
-	            t.user_id, 
-	            t.post_datetime, 
-	            t.content,  
-	            u.username, 
-	            COUNT(lt_all.user_id) AS like_count,
-	            EXISTS (
-	                SELECT 1 
-	                FROM LikeTweet lt_user 
-	                WHERE lt_user.tweet_id = t.id 
-	                  AND lt_user.user_id = ?
-	            ) AS liked_by_current_user
-	        FROM Tweet t
-	        INNER JOIN Users u ON t.user_id = u.id
-	        LEFT JOIN LikeTweet lt_all ON lt_all.tweet_id = t.id
-	        WHERE u.polis_id = (
-	            SELECT polis_id FROM Users WHERE id = ?
-	        )
-	        GROUP BY t.id, u.username, t.user_id, t.post_datetime, t.content
-	        ORDER BY t.post_datetime DESC
-	        LIMIT ?, ?;
-	        """;
+	    String query = "SELECT " +
+	        "t.id, " +
+	        "t.user_id, " +
+	        "t.post_datetime, " +
+	        "t.content, " +
+	        "u.username, " +
+	        "COUNT(lt_all.user_id) AS like_count, " +
+	        "EXISTS ( " +
+	        "    SELECT 1 " +
+	        "    FROM LikeTweet lt_user " +
+	        "    WHERE lt_user.tweet_id = t.id " +
+	        "      AND lt_user.user_id = ? " +
+	        ") AS liked_by_current_user " +
+	        "FROM Tweet t " +
+	        "INNER JOIN Users u ON t.user_id = u.id " +
+	        "LEFT JOIN LikeTweet lt_all ON lt_all.tweet_id = t.id " +
+	        "WHERE u.polis_id = ( " +
+	        "    SELECT polis_id FROM Users WHERE id = ? " +
+	        ") " +
+	        "GROUP BY t.id, u.username, t.user_id, t.post_datetime, t.content " +
+	        "ORDER BY t.post_datetime DESC " +
+	        "LIMIT ?, ?;";
 
 	    try (PreparedStatement statement = db.prepareStatement(query)) {
 	        statement.setInt(1, uid);   // EXISTS LIKE

@@ -9,7 +9,9 @@ import jakarta.servlet.http.HttpSession;
 import model.Tweet;
 import model.User;
 import repository.TweetRepository;
+import repository.UserRepository;
 import service.TweetService;
+import service.UserService;
 
 import java.io.IOException;
 import java.util.List;
@@ -35,26 +37,53 @@ public class Tweets extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         List<Tweet> tweets = null;
-        User user = null;
+
         HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
 
+        User currentUser = (User) session.getAttribute("user");
+        User userTweets = null;
 
-        if (session != null) {
-            user = (User) session.getAttribute("user");
-            if (user != null) {
-                try(TweetRepository tweetRepository = new TweetRepository()) {
-                    TweetService tweetService = new TweetService(tweetRepository);
-                    tweets = tweetService.getTweetsByUser(user.getId(),0,4);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+        if (currentUser == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
+        // get the userid to get the tweets
+        String username = request.getParameter("username");
+
+        if (username == null || username.isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Username parameter is required.");
+            return;
+        }
+
+        try (UserRepository userRepository = new UserRepository()) {
+            UserService userService = new UserService(userRepository);
+            userTweets = userService.findByUsername(username);
+            userService.setPictureUrl(userTweets, request);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (userTweets == null) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found.");
+            return;
+        }
+
+        try(TweetRepository tweetRepository = new TweetRepository()) {
+            TweetService tweetService = new TweetService(tweetRepository);
+
+            tweets = tweetService.getTweetsByUser(userTweets.getId(),0,10); // TODO: add pagination
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         request.setAttribute("tweets",tweets);
-        request.setAttribute("user",user);
+        request.setAttribute("user", userTweets);
         request.getRequestDispatcher("Tweets.jsp").forward(request, response);
-
     }
 
     /**

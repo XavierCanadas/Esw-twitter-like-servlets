@@ -3,10 +3,15 @@
 
 <script type="text/javascript">
   $(document).ready(function () {
+
+      var username = "${user.username}";
+
+      console.log("Enviando username:", username); // Debug
+
     // Cargas iniciales
     $('#lcolumn').load('NotFollowed');
     $('#rcolumn').load('Navegation');
-    $('#iterator').load('Tweets');
+    $('#iterator').load('Tweets?username=' + encodeURIComponent(username));
 
     // Botón izquierdo (polis)
     $('#boton1').on('click', function () {
@@ -38,7 +43,6 @@
   </div>
 </div>
  
- <div id="iterator">
-</div>
+ <div id="iterator"></div>
 
 
