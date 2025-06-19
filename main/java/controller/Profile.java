@@ -42,6 +42,11 @@ public class Profile extends HttpServlet {
 			return;
 		}
 
+		if (username == null || username.isEmpty()) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Username parameter is required.");
+			return;
+		}
+
 		try (UserRepository userRepository = new UserRepository()) {
 			UserService userService = new UserService(userRepository);
 
