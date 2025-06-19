@@ -6,7 +6,6 @@
 
       var username = "${user.username}";
 
-      console.log("Enviando username:", username); // Debug
 
     // Cargas iniciales
     $('#lcolumn').load('NotFollowed');
