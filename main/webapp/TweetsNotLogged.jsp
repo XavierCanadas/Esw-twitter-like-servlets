@@ -16,7 +16,7 @@
     </div>
 </c:if>
 
-<!-- Si no hay user, solo se muestra título -->
+<!-- Si no hay user, solo se muestra titulo -->
 <c:if test="${user == null}">
     <h2 class="w3-center w3-padding">Latest Tweets</h2>
 </c:if>
@@ -32,7 +32,7 @@
         <hr class="w3-clear">
         <p>${t.content}</p>
 
-        <!-- Mostrar solo número de likes -->
+        <!-- Mostrar solo numero de likes -->
         <p><i class="fa fa-thumbs-up"></i> (${t.likesCount})</p>
     </div>
 </c:forEach>

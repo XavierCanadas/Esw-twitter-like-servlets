@@ -182,12 +182,12 @@ public class UserService {
 
 
 
-    public Optional<User> getUserById(Integer id) {
-        return userRepository.findById(id);
-    }
-
-    public Optional<User> getUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public User getUserById(Integer id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            return user.get();
+        }
+        return null;
     }
 
     // Get all users
@@ -216,6 +216,7 @@ public class UserService {
         return users.orElse(Collections.emptyList());
     }
 
+    // TODO: refactor to use this method only in the service, for simplicity.
     public void setPictureUrl(User user, HttpServletRequest request) {
         if (user == null) return;
 
@@ -241,9 +242,9 @@ public class UserService {
         return null;
     }
     
-//find a user by its name
-    public User findByName(String name) {
-    	Optional<User> user = userRepository.findByUsername(name);
+//find a user by its username
+    public User findByUsername(String username) {
+    	Optional<User> user = userRepository.findByUsername(username);
     	if (user.isPresent()) {
     		return user.get();
     	}

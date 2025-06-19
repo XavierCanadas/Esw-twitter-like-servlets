@@ -14,7 +14,7 @@
   <p class="w3-left-align"> <i class="fa fa-star fa-fw w3-margin-right"></i> Social Credit: ${user.socialCredit} </p>
   <p class="w3-left-align"> <i class="fa fa-map-marker fa-fw w3-margin-right"></i> Polis: ${user.polis.name} </p>
   <c:if test="${enableEdit == true}">
-    <button type="button" class="editUser w3-row w3-button w3-green w3-section"><i class="fa fa-user-plus"></i> &nbsp;Edit</button>
+    <button type="button" class="editUser w3-row w3-button w3-green w3-section" data-username="${user.username}"><i class="fa fa-user-plus"></i> &nbsp;Edit</button>
   </c:if>
  </div>
 <br>
