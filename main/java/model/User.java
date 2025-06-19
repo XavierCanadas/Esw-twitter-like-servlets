@@ -18,6 +18,7 @@ public class User implements Serializable {
 	private Polis polis;
 	private Integer polisId;
 	private Integer socialCredit = 0;
+	private boolean isAdmin = false;
 
 
     public User() {
@@ -103,6 +104,14 @@ public class User implements Serializable {
 
 	public void setSocialCredit(Integer socialCredit) {
 		this.socialCredit = socialCredit;
+	}
+
+	public boolean getIsAdmin() {
+		return isAdmin;
+	}
+
+	public void setIsAdmin(boolean is_admin) {
+		this.isAdmin = is_admin;
 	}
 
 }

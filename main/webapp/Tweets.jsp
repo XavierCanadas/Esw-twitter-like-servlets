@@ -3,7 +3,9 @@
 
 <c:forEach var="t" items="${tweets}">
     <div id="${t.id}" class="w3-container w3-card w3-section w3-white w3-round w3-animate-opacity"><br>
-        <img src="${user.picture}" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+            <%-- De momento me cargo la imagen --%>
+    
+        <%--<img src="${user.picture}" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">--%>
         <span class="w3-right w3-opacity"> ${t.postDateTime} </span>
         <h4> ${t.username} </h4><br>
         <hr class="w3-clear">
@@ -19,8 +21,10 @@
                 </c:otherwise>
             </c:choose>
             <span>(${t.likesCount})</span>
-        </button>
-        <button type="button" class="delTweet w3-button w3-red w3-margin-bottom"><i class="fa fa-trash"></i> &nbsp;Delete
-        </button>
+	        <c:if test="${user.isAdmin || user.id == t.uid}">
+	            <button type="button" class="delTweet w3-button w3-red w3-margin-bottom">
+	                <i class="fa fa-trash"></i> &nbsp;Delete
+	            </button>
+	        </c:if>
     </div>
 </c:forEach>

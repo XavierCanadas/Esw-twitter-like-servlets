@@ -111,15 +111,15 @@ public class TweetRepository extends BaseRepository {
 	
 	public Optional<List<Tweet>> getFollowingTweets(Integer uid, Integer start, Integer end) {
 		List<Tweet> tweets = new ArrayList<Tweet>();
-		String query = "SELECT  t.id, t.user_id, t.post_datetime, t.content,  u.username, COUNT(lt.user_id) AS like_count,"+
-				"EXISTS (SELECT 1 FROM LikeTweet ltu WHERE ltu.tweet_id = t.id AND ltu.user_id = ?) AS liked_by_current_user"+
-				"FROM Tweet t"+
-				"INNER JOIN Users u ON t.user_id = u.id"+
-				"INNER JOIN FollowUser f ON t.user_id = f.followed_id"+
-				"LEFT JOIN LikeTweet lt ON t.id = lt.tweet_id"+
-				"WHERE f.user_id = ?"+
-				"GROUP BY t.id, u.username, u.picture"+
-				"ORDER BY  t.post_datetime DESC"+
+		String query = "SELECT  t.id, t.user_id, t.post_datetime, t.content,  u.username, COUNT(lt.user_id) AS like_count, "+
+				"EXISTS (SELECT 1 FROM LikeTweet ltu WHERE ltu.tweet_id = t.id AND ltu.user_id = ?) AS liked_by_current_user "+
+				"FROM Tweet t "+
+				"INNER JOIN Users u ON t.user_id = u.id "+
+				"INNER JOIN FollowUser f ON t.user_id = f.followed_id "+
+				"LEFT JOIN LikeTweet lt ON t.id = lt.tweet_id "+
+				"WHERE f.user_id = ? "+
+				"GROUP BY t.id, u.username, u.picture "+
+				"ORDER BY  t.post_datetime DESC "+
 				"LIMIT ?, ?;";
 
 		try (PreparedStatement statement = db.prepareStatement(query)) {

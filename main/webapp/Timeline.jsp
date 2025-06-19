@@ -19,7 +19,7 @@
     $('#boton2').on('click', function () {
       $(this).addClass('active');
       $('#boton1').removeClass('active');
-      $('#iterator').load('Profile');
+      $('#iterator').load('TweetsFriends');
     });
   });
 </script>
