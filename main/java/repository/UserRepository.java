@@ -33,7 +33,7 @@ public class UserRepository extends BaseRepository {
 
     public boolean checkLogin(User user) {
 
-        String query = "SELECT u.id, u.username, u.picture, p.name as polis_name, p.id as polis_id " +
+        String query = "SELECT u.*, p.name as polis_name, p.id as polis_id " +
                         "FROM Users u " +
                         "JOIN Polis p ON u.polis_id = p.id " +
                         "WHERE u.username=? AND u.password=?;";
@@ -46,7 +46,12 @@ public class UserRepository extends BaseRepository {
                 if (rs.next()) {
                     user.setId(rs.getInt("id"));
                     user.setUsername(rs.getString("username"));
+                    user.setPassword(rs.getString("password"));
+                    user.setEmail(rs.getString("email"));
+                    user.setGender(rs.getString("gender"));
+                    user.setBirthdate(rs.getDate("birthday"));
                     user.setPicture(rs.getString("picture"));
+                    user.setSocialCredit(rs.getInt("socialCredit"));
 
                     // polis
                     Polis polis = new Polis();

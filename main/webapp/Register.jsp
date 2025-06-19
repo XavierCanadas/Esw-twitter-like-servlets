@@ -4,9 +4,14 @@
 
 <c:set var="isEditMode" value="${editing == true}"/>
 
-<form id="registerForm" action="${isEditMode ? 'EditUser' : 'Register'}" method="POST" enctype="multipart/form-data">
+<form id="registerForm" action="${isEditMode ? 'EditUser' : 'Register'}" method="POST" enctype="multipart/form-data"
+      class="w3-container w3-card-4 w3-light-grey w3-text-theme w3-margin">
 
     <h3>${isEditMode ? 'Edit Profile' : 'Register'}</h3>
+
+    <c:if test="${isEditMode}">
+        <input type="hidden" name="userId" value="${user.id}"/>
+    </c:if>
 
     <div>
         <label for="email">Email:</label>

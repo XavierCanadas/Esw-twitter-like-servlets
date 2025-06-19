@@ -132,16 +132,14 @@
                     console.error("Error:", error);
                 });
             });
-            
-            
-
 
 
             /* Edit user */
             $(document).on("click", ".editUser", function (event) {
-                var user = $(this).parent();
+                var username = $(this).data("username");
+
                 $.get("EditUser", {
-                    id: $(this).parent().attr("id")
+                    username: username
                 }, function (event) {
                     $("#content").load("EditUser");
                 });

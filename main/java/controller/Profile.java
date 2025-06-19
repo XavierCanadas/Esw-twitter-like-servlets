@@ -38,7 +38,7 @@ public class Profile extends HttpServlet {
 			request.setAttribute("enableEdit", true);
 		}
 
-		request.setAttribute("user",user);
+		request.setAttribute("user", user);
 		request.getRequestDispatcher("Profile.jsp").forward(request, response);
 	}
 
