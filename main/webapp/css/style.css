@@ -77,3 +77,14 @@ body, h1, h2, h3, h4, h5, h6, p, span, div  {
   align-items: flex-start;
 }
 
+.toggle-btn {
+  font-family: 'Greek-Freak', sans-serif;
+  font-size: 38px;
+  font-weight: normal;
+  transition: font-weight 0.2s;
+}
+
+.toggle-btn.active {
+  font-weight: bold;
+}
+
