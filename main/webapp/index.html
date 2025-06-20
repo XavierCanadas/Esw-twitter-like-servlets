@@ -104,11 +104,38 @@
             $(document).on("click", ".delTweet", function (event) {
                 event.preventDefault();
                 event.stopPropagation();
+
+                // from the tweet view the param current-tweet-id is used
+                var currentTweetId = $(this).data("current-tweet-id");
+
+                // from a comment in the tweets the parent-id is used
+                var parentTweetId = $(this).closest("#iterator").data("parent-id");
+
+                // from a username profile the username is used
+                var profileUsername = $(this).closest("#iterator").data("profile-username");
+
+                // from the timeline, timeline = 1 if polis, timeline = 2 if following
+                var timelineOption = $(this).closest("#iterator").data("timeline-option");
+
+
                 var tweet = $(this).parent();
                 $.post("DelTweet", {
                     id: $(this).parent().attr("id")
-                }, function (event) {
-                    $("#content").load("Timeline");
+                }, function () {
+                    // Reload the appropriate content after liking
+                    if (currentTweetId) {
+                        console.log("Reloading TweetView for tweet ID:", currentTweetId); // Debug
+                        $('#content').load('TweetView?tweetId=' + encodeURIComponent(currentTweetId));
+                    } else if (parentTweetId) {
+                        $('#content').load('TweetView?tweetId=' + encodeURIComponent(parentTweetId));
+                    } else if (profileUsername) {
+                        $('#content').load('Profile?username=' + encodeURIComponent(profileUsername));
+                    } else if (timelineOption) {
+                        console.log("AAA");
+                        $('#content').load('Timeline');
+                    } else {
+                        $('#content').load('Timeline');
+                    }
                 });
             });
 
@@ -117,27 +144,58 @@
                 event.preventDefault();
                 event.stopPropagation();
                 var tweet = $(this).parent();
+
+                // check where the call is coming from
+
+                // from the tweet view the param current-tweet-id is used
+                var currentTweetId = $(this).data("current-tweet-id");
+
+                // from a comment in the tweets the parent-id is used
+                var parentTweetId = $(this).closest("#iterator").data("parent-id");
+
+                // from a username profile the username is used
+                var profileUsername = $(this).closest("#iterator").data("profile-username");
+
+                // from the timeline, timeline = 1 if polis, timeline = 2 if following
+                var timelineOption = $(this).closest("#iterator").data("timeline-option");
+
+
                 $.post("LikeTweet", {
-                    id: $(this).parent().attr("id")
-                }, function (event) {
-                    $("#content").load("Timeline");
+                    id: $(this).parent().attr("id"),
+                    currentTweetId: currentTweetId,
+                    parentTweetId: parentTweetId,
+                    profileUsername: profileUsername,
+                    timelineOption: timelineOption
+                },function () {
+                    // Reload the appropriate content after liking
+                    if (currentTweetId) {
+                        console.log("Reloading TweetView for tweet ID:", currentTweetId); // Debug
+                        $('#content').load('TweetView?tweetId=' + encodeURIComponent(currentTweetId));
+                    } else if (parentTweetId) {
+                        $('#content').load('TweetView?tweetId=' + encodeURIComponent(parentTweetId));
+                    } else if (profileUsername) {
+                        $('#content').load('Profile?username=' + encodeURIComponent(profileUsername));
+                    } else if (timelineOption) {
+                        $('#content').load('Timeline?timelineOption=' + encodeURIComponent(timelineOption));
+                    } else {
+                        $('#content').load('Timeline');
+                    }
                 });
 
-            });
+            },);
 
 
-
-            $(document).on("click", ".showTweets", function(event) {
+            $(document).on("click", ".showTweets", function (event) {
                 event.preventDefault();
                 var username = $(this).data("username");
-                
+
                 console.log("Enviando username:", username); // Debug
-                
+
                 // Usa GET con parámetros en la URL
-                $.get("TweetsNotLogged?username=" + encodeURIComponent(username), function(data) {
+                $.get("TweetsNotLogged?username=" + encodeURIComponent(username), function (data) {
                     // Reemplaza TODO el contenido de #lcolumn
-                    $("#content").html(data); 
-                }).fail(function(error) {
+                    $("#content").html(data);
+                }).fail(function (error) {
                     console.error("Error:", error);
                 });
             });
@@ -160,8 +218,6 @@
                 var username = $(this).data("username");
 
                 $('#content').load('Profile?username=' + encodeURIComponent(username));
-
-
             });
 
             /* Show user profile when clicks username in a tweet */
@@ -174,12 +230,20 @@
                 $('#content').load('Profile?username=' + encodeURIComponent(username));
             });
 
-            /* click in a tweet to see more their comments and more */
+            // After loading TweetView, load the comments
+            $(document).on('content:tweetview', function (event, tweetId) {
+                $('#iterator').load('Comments?parentId=' + encodeURIComponent(tweetId));
+            });
+
+            // When loading TweetView via AJAX
             $(document).on("click", ".tweet-container", function (event) {
                 event.preventDefault();
                 var tweetId = $(this).attr("id");
 
-                $('#content').load('TweetView?tweetId=' + encodeURIComponent(tweetId));
+                $('#content').load('TweetView?tweetId=' + encodeURIComponent(tweetId), function () {
+                    // After TweetView is loaded, trigger the event to load comments
+                    //$(document).trigger('content:tweetview', [tweetId]);
+                });
             });
 
             /* Add comment */
@@ -187,7 +251,6 @@
                 event.preventDefault();
                 var parentId = $(this).data("tweet-id");
                 var commentContent = $("#commentContent").val();
-
 
 
                 console.log("Adding comment to tweet ID:", parentId); // Debug
@@ -205,6 +268,9 @@
                 event.preventDefault();
                 $('#content').load("Content");
             });
+
+            /* Tweet view */
+
 
         };
 

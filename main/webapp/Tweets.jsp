@@ -26,7 +26,8 @@
             </c:choose>
             <span>(${t.likesCount})</span>
             <c:if test="${user.isAdmin || user.id == t.uid}">
-            <button type="button" class="delTweet w3-button w3-red w3-margin-bottom">
+            <button type="button"
+                    class="delTweet w3-button w3-red w3-margin-bottom">
                 <i class="fa fa-trash"></i> &nbsp;Delete
             </button>
             </c:if>

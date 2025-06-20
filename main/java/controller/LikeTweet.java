@@ -40,21 +40,28 @@ public class LikeTweet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
 
-        if (session != null) {
-            User user = (User) session.getAttribute("user");
-            if (user != null) {
-                try (LikeTweetRepository likeTweetRepository = new LikeTweetRepository()) {
-                    Tweet tweet = new Tweet();
-                    BeanUtils.populate(tweet, request.getParameterMap());
-                    LikeTweetService likeTweetService = new LikeTweetService(likeTweetRepository);
-                    likeTweetService.likeTweet(tweet.getId(), user.getId());
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+            return;
         }
-        //response.sendRedirect("Tweets");
+
+        User currentUser = (User) session.getAttribute("user");
+
+        if (currentUser == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
+        // set like tweet
+        try (LikeTweetRepository likeTweetRepository = new LikeTweetRepository()) {
+            Tweet tweet = new Tweet();
+            BeanUtils.populate(tweet, request.getParameterMap());
+            LikeTweetService likeTweetService = new LikeTweetService(likeTweetRepository);
+            likeTweetService.likeTweet(tweet.getId(), currentUser.getId());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
