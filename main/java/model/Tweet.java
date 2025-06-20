@@ -12,6 +12,7 @@ public class Tweet implements java.io.Serializable {
 	 private Timestamp postDateTime;
 	 private String content;
 	 private Integer likesCount;
+	 private Integer parentId;
 	 private boolean isLikedByCurrentUser;
 
 	 public Tweet() {
@@ -76,5 +77,12 @@ public class Tweet implements java.io.Serializable {
 	}
 	public void setProfilePictureUrl(String profilePictureUrl) {
 		this.profilePictureUrl = profilePictureUrl;
+	}
+	public Integer getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
 	}
 }

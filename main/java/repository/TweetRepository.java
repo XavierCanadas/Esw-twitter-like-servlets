@@ -24,6 +24,19 @@ public class TweetRepository extends BaseRepository {
         }
     }
 
+    public void saveComment(Tweet tweet) {
+        String query = "INSERT INTO Tweet (user_id, post_datetime, content, parent_id) VALUES (?,?,?,?)";
+        try (PreparedStatement statement = db.prepareStatement(query)) {
+            statement.setInt(1, tweet.getUid());
+            statement.setTimestamp(2, tweet.getPostDateTime());
+            statement.setString(3, tweet.getContent());
+            statement.setObject(4, tweet.getParentId(), java.sql.Types.INTEGER); // Use setObject for nullable parent_id
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     /* Delete existing tweet */
     public void delete(Integer id, Integer uid) {
         String query = "DELETE FROM Tweet WHERE id = ? AND user_id=?";
@@ -230,7 +243,7 @@ public class TweetRepository extends BaseRepository {
                     tweet.setPostDateTime(rs.getTimestamp("post_datetime"));
                     tweet.setContent(rs.getString("content"));
                     tweet.setUsername(rs.getString("username"));
-                    tweet.setLikesCount(rs.getInt("like_count"));
+                    tweet.setLikesCount(rs.getInt("likes_count"));
                     tweet.setLikedByCurrentUser(rs.getBoolean("liked_by_current_user"));
 
                     // TODO: set user picture URL
@@ -286,6 +299,7 @@ public class TweetRepository extends BaseRepository {
         }
         return Optional.empty();
     }
+
 }
 
 

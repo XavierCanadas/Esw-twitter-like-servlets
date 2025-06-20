@@ -53,7 +53,7 @@
 <div class="w3-container w3-card w3-round w3-white w3-section w3-center">
     <h5>Write a comment</h5>
     <textarea id="commentContent" class="w3-input w3-border" rows="4" placeholder="Write your comment here..."></textarea>
-    <button id="addComment" class="w3-button w3-green w3-section">Add Comment</button>
+    <button id="addComment" data-tweet-id="${tweet.id}" class="w3-button w3-green w3-section">Add Comment</button>
 </div>
 
 <br>

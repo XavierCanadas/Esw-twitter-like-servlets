@@ -23,6 +23,10 @@ public class TweetService {
         tweetRepository.save(tweet);
     }
 
+    public void addComment(Tweet tweet) {
+        tweetRepository.saveComment(tweet);
+    }
+
     public void delete(Integer id, Integer uid) {
         tweetRepository.delete(id, uid);
     }

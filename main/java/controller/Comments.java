@@ -13,6 +13,7 @@ import repository.TweetRepository;
 import service.TweetService;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 
 
@@ -78,7 +79,42 @@ public class Comments extends HttpServlet {
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
-        doGet(request, response);
+        // Add a new comment to a tweet
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
+        User currentUser = (User) session.getAttribute("user");
+        if (currentUser == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
+        String content = request.getParameter("content");
+        String parentIdString = request.getParameter("parent");
+        if (content == null || content.isEmpty() || parentIdString == null || parentIdString.isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Content and Tweet ID parameters are required.");
+            return;
+        }
+        Integer parentId = Integer.valueOf(parentIdString);
+        Timestamp postDateTime = new Timestamp(System.currentTimeMillis());
+
+        Tweet comment = new Tweet();
+        comment.setUid(currentUser.getId());
+        comment.setContent(content);
+        comment.setPostDateTime(postDateTime);
+        comment.setParentId(parentId);
+
+        try (TweetRepository tweetRepository = new TweetRepository()) {
+            TweetService tweetService = new TweetService(tweetRepository);
+            tweetService.addComment(comment);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while adding the comment.");
+            return;
+        }
+        // no need to redirect, the html page will handle the display of the new comment
     }
 }
