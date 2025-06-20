@@ -8,12 +8,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="false" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
+
 <script type="text/javascript">
     $(document).ready(function () {
         var parentId = "${tweet.id}";
         $('#iterator').load('Comments?parentId=' + encodeURIComponent(parentId));
     });
 </script>
+
 
 
 <div id="${tweet.id}" class="w3-container w3-card w3-round w3-white w3-section w3-center">
@@ -27,7 +29,7 @@
     <hr class="w3-clear">
     <p> ${tweet.content} </p>
     <br>
-    <button type="button"
+    <button type="button" data-current-tweet-id="${tweet.id}"
             class="likeTweet w3-button w3-theme w3-margin-bottom${tweet.likedByCurrentUser ? ' liked' : ''}">
         <i class="fa fa-thumbs-up"></i> &nbsp;
         <c:choose>
@@ -41,7 +43,7 @@
         <span>(${tweet.likesCount})</span>
     </button>
     <c:if test="${user.isAdmin || user.id == tweet.uid}">
-        <button type="button" class="delTweet w3-button w3-red w3-margin-bottom">
+        <button type="button" data-current-tweet-id="${tweet.id}" class="delTweet w3-button w3-red w3-margin-bottom">
             <i class="fa fa-trash"></i> &nbsp;Delete
         </button>
     </c:if>
@@ -60,5 +62,5 @@
 
 <!-- Tweets of the user -->
 <h5 class="w3-center">Comments</h5>
-<div id="iterator"></div>
+<div id="iterator" data-parent-id="${tweet.id}"></div>
 

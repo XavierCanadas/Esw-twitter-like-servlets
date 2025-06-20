@@ -34,7 +34,7 @@
 
         <!-- Tweets of the user -->
         <h5 class="w3-center">User Tweets</h5>
-        <div id="iterator"></div>
+        <div id="iterator" data-profile-username="${user.username}"></div>
 
     </c:when>
     <c:otherwise>
