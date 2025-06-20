@@ -118,21 +118,21 @@
                 var timelineOption = $(this).closest("#iterator").data("timeline-option");
 
 
+
+
                 var tweet = $(this).parent();
                 $.post("DelTweet", {
                     id: $(this).parent().attr("id")
                 }, function () {
                     // Reload the appropriate content after liking
                     if (currentTweetId) {
-                        console.log("Reloading TweetView for tweet ID:", currentTweetId); // Debug
-                        $('#content').load('TweetView?tweetId=' + encodeURIComponent(currentTweetId));
+                        $('#content').load('Timeline');
                     } else if (parentTweetId) {
                         $('#content').load('TweetView?tweetId=' + encodeURIComponent(parentTweetId));
                     } else if (profileUsername) {
                         $('#content').load('Profile?username=' + encodeURIComponent(profileUsername));
                     } else if (timelineOption) {
-                        console.log("AAA");
-                        $('#content').load('Timeline');
+                        $('#content').load('Timeline?timelineOption=' + encodeURIComponent(timelineOption));
                     } else {
                         $('#content').load('Timeline');
                     }
@@ -251,9 +251,6 @@
                 event.preventDefault();
                 var parentId = $(this).data("tweet-id");
                 var commentContent = $("#commentContent").val();
-
-
-                console.log("Adding comment to tweet ID:", parentId); // Debug
 
                 $.post("Comments", {
                     parent: parentId,

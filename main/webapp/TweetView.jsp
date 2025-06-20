@@ -12,7 +12,6 @@
 <script type="text/javascript">
     $(document).ready(function () {
         var parentId = "${tweet.id}";
-        console.log("Loading comments for parentId: " + parentId);
         $('#iterator').load('Comments?parentId=' + encodeURIComponent(parentId));
     });
 </script>

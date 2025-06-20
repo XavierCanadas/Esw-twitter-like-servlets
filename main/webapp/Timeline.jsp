@@ -8,20 +8,24 @@
 
         var timelineOption = "${timelineOption}";
 
-        console.log("Timeline option in timeline.jsp: " + timelineOption);
-
         // Cargas iniciales
         $('#lcolumn').load('NotFollowed');
         $('#rcolumn').load('Navegation');
 
         if (timelineOption === "2") {
-            $('#iterator').load('TweetsFriends');
             $('#boton2').addClass('active');
             $('#boton1').removeClass('active');
+
+            var $iterator = $('#iterator');
+            $iterator.load('TweetsFriends');
+            $iterator.attr('data-timeline-option', timelineOption);
         } else {
-            $('#iterator').load('TweetsPolis');
             $('#boton1').addClass('active');
             $('#boton2').removeClass('active');
+
+            var $iterator = $('#iterator');
+            $iterator.load('TweetsPolis');
+            $iterator.attr('data-timeline-option', timelineOption);
         }
 
         // Botón izquierdo (polis)
