@@ -54,7 +54,7 @@ public class LikeTweet extends HttpServlet {
                 }
             }
         }
-        response.sendRedirect("Tweets");
+        //response.sendRedirect("Tweets");
     }
 
     /**

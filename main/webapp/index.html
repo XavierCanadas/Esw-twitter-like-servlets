@@ -102,24 +102,27 @@
 
             /* Delete tweet */
             $(document).on("click", ".delTweet", function (event) {
+                event.preventDefault();
+                event.stopPropagation();
                 var tweet = $(this).parent();
                 $.post("DelTweet", {
                     id: $(this).parent().attr("id")
                 }, function (event) {
                     $("#content").load("Timeline");
                 });
-                event.preventDefault();
             });
 
             /* Like tweet */
             $(document).on("click", ".likeTweet", function (event) {
+                event.preventDefault();
+                event.stopPropagation();
                 var tweet = $(this).parent();
                 $.post("LikeTweet", {
                     id: $(this).parent().attr("id")
                 }, function (event) {
                     $("#content").load("Timeline");
                 });
-                event.preventDefault();
+
             });
 
 
@@ -154,7 +157,6 @@
             /* Show user info */
             $(document).on("click", ".userInfo", function (event) {
                 event.preventDefault();
-
                 var username = $(this).data("username");
 
                 $('#content').load('Profile?username=' + encodeURIComponent(username));
@@ -165,6 +167,7 @@
             /* Show user profile when clicks username in a tweet */
             $(document).on("click", ".tweet-username", function (event) {
                 event.preventDefault();
+                event.stopPropagation();
 
                 var username = $(this).data("username"); // Get the username from the tweet
 

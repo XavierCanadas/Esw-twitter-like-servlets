@@ -10,7 +10,7 @@
     // Cargas iniciales
     $('#lcolumn').load('NotFollowed');
     $('#rcolumn').load('Navegation');
-    $('#iterator').load('Tweets?username=' + encodeURIComponent(username));
+    $('#iterator').load('TweetsPolis');
 
     // Botón izquierdo (polis)
     $('#boton1').on('click', function () {
