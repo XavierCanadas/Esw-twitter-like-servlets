@@ -31,14 +31,14 @@
             class="likeTweet w3-button w3-theme w3-margin-bottom${tweet.likedByCurrentUser ? ' liked' : ''}">
         <i class="fa fa-thumbs-up"></i> &nbsp;
         <c:choose>
-            <c:when test="${t.likedByCurrentUser}">
+            <c:when test="${tweet.likedByCurrentUser}">
                 Liked
             </c:when>
             <c:otherwise>
                 Like
             </c:otherwise>
         </c:choose>
-        <span>(${t.likesCount})</span>
+        <span>(${tweet.likesCount})</span>
         <c:if test="${user.isAdmin || user.id == tweet.uid}">
             <button type="button" class="delTweet w3-button w3-red w3-margin-bottom">
                 <i class="fa fa-trash"></i> &nbsp;Delete
