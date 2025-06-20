@@ -181,7 +181,6 @@ public class UserService {
     }
 
 
-
     public User getUserById(Integer id) {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
@@ -233,30 +232,29 @@ public class UserService {
         }
     }
 
-//shows 20 most popular users
-    public List<User> getMostPopularUsers(){
-    	Optional<List<User>> users = userRepository.getMostPopularUsers();
-    	if (users.isPresent()) {
-    	    return users.get();
-    	}
+    //shows 20 most popular users
+    public List<User> getMostPopularUsers() {
+        Optional<List<User>> users = userRepository.getMostPopularUsers();
+        if (users.isPresent()) {
+            return users.get();
+        }
         return null;
     }
-    
-//find a user by its username
+
+    //find a user by its username
     public User findByUsername(String username) {
-    	Optional<User> user = userRepository.findByUsername(username);
-    	if (user.isPresent()) {
-    		return user.get();
-    	}
-    	return null;
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isPresent()) {
+            return user.get();
+        }
+        return null;
     }
-    
+
     //given a username returns if it is admin or not
     public boolean isAdmin(String username) {
-    	return userRepository.isUserAdmin(username);
+        return userRepository.isUserAdmin(username);
     }
-    
-    
+
 
 
 }
