@@ -39,12 +39,12 @@
             </c:otherwise>
         </c:choose>
         <span>(${tweet.likesCount})</span>
-        <c:if test="${user.isAdmin || user.id == tweet.uid}">
-            <button type="button" class="delTweet w3-button w3-red w3-margin-bottom">
-                <i class="fa fa-trash"></i> &nbsp;Delete
-            </button>
-        </c:if>
     </button>
+    <c:if test="${user.isAdmin || user.id == tweet.uid}">
+        <button type="button" class="delTweet w3-button w3-red w3-margin-bottom">
+            <i class="fa fa-trash"></i> &nbsp;Delete
+        </button>
+    </c:if>
 </div>
 <br>
 
