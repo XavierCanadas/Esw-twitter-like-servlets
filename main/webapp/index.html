@@ -124,7 +124,7 @@
                 $.post("DelTweet", {
                     id: $(this).parent().attr("id")
                 }, function () {
-                    // Reload the appropriate content after liking
+                    // Reload the appropriate content after deleting
                     if (currentTweetId) {
                         $('#content').load('Timeline');
                     } else if (parentTweetId) {
