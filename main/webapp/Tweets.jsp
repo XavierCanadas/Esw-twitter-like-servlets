@@ -8,44 +8,34 @@
 
         <img src="${t.profilePictureUrl}" alt="${t.username} avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
 
-        <span class="w3-right w3-opacity"> ${t.postDateTime} </span>
-
+        <c:if test="${t.parentId != null}">
+                <span class="load-parent-tweet-comment w3-right" data-parent-id="${t.parentId}">
+                    Respuesta
+                </span>
+            </c:if>
 
         <div style="display: flex; flex-direction: column; align-items: flex-start;">
-            <c:if test="${t.parentId != null}">
-                <button type="button" class="load-parent-tweet-comment" data-parent-id="${t.parentId}">
-                    This tweet is a reply
-                </button>
-            </c:if>
-            <button type="button" class="tweet-username" data-username="${t.username}">
-                    ${t.username}
-            </button>
+            <span class= "w3-opacity"> ${t.postDateTime} </span>
         </div>
-        <br>
+        <h5 type="button" class="load-parent-tweet-comment" style="margin: 0px" data-username="${t.username}">
+                    ${t.username}
+            </h5>
         <hr class="w3-clear">
         <p> ${t.content} </p>
         <button type="button"
-                class="likeTweet w3-button w3-theme w3-margin-bottom${t.likedByCurrentUser ? ' liked' : ''}">
+                class="likeTweet w3-button w3-margin-bottom${t.likedByCurrentUser ? ' liked' : ''}">
             <i class="fa fa-thumbs-up"></i> &nbsp;
-            <c:choose>
-            <c:when test="${t.likedByCurrentUser}">
-            Liked
-            </c:when>
-            <c:otherwise>
-            Like
-            </c:otherwise>
-            </c:choose>
-            <span>(${t.likesCount})</span>
+            <span>${t.likesCount}</span>
             <c:if test="${user.isAdmin || user.id == t.uid}">
-            <button type="button"
-                    class="delTweet w3-button w3-red w3-margin-bottom">
-                <i class="fa fa-trash"></i> &nbsp;Delete
-            </button>
+	            <button type="button"
+	                    class="delTweet w3-button w3-margin-bottom" style= "margin-left: 5px"> 
+	                <i class="fa fa-trash"></i> &nbsp;Delete
+	            </button>
             </c:if>
         </button>
     </div>
 </c:forEach>
 
-<button type="button" class="load-more-tweets w3-button w3-theme w3-margin-bottom" data-total-tweets="${fn:length(tweets)}" aria-label="Load more tweets">
+<button type="button" class="load-more-tweets w3-button w3-margin-bottom" data-total-tweets="${fn:length(tweets)}" aria-label="Load more tweets">
     <i class="fa fa-refresh"></i> &nbsp;Load More Tweets
 </button>

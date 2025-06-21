@@ -2,8 +2,8 @@
 	<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 		<div class="w3-bar">
-			<a class="w3-bar-item w3-button icono-navbar" href="index.html"> <img src="assets/Netopolis.png" alt="Home"class="icono-navbar"></img> </a>		
-			<a class="menu w3-bar-item w3-button w3-hide-small " href="Profile" data-username="${user.username}">
+			<a class="w3-bar-item w3-button icono-navbar sin-hover" href="index.html"> <img src="assets/Netopolis.png" alt="Home"class="icono-navbar"></img> </a>		
+			<a class="menu w3-bar-item w3-button w3-hide-small sin-hover" href="Profile" data-username="${user.username}">
 			  <img src="${user.picture}" class="w3-circle" style="height:40px;width:40px;vertical-align:middle;" alt="Avatar">
 			  <span style="margin-left: 5px; font-weight: bold">${user.username}</span>
 			</a>
@@ -15,7 +15,7 @@
 			  <img src="${pageContext.request.contextPath}/assets/detenido.png"  style="height:35px;width:35px;vertical-align:middle;" alt="Avatar"></img>
 			</a>
 			<a class="menu w3-bar-item w3-button w3-hide-small " href="Followed"> Buddies </a>
-			<a class="menu w3-bar-item w3-button w3-hide-small w3-right " href="Logout" style="margin-right: 8px"> <i
+			<a class="menu w3-bar-item w3-button w3-hide-small w3-right sin-hover" href="Logout" style="margin-right: 8px"> <i
 					class="fa fa-sign-out"></i> </a>
 			<c:if test="${user.isAdmin}">
         		<a class="menu w3-bar-item w3-button w3-hide-small" href="Users">Admin Users</a>

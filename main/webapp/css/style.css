@@ -91,42 +91,21 @@ body, h1, h2, h3, h4, h5, h6, div, p, span, button {
     background-color: #EEF7FE;
 }
 
-
-.tweet-username {
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    font: inherit;
-    color: #000000;
-    cursor: pointer;
-    transition: background 0.2s;
-    outline: none;
-    font-size: 1.2em; /* Adjust as needed */
-    font-weight: bold;
-    text-align: left;
-}
-.tweet-username:hover, .tweet-username:focus {
-    text-decoration: underline;
-}
-
 .load-parent-tweet-comment {
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    font: inherit;
-    color: #2c2c2c;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.2s, color 0.2s;
     outline: none;
-    font-size: 0.9em; /* Adjust as needed */
     font-weight: bold;
     text-align: left;
 }
-.load-parent-tweet-comment:hover, .load-parent-tweet-comment:focus, .tweet-username:focus {
+
+.load-parent-tweet-comment:hover,
+.load-parent-tweet-comment:focus,
+.tweet-username:focus {
     text-decoration: underline;
+    color: #3399ff !important; /* azul claro */
 }
+
 
 .tweet-container {
     cursor: pointer;
@@ -134,4 +113,27 @@ body, h1, h2, h3, h4, h5, h6, div, p, span, button {
 
 .tweet-container:hover {
     background-color: #f4f4f4 !important; /* Change to your desired hover color */
+}
+
+.boton-relevante{
+  border-radius: 24px;
+  background-color: #f0f0f0; /* color clarito */
+  font-weight: bold;
+}
+
+/*Quitar el oscuro al poner el ratón encima*/
+.sin-hover {
+  transition: none !important;
+  background-color: inherit !important;
+  color: inherit !important;
+}
+
+.sin-hover:hover {
+  background-color: inherit !important;
+  color: inherit !important;
+  box-shadow: none !important;
+}
+
+.w3-btn,.w3-button {
+    border-radius: 12px;
 }
