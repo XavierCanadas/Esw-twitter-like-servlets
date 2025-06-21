@@ -11,7 +11,7 @@
 	<p>Friend Suggestion</p>
     <img src="${u.picture}" alt="Avatar" style="width:50%"><br>
     <div>${u.username}</div>
-   	<button type="button" class="followUser w3-row w3-button w3-green w3-section"><i class="fa fa-user-plus"></i> &nbsp;Follow</button> 
+   	<button type="button" class="followUser w3-row w3-button w3-section"><i class="fa fa-user-plus"></i> &nbsp;Follow</button> 
 </div>
 </c:forEach>
 </c:otherwise>

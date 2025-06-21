@@ -15,6 +15,8 @@
 			  <img src="${pageContext.request.contextPath}/assets/detenido.png"  style="height:35px;width:35px;vertical-align:middle;" alt="Avatar"></img>
 			</a>
 			<a class="menu w3-bar-item w3-button w3-hide-small " href="Followed"> Buddies </a>
+			<a class="menu w3-bar-item w3-button w3-hide-small w3-right " href="Logout" style="margin-right: 8px"> <i
+					class="fa fa-sign-out"></i> </a>
 			<c:if test="${user.isAdmin}">
         		<a class="menu w3-bar-item w3-button w3-hide-small" href="Users">Admin Users</a>
     		</c:if>

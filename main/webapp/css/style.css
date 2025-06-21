@@ -35,9 +35,9 @@ video, canvas {
     font-weight: normal;
     font-style: normal;
 }
-body, h1, h2, h3, h4, h5, h6, div, p, span {
+body, h1, h2, h3, h4, h5, h6, div, p, span, button {
     font-family: 'Cinzel', sans-serif;
-    color: #103957;
+    color: #103957 !important;
 }
 
 /*Icono Home*/
