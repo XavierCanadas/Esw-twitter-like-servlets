@@ -25,7 +25,7 @@
 
             var $iterator = $('#iterator');
             $iterator.load('TweetsPolis');
-            $iterator.attr('data-timeline-option', timelineOption);
+            $iterator.attr('data-timeline-option', "1");
         }
 
         // Botón izquierdo (polis)
