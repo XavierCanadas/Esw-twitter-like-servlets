@@ -29,6 +29,11 @@
                         data-username="${user.username}"><i class="fa fa-user-plus"></i> &nbsp;Edit
                 </button>
             </c:if>
+            <c:if test="${enableDelete == true}">
+                <button type="button" class="deleteUser w3-row w3-button w3-green w3-section"
+                        data-username="${user.username}"><i class="fa fa-user-plus"></i> &nbsp;Delete
+                </button>
+            </c:if>
         </div>
         <br>
 
