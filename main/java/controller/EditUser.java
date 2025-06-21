@@ -20,6 +20,7 @@ import repository.PolisRepository;
 import repository.UserRepository;
 import service.PolisService;
 import service.UserService;
+import util.Common;
 
 /**
  * Servlet implementation class User
@@ -142,7 +143,7 @@ public class EditUser extends HttpServlet {
             Map<String, String> errors = userService.update(userToEdit, currentUsername);
 
             if (errors.isEmpty()) {
-                userService.setPictureUrl(userToEdit, request);
+                userToEdit.setPicture(Common.setPictureUrl(userToEdit.getPicture(), request));
 
                 // Update the session user
                 if (userId.equals(currentUser.getId())) {

@@ -54,7 +54,7 @@ public class TweetsFriends extends HttpServlet {
             if (user != null) {
                 try(TweetRepository tweetRepository = new TweetRepository()) {
                     TweetService tweetService = new TweetService(tweetRepository);
-                    tweets = tweetService.getFollowingTweets(user.getId(),0, lastTweetNumber);
+                    tweets = tweetService.getFollowingTweets(user.getId(),0, lastTweetNumber, request);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -74,5 +74,4 @@ public class TweetsFriends extends HttpServlet {
         // TODO Auto-generated method stub
         doGet(request, response);
     }
-
 }

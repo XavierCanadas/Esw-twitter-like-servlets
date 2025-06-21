@@ -56,7 +56,7 @@ public class TweetsPolis extends HttpServlet {
             if (user != null) {
                 try (TweetRepository tweetRepository = new TweetRepository()) {
                     TweetService tweetService = new TweetService(tweetRepository);
-                    tweets = tweetService.getPolisTweets(user.getId(), 0, lastTweetNumber);
+                    tweets = tweetService.getPolisTweets(user.getId(), 0, lastTweetNumber, request);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

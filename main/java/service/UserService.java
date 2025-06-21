@@ -215,23 +215,6 @@ public class UserService {
         return users.orElse(Collections.emptyList());
     }
 
-    // TODO: refactor to use this method only in the service, for simplicity.
-    public void setPictureUrl(User user, HttpServletRequest request) {
-        if (user == null) return;
-
-        String baseUrl = request.getScheme() + "://" +
-                request.getServerName() +
-                (request.getServerPort() == 80 || request.getServerPort() == 443 ? "" : ":" + request.getServerPort()) +
-                request.getContextPath() + "/assets/";
-
-        if (user.getPicture() != null && !user.getPicture().isEmpty()) {
-            String pictureUrl = baseUrl + user.getPicture();
-            user.setPicture(pictureUrl);
-        } else {
-            user.setPicture(baseUrl + "default.jpg");
-        }
-    }
-
     //shows 20 most popular users
     public List<User> getMostPopularUsers() {
         Optional<List<User>> users = userRepository.getMostPopularUsers();

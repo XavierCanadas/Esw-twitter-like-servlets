@@ -12,6 +12,7 @@ import repository.TweetRepository;
 import repository.UserRepository;
 import service.TweetService;
 import service.UserService;
+import util.Common;
 
 /**
  * Servlet implementation class User
@@ -68,7 +69,7 @@ public class Profile extends HttpServlet {
 			request.setAttribute("enableDelete", enableDelete);
 			
 			
-			userService.setPictureUrl(user, request);
+			user.setPicture(Common.setPictureUrl(user.getPicture(), request));
 			request.setAttribute("user", user);
 			request.getRequestDispatcher("Profile.jsp").forward(request, response);
 

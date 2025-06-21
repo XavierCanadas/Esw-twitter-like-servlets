@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import model.User;
 import repository.UserRepository;
 import service.UserService;
+import util.Common;
 
 import java.io.IOException;
 import java.util.List;
@@ -44,7 +45,8 @@ public class NotFollowed extends HttpServlet {
 					UserService userService = new UserService(userRepository);
 					users = userService.getNotFollowedUsers(user.getId(),0,4);
                     for (User currentUser : users) {
-                        userService.setPictureUrl(currentUser, request);
+						currentUser.setPicture(Common.setPictureUrl(currentUser.getPicture(), request));
+
                     }
 				} catch (Exception e) {
 					e.printStackTrace();

@@ -6,11 +6,21 @@
     <div id="${t.id}" class="tweet-container w3-container w3-card w3-section w3-white w3-round w3-animate-opacity"><br>
             <%-- De momento me cargo la imagen --%>
 
-            <%--<img src="${user.picture}" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px"> --%>
+        <img src="${t.profilePictureUrl}" alt="${t.username} avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+
         <span class="w3-right w3-opacity"> ${t.postDateTime} </span>
-        <button type="button" class="tweet-username" data-username="${t.username}">
-                ${t.username}
-        </button>
+
+
+        <div style="display: flex; flex-direction: column; align-items: flex-start;">
+            <c:if test="${t.parentId != null}">
+                <button type="button" class="load-parent-tweet-comment" data-parent-id="${t.parentId}">
+                    This tweet is a reply
+                </button>
+            </c:if>
+            <button type="button" class="tweet-username" data-username="${t.username}">
+                    ${t.username}
+            </button>
+        </div>
         <br>
         <hr class="w3-clear">
         <p> ${t.content} </p>
