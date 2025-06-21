@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="false" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 
 <c:forEach var="t" items="${tweets}">
     <div id="${t.id}" class="tweet-container w3-container w3-card w3-section w3-white w3-round w3-animate-opacity"><br>
@@ -35,6 +36,6 @@
     </div>
 </c:forEach>
 
-<button type="button" class="load-more-tweets w3-button w3-theme w3-margin-bottom">
+<button type="button" class="load-more-tweets w3-button w3-theme w3-margin-bottom" data-total-tweets="${fn:length(tweets)}" aria-label="Load more tweets">
     <i class="fa fa-refresh"></i> &nbsp;Load More Tweets
 </button>

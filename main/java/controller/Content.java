@@ -32,9 +32,10 @@ public class Content extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		String view = "Login";
 		
-		if (session != null && session.getAttribute("user")!=null) 
+		if (session != null && session.getAttribute("user")!=null) {
 			view = "Timeline.jsp";
-			
+			request.setAttribute("timelineOption", 1);
+		}
 		request.getRequestDispatcher(view).forward(request, response);
 	}
 

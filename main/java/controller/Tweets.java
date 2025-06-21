@@ -12,6 +12,7 @@ import repository.TweetRepository;
 import repository.UserRepository;
 import service.TweetService;
 import service.UserService;
+import util.Common;
 
 import java.io.IOException;
 import java.util.List;
@@ -63,7 +64,7 @@ public class Tweets extends HttpServlet {
         try (UserRepository userRepository = new UserRepository()) {
             UserService userService = new UserService(userRepository);
             userTweets = userService.findByUsername(username);
-            userService.setPictureUrl(userTweets, request);
+            userTweets.setPicture(Common.setPictureUrl(userTweets.getPicture(), request));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -73,10 +74,21 @@ public class Tweets extends HttpServlet {
             return;
         }
 
+        String lastTweetNumberString = request.getParameter("lastTweetNumber");
+        int lastTweetNumber = 10; // Default value
+
+        if (lastTweetNumberString != null && !lastTweetNumberString.isEmpty()) {
+            try {
+                lastTweetNumber = Integer.parseInt(lastTweetNumberString) + 10;
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+
         try(TweetRepository tweetRepository = new TweetRepository()) {
             TweetService tweetService = new TweetService(tweetRepository);
 
-            tweets = tweetService.getTweetsByUser(userTweets.getId(),0,10); // TODO: add pagination
+            tweets = tweetService.getTweetsByUser(userTweets.getId(),0, lastTweetNumber); // TODO: add pagination
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -38,13 +38,23 @@ public class TweetsFriends extends HttpServlet {
         User user = null;
         HttpSession session = request.getSession(false);
 
+        String lastTweetNumberString = request.getParameter("lastTweetNumber");
+        int lastTweetNumber = 10; // Default value
+
+        if (lastTweetNumberString != null && !lastTweetNumberString.isEmpty()) {
+            try {
+                lastTweetNumber = Integer.parseInt(lastTweetNumberString) + 10;
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
 
         if (session != null) {
             user = (User) session.getAttribute("user");
             if (user != null) {
                 try(TweetRepository tweetRepository = new TweetRepository()) {
                     TweetService tweetService = new TweetService(tweetRepository);
-                    tweets = tweetService.getFollowingTweets(user.getId(),0,5);
+                    tweets = tweetService.getFollowingTweets(user.getId(),0, lastTweetNumber);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

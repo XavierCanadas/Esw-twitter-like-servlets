@@ -159,6 +159,7 @@
                 // from the timeline, timeline = 1 if polis, timeline = 2 if following
                 var timelineOption = $(this).closest("#iterator").data("timeline-option");
 
+                console.log("timelineOption:", timelineOption); // Debug
 
                 $.post("LikeTweet", {
                     id: $(this).parent().attr("id"),
@@ -283,7 +284,37 @@
             });
 
             /* Tweet view */
+            $(document).on("click", ".load-more-tweets", function (event) {
+                event.preventDefault();
+                var lastTweetNumber = $(this).data("total-tweets");
 
+                var $iterator = $(this).closest('#iterator');
+
+                // from a comment in the tweets the parent-id is used
+                var parentTweetId = $iterator.data("parent-id");
+
+                // from a username profile the username is used
+                var profileUsername = $iterator.data("profile-username");
+
+                // from the timeline, timeline = 1 if polis, timeline = 2 if following
+                var timelineOption = $iterator.data("timeline-option");
+
+                console.log("timelineOption:", timelineOption); // Debug
+
+                // Load more tweets using the first tweet number
+                if (parentTweetId) {
+                    $iterator.load('Comments?parentId=' + encodeURIComponent(parentTweetId) + '&lastTweetNumber=' + encodeURIComponent(lastTweetNumber));
+                } else if (profileUsername) {
+                    $iterator.load('Tweets?username=' + encodeURIComponent(profileUsername) + '&lastTweetNumber=' + encodeURIComponent(lastTweetNumber));
+                } else if (timelineOption === 1) {
+                    $iterator.load('TweetsPolis?lastTweetNumber=' + encodeURIComponent(lastTweetNumber));
+                } else if (timelineOption === 2) {
+                    // Debugging statement removed: console.log("Loading TweetsFollowing with lastTweetNumber:", lastTweetNumber);
+                    $iterator.load('TweetsFriends?lastTweetNumber=' + encodeURIComponent(lastTweetNumber));
+                } else {
+                    $iterator.load('TweetsPolis?lastTweetNumber=' + encodeURIComponent(lastTweetNumber));
+                }
+            });
             
             
             /* Show user profile in lcolumn for editing */
