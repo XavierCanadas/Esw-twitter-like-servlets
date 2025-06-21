@@ -309,7 +309,7 @@
                 } else if (timelineOption === 1) {
                     $iterator.load('TweetsPolis?lastTweetNumber=' + encodeURIComponent(lastTweetNumber));
                 } else if (timelineOption === 2) {
-                    console.log("Loading TweetsFollowing with lastTweetNumber:", lastTweetNumber); // Debug
+                    // Debugging statement removed: console.log("Loading TweetsFollowing with lastTweetNumber:", lastTweetNumber);
                     $iterator.load('TweetsFriends?lastTweetNumber=' + encodeURIComponent(lastTweetNumber));
                 } else {
                     $iterator.load('TweetsPolis?lastTweetNumber=' + encodeURIComponent(lastTweetNumber));
