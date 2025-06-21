@@ -59,9 +59,20 @@ public class Comments extends HttpServlet {
         // get the comments
         Integer parentId = Integer.valueOf(parentIdString);
 
+        String lastTweetNumberString = request.getParameter("lastTweetNumber");
+        int lastTweetNumber = 10; // Default value
+
+        if (lastTweetNumberString != null && !lastTweetNumberString.isEmpty()) {
+            try {
+                lastTweetNumber = Integer.parseInt(lastTweetNumberString) + 10;
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+
         try (TweetRepository tweetRepository = new TweetRepository()) {
             TweetService tweetService = new TweetService(tweetRepository);
-            comments = tweetService.getCommentsByTweetId(parentId, currentUser.getId(), 0, 10); // TODO: pagination
+            comments = tweetService.getCommentsByTweetId(parentId, currentUser.getId(), 0, lastTweetNumber); // TODO: pagination
 
         } catch (Exception e) {
             e.printStackTrace();

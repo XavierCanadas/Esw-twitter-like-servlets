@@ -286,30 +286,33 @@
             /* Tweet view */
             $(document).on("click", ".load-more-tweets", function (event) {
                 event.preventDefault();
-                var lastTweetNumber = $(this).data("first-tweet-number");
+                var lastTweetNumber = $(this).data("total-tweets");
+
+                var $iterator = $(this).closest('#iterator');
 
                 // from a comment in the tweets the parent-id is used
-                var parentTweetId = $(this).closest("#iterator").data("parent-id");
+                var parentTweetId = $iterator.data("parent-id");
 
                 // from a username profile the username is used
-                var profileUsername = $(this).closest("#iterator").data("profile-username");
+                var profileUsername = $iterator.data("profile-username");
 
                 // from the timeline, timeline = 1 if polis, timeline = 2 if following
-                var timelineOption = $(this).closest("#iterator").data("timeline-option");
+                var timelineOption = $iterator.data("timeline-option");
 
-                console.log("Loading more tweets with first tweet number:", lastTweetNumber); // Debug
-                console.log("Parent Tweet ID:", parentTweetId); // Debug
-                console.log("Profile Username:", profileUsername); // Debug
-                console.log("Timeline Option:", timelineOption); // Debug
-
+                console.log("timelineOption:", timelineOption); // Debug
 
                 // Load more tweets using the first tweet number
                 if (parentTweetId) {
-                    $('#content').load('TweetView?tweetId=' + encodeURIComponent(parentTweetId) + '&lastTweetNumber=' + encodeURIComponent(lastTweetNumber));
+                    $iterator.load('Comments?parentId=' + encodeURIComponent(parentTweetId) + '&lastTweetNumber=' + encodeURIComponent(lastTweetNumber));
                 } else if (profileUsername) {
-                    $('#content').load('Profile?username=' + encodeURIComponent(profileUsername) + '&lastTweetNumber=' + encodeURIComponent(lastTweetNumber));
-                } else if (timelineOption) {
-                    $('#content').load('Timeline?timelineOption=' + encodeURIComponent(timelineOption) + '&lastTweetNumber=' + encodeURIComponent(lastTweetNumber));
+                    $iterator.load('Tweets?username=' + encodeURIComponent(profileUsername) + '&lastTweetNumber=' + encodeURIComponent(lastTweetNumber));
+                } else if (timelineOption === 1) {
+                    $iterator.load('TweetsPolis?lastTweetNumber=' + encodeURIComponent(lastTweetNumber));
+                } else if (timelineOption === 2) {
+                    console.log("Loading TweetsFollowing with lastTweetNumber:", lastTweetNumber); // Debug
+                    $iterator.load('TweetsFriends?lastTweetNumber=' + encodeURIComponent(lastTweetNumber));
+                } else {
+                    $iterator.load('TweetsPolis?lastTweetNumber=' + encodeURIComponent(lastTweetNumber));
                 }
             });
             
