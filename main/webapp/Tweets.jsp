@@ -36,6 +36,6 @@
     </div>
 </c:forEach>
 
-<button type="button" class="load-more-tweets w3-button w3-theme w3-margin-bottom" data-total-tweets="${fn:length(tweets)}">
+<button type="button" class="load-more-tweets w3-button w3-theme w3-margin-bottom" data-total-tweets="${fn:length(tweets)}" aria-label="Load more tweets">
     <i class="fa fa-refresh"></i> &nbsp;Load More Tweets
 </button>
