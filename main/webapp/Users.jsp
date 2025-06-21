@@ -9,12 +9,22 @@
         <h2>Popular Users</h2>  
         <div class="w3-margin-top">
             <c:forEach var="user" items="${users}">
-                <button 
-                    type="button" 
-                    class="showTweets w3-button w3-theme w3-margin-bottom"
-                    data-username="${user.username}">
-                    ${user.username}
-                </button>
+				<c:if test="${isForEdit == false}">
+	                <button 
+	                    type="button" 
+	                    class="showTweets w3-button w3-theme w3-margin-bottom"
+	                    data-username="${user.username}">
+	                    ${user.username}
+	                </button>
+	        	</c:if>
+				<c:if test="${isForEdit == true}">
+	                <button 
+	                    type="button" 
+	                    class="showUser w3-button w3-theme w3-margin-bottom"
+	                    data-username="${user.username}">
+	                    ${user.username}
+	                </button>
+	        	</c:if>
             </c:forEach>
         </div>
     </c:otherwise>

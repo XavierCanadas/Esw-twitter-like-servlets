@@ -254,7 +254,10 @@ public class UserService {
     public boolean isAdmin(String username) {
         return userRepository.isUserAdmin(username);
     }
-
+    
+    public void deleteUserFromUsername(String username) {
+    	userRepository.deleteUserFromUsername(username);
+    }
 
 
 }

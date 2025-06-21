@@ -268,6 +268,17 @@
 
             /* Tweet view */
 
+            
+            
+            /* Show user profile in lcolumn for editing */
+            $(document).on("click", ".showUser", function(event) {
+                event.preventDefault();
+
+                const username = $(this).data("username");
+
+                $('#content').load("Profile?username=" + encodeURIComponent(username));
+            });
+
 
         };
 
