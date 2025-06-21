@@ -52,7 +52,7 @@ public class TweetRepository extends BaseRepository {
     /* Get tweets from a user given start and end */
     public Optional<List<Tweet>> findByUser(Integer uid, Integer start, Integer end) {
         List<Tweet> tweets = new ArrayList<Tweet>();
-        String query = "SELECT t.id, t.user_id, t.post_datetime, t.content, u.username, COUNT(lt.user_id) AS like_count, " +
+        String query = "SELECT t.id, t.user_id, t.post_datetime, t.content, t.parent_id, u.username, COUNT(lt.user_id) AS like_count, " +
                 "EXISTS (SELECT 1 FROM LikeTweet ltu WHERE ltu.tweet_id = t.id AND ltu.user_id = ?) AS liked_by_current_user " +
                 "FROM Tweet t " +
                 "INNER JOIN Users u ON t.user_id = u.id " +
@@ -76,6 +76,7 @@ public class TweetRepository extends BaseRepository {
                     tweet.setContent(rs.getString("content"));
                     tweet.setUsername(rs.getString("username"));
                     tweet.setLikesCount(rs.getInt("like_count"));
+                    tweet.setParentId(rs.getObject("parent_id", Integer.class));
                     tweet.setLikedByCurrentUser(rs.getBoolean("liked_by_current_user"));
 
                     tweets.add(tweet);
@@ -92,7 +93,7 @@ public class TweetRepository extends BaseRepository {
     public Optional<List<Tweet>> getLatestTweets() {
 
         List<Tweet> tweets = new ArrayList<Tweet>();
-        String query = "SELECT t.id, t.user_id, t.post_datetime, t.content, u.username, " +
+        String query = "SELECT t.id, t.user_id, t.post_datetime, t.content, t.parent_id, u.username, " +
                 "COUNT(lt.tweet_id) AS like_count " +
                 "FROM Tweet t " +
                 "JOIN Users u ON t.user_id = u.id " +
@@ -110,6 +111,7 @@ public class TweetRepository extends BaseRepository {
                     tweet.setContent(rs.getString("content"));
                     tweet.setUsername(rs.getString("username"));
                     tweet.setLikesCount(rs.getInt("like_count"));
+                    tweet.setParentId(rs.getObject("parent_id", Integer.class));
                     tweet.setLikedByCurrentUser(false);
 
                     tweets.add(tweet);
@@ -124,7 +126,7 @@ public class TweetRepository extends BaseRepository {
 
     public Optional<List<Tweet>> getFollowingTweets(Integer uid, Integer start, Integer end) {
         List<Tweet> tweets = new ArrayList<Tweet>();
-        String query = "SELECT  t.id, t.user_id, t.post_datetime, t.content,  u.username, COUNT(lt.user_id) AS like_count, " +
+        String query = "SELECT  t.id, t.user_id, t.post_datetime, t.content, t.parent_id,  u.username, COUNT(lt.user_id) AS like_count, " +
                 "EXISTS (SELECT 1 FROM LikeTweet ltu WHERE ltu.tweet_id = t.id AND ltu.user_id = ?) AS liked_by_current_user " +
                 "FROM Tweet t " +
                 "INNER JOIN Users u ON t.user_id = u.id " +
@@ -149,6 +151,7 @@ public class TweetRepository extends BaseRepository {
                     tweet.setContent(rs.getString("content"));
                     tweet.setUsername(rs.getString("username"));
                     tweet.setLikesCount(rs.getInt("like_count"));
+                    tweet.setParentId(rs.getObject("parent_id", Integer.class));
                     tweet.setLikedByCurrentUser(rs.getBoolean("liked_by_current_user"));
 
                     tweets.add(tweet);
@@ -168,6 +171,7 @@ public class TweetRepository extends BaseRepository {
                 "t.user_id, " +
                 "t.post_datetime, " +
                 "t.content, " +
+                "t.parent_id, " +
                 "u.username, " +
                 "COUNT(lt_all.user_id) AS like_count, " +
                 "EXISTS ( " +
@@ -201,6 +205,7 @@ public class TweetRepository extends BaseRepository {
                     tweet.setContent(rs.getString("content"));
                     tweet.setUsername(rs.getString("username"));
                     tweet.setLikesCount(rs.getInt("like_count"));
+                    tweet.setParentId(rs.getObject("parent_id", Integer.class));
                     tweet.setLikedByCurrentUser(rs.getBoolean("liked_by_current_user"));
 
                     tweets.add(tweet);
@@ -244,6 +249,7 @@ public class TweetRepository extends BaseRepository {
                     tweet.setContent(rs.getString("content"));
                     tweet.setUsername(rs.getString("username"));
                     tweet.setLikesCount(rs.getInt("likes_count"));
+                    tweet.setParentId(rs.getObject("parent_id", Integer.class));
                     tweet.setLikedByCurrentUser(rs.getBoolean("liked_by_current_user"));
 
                     // TODO: set user picture URL
@@ -289,6 +295,7 @@ public class TweetRepository extends BaseRepository {
                     tweet.setUsername(rs.getString("username"));
                     tweet.setLikesCount(rs.getInt("likes_count"));
                     tweet.setLikedByCurrentUser(rs.getBoolean("liked_by_current_user"));
+                    tweet.setParentId(rs.getObject("parent_id", Integer.class));
                     tweet.setProfilePictureUrl(rs.getString("user_picture"));
                 }
                 return Optional.ofNullable(tweet);
