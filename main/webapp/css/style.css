@@ -110,6 +110,24 @@ body, h1, h2, h3, h4, h5, h6, div, p, span {
     text-decoration: underline;
 }
 
+.load-parent-tweet-comment {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: #2c2c2c;
+    cursor: pointer;
+    transition: background 0.2s;
+    outline: none;
+    font-size: 0.9em; /* Adjust as needed */
+    font-weight: bold;
+    text-align: left;
+}
+.load-parent-tweet-comment:hover, .load-parent-tweet-comment:focus, .tweet-username:focus {
+    text-decoration: underline;
+}
+
 .tweet-container {
     cursor: pointer;
 }

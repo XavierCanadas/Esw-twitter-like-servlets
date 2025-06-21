@@ -315,6 +315,16 @@
                     $iterator.load('TweetsPolis?lastTweetNumber=' + encodeURIComponent(lastTweetNumber));
                 }
             });
+
+            /* Load parent tweet comment */
+            $(document).on("click", ".load-parent-tweet-comment", function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                var parentId = $(this).data("parent-id");
+
+                // Load the parent tweet comment
+                $('#content').load('TweetView?tweetId=' + encodeURIComponent(parentId));
+            });
             
             
             /* Show user profile in lcolumn for editing */

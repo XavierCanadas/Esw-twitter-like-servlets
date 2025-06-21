@@ -88,7 +88,7 @@ public class Tweets extends HttpServlet {
         try(TweetRepository tweetRepository = new TweetRepository()) {
             TweetService tweetService = new TweetService(tweetRepository);
 
-            tweets = tweetService.getTweetsByUser(userTweets.getId(),0, lastTweetNumber); // TODO: add pagination
+            tweets = tweetService.getTweetsByUser(userTweets.getId(),0, lastTweetNumber, request);
         } catch (Exception e) {
             e.printStackTrace();
         }

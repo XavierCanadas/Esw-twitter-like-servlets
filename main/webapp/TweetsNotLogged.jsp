@@ -36,3 +36,10 @@
         <p><i class="fa fa-thumbs-up"></i> (${t.likesCount})</p>
     </div>
 </c:forEach>
+
+
+<c:if test="${user == null}">
+    <div class="w3-center w3-panel w3-border">
+        To see more tweets, please log in or register.
+    </div>
+</c:if>
