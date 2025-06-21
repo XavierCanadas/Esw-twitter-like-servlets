@@ -25,12 +25,12 @@
             <p class="w3-left-align"><i class="fa fa-map-marker fa-fw w3-margin-right"></i> Polis: ${user.polis.name}
             </p>
             <c:if test="${enableEdit == true}">
-                <button type="button" class="editUser w3-row w3-button w3-section"
+                <button type="button" class="editUser w3-row w3-button w3-section boton-relevante"
                         data-username="${user.username}"><i class="fa fa-user-plus"></i> &nbsp;Edit
                 </button>
             </c:if>
             <c:if test="${enableDelete == true}">
-                <button type="button" class="deleteUser w3-row w3-button w3-section"
+                <button type="button" class="deleteUser w3-row w3-button w3-section boton-relevante"
                         data-username="${user.username}"><i class="fa fa-user-times"></i> &nbsp;Delete
                 </button>
             </c:if>
