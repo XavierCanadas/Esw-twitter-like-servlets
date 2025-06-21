@@ -33,42 +33,26 @@ public class TweetService {
 
     public List<Tweet> getTweetsByUser(Integer uid, Integer start, Integer end, HttpServletRequest request) {
         Optional<List<Tweet>> tweets = tweetRepository.findByUser(uid, start, end);
-        if (tweets.isPresent()) {
-            for (Tweet tweet : tweets.get()) {
-                tweet.setProfilePictureUrl(Common.setPictureUrl(tweet.getProfilePictureUrl(), request));
-            }
-        }
+        updateTweetsProfilePictureUrl(tweets, request);
         return tweets.orElse(Collections.emptyList());
     }
 
     public List<Tweet> getLatestTweets(HttpServletRequest request) {
         Optional<List<Tweet>> tweets = tweetRepository.getLatestTweets();
-        if (tweets.isPresent()) {
-            for (Tweet tweet : tweets.get()) {
-                tweet.setProfilePictureUrl(Common.setPictureUrl(tweet.getProfilePictureUrl(), request));
-            }
-        }
+        updateTweetsProfilePictureUrl(tweets, request);
         return tweets.orElse(Collections.emptyList());
     }
 
     public List<Tweet> getFollowingTweets(Integer uid, Integer start, Integer end, HttpServletRequest request) {
         Optional<List<Tweet>> tweets = tweetRepository.getFollowingTweets(uid, start, end);
-        if (tweets.isPresent()) {
-            for (Tweet tweet : tweets.get()) {
-                tweet.setProfilePictureUrl(Common.setPictureUrl(tweet.getProfilePictureUrl(), request));
-            }
-        }
+        updateTweetsProfilePictureUrl(tweets, request);
         return tweets.orElse(Collections.emptyList());
 
     }
 
     public List<Tweet> getPolisTweets(Integer uid, Integer start, Integer end, HttpServletRequest request) {
         Optional<List<Tweet>> tweets = tweetRepository.getPolisTweets(uid, start, end);
-        if (tweets.isPresent()) {
-            for (Tweet tweet : tweets.get()) {
-                tweet.setProfilePictureUrl(Common.setPictureUrl(tweet.getProfilePictureUrl(), request));
-            }
-        }
+        updateTweetsProfilePictureUrl(tweets, request);
         return tweets.orElse(Collections.emptyList());
     }
 
@@ -76,11 +60,7 @@ public class TweetService {
     public List<Tweet> getCommentsByTweetId(Integer tweetId, Integer currentUserId, Integer start, Integer end, HttpServletRequest request) {
         Optional<List<Tweet>> tweets = tweetRepository.getCommentsByTweetId(tweetId, currentUserId, start, end);
 
-        if (tweets.isPresent()) {
-            for (Tweet tweet : tweets.get()) {
-                tweet.setProfilePictureUrl(Common.setPictureUrl(tweet.getProfilePictureUrl(), request));
-            }
-        }
+        updateTweetsProfilePictureUrl(tweets, request);
 
         return tweets.orElse(Collections.emptyList());
     }
@@ -94,5 +74,13 @@ public class TweetService {
 
         }
         return null;
+    }
+
+    private void updateTweetsProfilePictureUrl(Optional<List<Tweet>> tweets, HttpServletRequest request) {
+        if (tweets.isPresent()) {
+            for (Tweet tweet : tweets.get()) {
+                tweet.setProfilePictureUrl(Common.setPictureUrl(tweet.getProfilePictureUrl(), request));
+            }
+        }
     }
 }
