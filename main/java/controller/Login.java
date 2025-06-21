@@ -18,6 +18,7 @@ import java.util.Map;
 
 
 import org.apache.commons.beanutils.BeanUtils;
+import util.Common;
 
 /**
  * Servlet implementation class Login
@@ -66,7 +67,7 @@ public class Login extends HttpServlet {
                 if (errors.isEmpty()) {
                     HttpSession session = request.getSession();
 
-                    userService.setPictureUrl(user, request);
+                    user.setPicture(Common.setPictureUrl(user.getPicture(), request));
                     
                     user.setIsAdmin(userService.isAdmin(user.getUsername()));
 

@@ -12,6 +12,7 @@ import repository.TweetRepository;
 import repository.UserRepository;
 import service.TweetService;
 import service.UserService;
+import util.Common;
 
 import java.io.IOException;
 import java.util.List;
@@ -41,7 +42,7 @@ public class TweetsNotLogged extends HttpServlet {
    		 UserService userService= new UserService(userRepo);
     	    if (username != null && !username.isEmpty()) {
     	        user = userService.findByUsername(username);
-				userService.setPictureUrl(user, request);
+				user.setPicture(Common.setPictureUrl(user.getPicture(), request));
     	            // Obtenemos tweets del usuario usando su ID
     	        tweets = tweetService.getTweetsByUser(user.getId(), 0, 20, request);
   
