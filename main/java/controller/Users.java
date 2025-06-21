@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -47,8 +48,17 @@ public class Users extends HttpServlet {
 		UserRepository userRepo = new UserRepository();
 		UserService userService = new UserService(userRepo);
 		List<User> users = userService.getMostPopularUsers();
-		
+        HttpSession session = request.getSession(false);
+        User user = null;
+        boolean isForEdit = false;
+        if (session != null) {
+            user = (User) session.getAttribute("user");
+            users = userService.getAllUsers();
+            isForEdit = userService.isAdmin(user.getUsername());
+        }
 		request.setAttribute("users", users);
+		request.setAttribute("isForEdit", isForEdit);
+		
 		request.getRequestDispatcher("Users.jsp").forward(request, response);
 
 	}

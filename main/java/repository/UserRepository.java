@@ -350,7 +350,14 @@ public class UserRepository extends BaseRepository {
             return false;
         }
     }
-    
-    
-
+    /*delete user from username*/
+    public void deleteUserFromUsername(String username) {
+        String query = "DELETE FROM Users WHERE username = ?";
+        try (PreparedStatement statement = db.prepareStatement(query)) {
+            statement.setString(1, username);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

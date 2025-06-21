@@ -34,3 +34,7 @@
         </button>
     </div>
 </c:forEach>
+
+<button type="button" class="load-more-tweets w3-button w3-theme w3-margin-bottom">
+    <i class="fa fa-refresh"></i> &nbsp;Load More Tweets
+</button>

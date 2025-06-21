@@ -211,6 +211,22 @@
 
 
             });
+            /* Delete user */
+			$(document).on("click", ".deleteUser", function(event) {
+			    event.preventDefault();
+			    event.stopPropagation();
+			
+			    const username = $(this).data("username");
+			
+			    // Confirmación opcional
+			    if (!confirm("Are you sure you want to delete this user?")) return;
+			
+			    $.post("DeleteUser", { username: username }, function() {
+			        // Una vez borrado, limpiamos el panel derecho (o recargamos algo)
+			        $('#content').load('Users');
+			    });
+			});
+
 
             /* Show user info */
             $(document).on("click", ".userInfo", function (event) {
@@ -267,6 +283,17 @@
             });
 
             /* Tweet view */
+
+            
+            
+            /* Show user profile in lcolumn for editing */
+            $(document).on("click", ".showUser", function(event) {
+                event.preventDefault();
+
+                const username = $(this).data("username");
+
+                $('#content').load("Profile?username=" + encodeURIComponent(username));
+            });
 
 
         };

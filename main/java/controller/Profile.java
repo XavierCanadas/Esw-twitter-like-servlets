@@ -61,9 +61,13 @@ public class Profile extends HttpServlet {
 			}
 
 			// TODO: if the user is an admin or the user itself, allow editing
-			boolean enableEdit = (/*currentUser.isAdmin() || */  currentUser.getUsername().equals(username));
+			boolean enableEdit = (userService.isAdmin(currentUser.getUsername()) ||  currentUser.getUsername().equals(username));
 			request.setAttribute("enableEdit", enableEdit);
-
+			//de momento, un user no puede borrarse porque se debería hacer logout y cerrar la sesion
+			boolean enableDelete = (userService.isAdmin(currentUser.getUsername()) /*||  currentUser.getUsername().equals(username)*/);
+			request.setAttribute("enableDelete", enableDelete);
+			
+			
 			userService.setPictureUrl(user, request);
 			request.setAttribute("user", user);
 			request.getRequestDispatcher("Profile.jsp").forward(request, response);

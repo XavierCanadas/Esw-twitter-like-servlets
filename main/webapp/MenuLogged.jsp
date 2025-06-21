@@ -14,18 +14,21 @@
 			<a class="menu w3-bar-item w3-hide-small ">Oficio
 			  <img src="${pageContext.request.contextPath}/assets/detenido.png"  style="height:35px;width:35px;vertical-align:middle;" alt="Avatar"></img>
 			</a>
-			<a class="menu w3-bar-item w3-button w3-hide-small " href="Tweets"> MyPosts </a>
 			<a class="menu w3-bar-item w3-button w3-hide-small " href="Followed"> Buddies </a>
-			<a class="menu w3-bar-item w3-button w3-hide-small w3-right " href="Logout" style="margin-right: 8px"> <i
-					class="fa fa-sign-out"></i> </a>
+			<c:if test="${user.isAdmin}">
+        		<a class="menu w3-bar-item w3-button w3-hide-small" href="Users">Admin Users</a>
+    		</c:if>
 			<a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium"
 				onclick="App.stack()">&#9776;</a>
 		</div>
 
 		<div id="stack" class="w3-bar-block w3-hide w3-hide-large w3-hide-medium">
-			<a class="menu w3-bar-item w3-button" href="Timeline"> MyPosts </a>
+			<a class="menu w3-bar-item w3-button" href="Timeline"> Timeline </a>
 			<a class="menu w3-bar-item w3-button" href="Followed"> Buddies </a>
 			<a class="menu w3-bar-item w3-button" href="Profile"> Profile </a>
 			<a class="menu w3-bar-item w3-button" href="NotFollowed"> Discover </a>
 			<a class="menu w3-bar-item w3-button" href="Logout"> Logout </a>
+			<c:if test="${user.isAdmin}">
+        		<a class="menu w3-bar-item w3-button" href="Users">Admin Users</a>
+    		</c:if>
 		</div>
