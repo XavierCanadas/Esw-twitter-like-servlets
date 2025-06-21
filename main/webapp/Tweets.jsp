@@ -17,9 +17,12 @@
         <div style="display: flex; flex-direction: column; align-items: flex-start;">
             <span class= "w3-opacity"> ${t.postDateTime} </span>
         </div>
-        <h5 type="button" class="load-parent-tweet-comment" style="margin: 0px" data-username="${t.username}">
-                    ${t.username}
-            </h5>
+        <button
+			  class="load-parent-tweet-comment"
+			  style="margin: 0px; font-size: 1.17em; font-weight: bold; background: none; border: none; padding: 0;"
+			  data-username="${t.username}"
+			>${t.username}
+			</button>
         <hr class="w3-clear">
         <p> ${t.content} </p>
         <button type="button"
