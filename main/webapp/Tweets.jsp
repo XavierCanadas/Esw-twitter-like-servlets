@@ -6,7 +6,8 @@
     <div id="${t.id}" class="tweet-container w3-container w3-card w3-section w3-white w3-round w3-animate-opacity"><br>
             <%-- De momento me cargo la imagen --%>
 
-            <%--<img src="${user.picture}" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px"> --%>
+        <img src="${t.profilePictureUrl}" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+
         <span class="w3-right w3-opacity"> ${t.postDateTime} </span>
 
 

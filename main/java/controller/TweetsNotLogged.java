@@ -43,10 +43,10 @@ public class TweetsNotLogged extends HttpServlet {
     	        user = userService.findByUsername(username);
 				userService.setPictureUrl(user, request);
     	            // Obtenemos tweets del usuario usando su ID
-    	        tweets = tweetService.getTweetsByUser(user.getId(), 0, 20);
+    	        tweets = tweetService.getTweetsByUser(user.getId(), 0, 20, request);
   
     	    } else {
-    	        tweets = tweetService.getLatestTweets();  // Tweets generales
+    	        tweets = tweetService.getLatestTweets(request);  // Tweets generales
     	    }
    	        request.setAttribute("user", user);  
     	    request.setAttribute("tweets", tweets);

@@ -72,7 +72,7 @@ public class Comments extends HttpServlet {
 
         try (TweetRepository tweetRepository = new TweetRepository()) {
             TweetService tweetService = new TweetService(tweetRepository);
-            comments = tweetService.getCommentsByTweetId(parentId, currentUser.getId(), 0, lastTweetNumber); // TODO: pagination
+            comments = tweetService.getCommentsByTweetId(parentId, currentUser.getId(), 0, lastTweetNumber, request);
 
         } catch (Exception e) {
             e.printStackTrace();
