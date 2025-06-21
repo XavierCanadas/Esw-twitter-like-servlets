@@ -47,7 +47,6 @@ public class DelTweet extends HttpServlet {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				
 			}
 		}
 	}

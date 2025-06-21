@@ -127,8 +127,6 @@ public class EditUser extends HttpServlet {
                 return;
             }
 
-
-
             String currentUsername = userToEdit.getUsername();
             BeanUtils.populate(userToEdit, request.getParameterMap());
 
