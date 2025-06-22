@@ -11,10 +11,9 @@
 			<a class="menu w3-bar-item w3-hide-small ">Clase Social
 			  <img src="${pageContext.request.contextPath}/assets/esclavo.png" class="w3-circle" style="height:45px;width:45px;vertical-align:middle;" alt="Avatar"></img>
 			</a>
-			<a class="menu w3-bar-item w3-hide-small ">Oficio
+			<a class="menu w3-bar-item w3-hide-small w3-margin-right">Oficio
 			  <img src="${pageContext.request.contextPath}/assets/detenido.png"  style="height:35px;width:35px;vertical-align:middle;" alt="Avatar"></img>
 			</a>
-			<a class="menu w3-bar-item w3-button w3-hide-small " href="Followed"> Buddies </a>
 			<a class="menu w3-bar-item w3-button w3-hide-small w3-right sin-hover" href="Logout" style="margin-right: 8px"> <i
 					class="fa fa-sign-out"></i> </a>
 			<c:if test="${user.isAdmin}">

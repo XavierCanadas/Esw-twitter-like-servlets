@@ -1,6 +1,7 @@
 package controller;
 
 import jakarta.servlet.ServletException;
+
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -13,6 +14,8 @@ import repository.PolisRepository;
 import repository.UserRepository;
 import service.PolisService;
 import service.UserService;
+import jakarta.servlet.ServletContext;
+
 
 import java.io.IOException;
 import java.util.List;
@@ -66,10 +69,10 @@ public class Register extends HttpServlet {
 			}
 
 			// profile picture
-			Part filePart = request.getPart("picture");
-
+			String picturePath = request.getParameter("picturePath");
+			user.setPicture(picturePath);
 			UserService userService = new UserService(userRepository, getServletContext());
-			Map<String, String> errors = userService.register(user, filePart);
+			Map<String, String> errors = userService.register(user);
 
 			if (errors.isEmpty()) {
 				request.setAttribute("user", user);
