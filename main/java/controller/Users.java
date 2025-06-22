@@ -53,8 +53,10 @@ public class Users extends HttpServlet {
         boolean isForEdit = false;
         if (session != null) {
             user = (User) session.getAttribute("user");
-            users = userService.getAllUsers();
-            isForEdit = userService.isAdmin(user.getUsername());
+            if (user != null) {
+                users = userService.getAllUsers();
+                isForEdit = userService.isAdmin(user.getUsername());
+            }
         }
 		request.setAttribute("users", users);
 		request.setAttribute("isForEdit", isForEdit);
