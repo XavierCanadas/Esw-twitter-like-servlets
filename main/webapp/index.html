@@ -190,7 +190,6 @@
                 event.preventDefault();
                 var username = $(this).data("username");
 
-                console.log("Enviando username:", username); // Debug
 
                 // Usa GET con parámetros en la URL
                 $.get("TweetsNotLogged?username=" + encodeURIComponent(username), function (data) {

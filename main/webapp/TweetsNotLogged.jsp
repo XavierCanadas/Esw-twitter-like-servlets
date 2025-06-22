@@ -2,18 +2,30 @@
 
 <!-- Mostrar encabezado con info de usuario si hay uno recibido -->
 <c:if test="${user != null}">
-    <div class="w3-container w3-card w3-white w3-round w3-margin">
-        <div class="w3-row w3-padding">
-            <div class="w3-col s3">
-                <img src="${user.picture}" alt="Avatar" class="w3-circle" style="width:80px">
-            </div>
-            <div class="w3-col s9 w3-container">
-                <h3>${user.username}</h3>
-                <p><strong>Polis:</strong> ${user.polis.name}</p>
-                <p><strong>Social Credit:</strong> ${user.socialCredit}</p>
-            </div>
+        <div id="${user.id}" class="w3-container w3-card w3-round w3-white w3-section w3-center">
+            <h4>My Profile</h4>
+            <p><img src="${user.picture}" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+            <hr>
+            <p class="w3-left-align"><i class="fa fa-id-card fa-fw w3-margin-right"></i> ${user.username} </p>
+            <p class="w3-left-align"><i class="fa fa-envelope fa-fw w3-margin-right"></i> ${user.email} </p>
+            <p class="w3-left-align"><i class="fa fa-venus-mars fa-fw w3-margin-right"></i> Gender: ${user.gender} </p>
+            <p class="w3-left-align"><i class="fa fa-birthday-cake fa-fw w3-margin-right"></i>
+                Birthdate: ${user.birthdate} </p>
+            <p class="w3-left-align"><i class="fa fa-star fa-fw w3-margin-right"></i> Social
+                Credit: ${user.socialCredit} </p>
+            <p class="w3-left-align"><i class="fa fa-map-marker fa-fw w3-margin-right"></i> Polis: ${user.polis.name}
+            </p>
+            <c:if test="${enableEdit == true}">
+                <button type="button" class="editUser w3-row w3-button w3-section boton-relevante"
+                        data-username="${user.username}"><i class="fa fa-user-plus"></i> &nbsp;Edit
+                </button>
+            </c:if>
+            <c:if test="${enableDelete == true}">
+                <button type="button" class="deleteUser w3-row w3-button w3-section boton-relevante"
+                        data-username="${user.username}"><i class="fa fa-user-times"></i> &nbsp;Delete
+                </button>
+            </c:if>
         </div>
-    </div>
 </c:if>
 
 <!-- Si no hay user, solo se muestra titulo -->
