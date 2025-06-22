@@ -21,10 +21,12 @@
 <div id="${tweet.id}" class="w3-container w3-card w3-round w3-white w3-section w3-center">
     <p><img src="${tweet.profilePictureUrl}" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
     <hr>
-    <span class="w3-right w3-opacity"> ${tweet.postDateTime} </span>
-    <button type="button" class="tweet-username" data-username="${tweet.username}">
+    <span class="w3-opacity" style="font-size: 11px;"> ${tweet.postDateTime} </span>
+    <div>
+    <button type="button" class="load-parent-tweet-comment tweet-username sin-hover" style="background-color: white; border-width: 0px;" data-username="${tweet.username}">
         ${tweet.username}
     </button>
+    </div>
     <br>
     <hr class="w3-clear">
     <p> ${tweet.content} </p>
@@ -55,7 +57,7 @@
 <div class="w3-container w3-card w3-round w3-white w3-section w3-center">
     <h5>Write a comment</h5>
     <textarea id="commentContent" class="w3-input w3-border" rows="4" placeholder="Write your comment here..."></textarea>
-    <button id="addComment" data-tweet-id="${tweet.id}" class="w3-button w3-green w3-section">Add Comment</button>
+    <div><button id="addComment" data-tweet-id="${tweet.id}" class="w3-button w3-green w3-section">Add Comment</button></div>
 </div>
 
 <br>
