@@ -8,7 +8,24 @@ function initValidation(serverErrors)  {
   const gender = document.getElementById('gender');
   const birthdateString = document.getElementById('birthdateString'); // TODO: change to handle date input instead of string
   const polis = document.getElementById('polis');
+  const avatars = document.querySelectorAll('.selectable-avatar');
 
+  avatars.forEach(img => {
+          img.addEventListener('click', () => {
+              // Limpiar bordes de todas las imágenes
+              avatars.forEach(i => i.style.border = '2px solid transparent');
+
+              // Establecer borde a la seleccionada
+              img.style.border = '2px solid #2196F3';
+
+              // Marcar el radio button
+              const radio = img.closest('label').querySelector('input[type="radio"]');
+              if (radio) {
+                  radio.checked = true;
+              }
+          });
+      });
+	  
   // Email validation
   email.addEventListener('input', () => {
     const emailPattern = /^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$/;

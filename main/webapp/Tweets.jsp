@@ -15,10 +15,10 @@
             </c:if>
 
         <div style="display: flex; flex-direction: column; align-items: flex-start;">
-            <span class= "w3-opacity"> ${t.postDateTime} </span>
+            <span class= "w3-opacity" style="font-size: 11px;"> ${t.postDateTime} </span>
         </div>
         <button
-			  class="load-parent-tweet-comment"
+			  class="load-parent-tweet-comment tweet-username"
 			  style="margin: 0px; font-size: 1.17em; font-weight: bold; background: none; border: none; padding: 0;"
 			  data-username="${t.username}"
 			>${t.username}

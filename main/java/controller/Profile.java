@@ -68,6 +68,13 @@ public class Profile extends HttpServlet {
 			boolean enableDelete = (userService.isAdmin(currentUser.getUsername()) /*||  currentUser.getUsername().equals(username)*/);
 			request.setAttribute("enableDelete", enableDelete);
 			
+			// Añadimos la cantidad de seguidores
+	        int followerCount = userService.getFollowerCount(user.getId());
+	        request.setAttribute("followerCount", followerCount);
+	        
+	     // Añadimos la cantidad de seguidores
+	        int followingCount = userService.getFollowingCount(user.getId());
+	        request.setAttribute("followingCount", followingCount);
 			
 			user.setPicture(Common.setPictureUrl(user.getPicture(), request));
 			request.setAttribute("user", user);

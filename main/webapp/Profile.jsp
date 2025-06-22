@@ -12,18 +12,38 @@
 <c:choose>
     <c:when test="${user != null}">
         <div id="${user.id}" class="w3-container w3-card w3-round w3-white w3-section w3-center">
-            <h4>My Profile</h4>
+            <h4 style="font-weight: bold;">${user.username}</h4>
             <p><img src="${user.picture}" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
             <hr>
-            <p class="w3-left-align"><i class="fa fa-id-card fa-fw w3-margin-right"></i> ${user.username} </p>
-            <p class="w3-left-align"><i class="fa fa-envelope fa-fw w3-margin-right"></i> ${user.email} </p>
-            <p class="w3-left-align"><i class="fa fa-venus-mars fa-fw w3-margin-right"></i> Gender: ${user.gender} </p>
-            <p class="w3-left-align"><i class="fa fa-birthday-cake fa-fw w3-margin-right"></i>
-                Birthdate: ${user.birthdate} </p>
-            <p class="w3-left-align"><i class="fa fa-star fa-fw w3-margin-right"></i> Social
-                Credit: ${user.socialCredit} </p>
-            <p class="w3-left-align"><i class="fa fa-map-marker fa-fw w3-margin-right"></i> Polis: ${user.polis.name}
-            </p>
+            <div class="w3-container w3-padding-32">
+			  <div class="w3-row">
+			
+			    <div class="w3-third w3-center">
+			      <div class="w3-card w3-padding w3-light-grey">
+			        <h3><i class="fa fa-star fa-fw"></i></h3>
+			        <p style="font-weight: bold;">${user.socialCredit}</p>
+			      </div>
+			    </div>
+			
+			    <div class="w3-third w3-center">
+			      <div class="w3-card w3-padding w3-light-grey">
+			        <h3>Seguidores</h3>
+			        <p style="font-weight: bold;">${followerCount}</p>
+			      </div>
+			    </div>
+			
+			    <a class="menu" href="Followed" style="text-decoration: none; color: inherit;">
+				  <div class="w3-third w3-center">
+				    <div class="w3-card w3-padding w3-light-grey">
+				      <h3>Siguiendo</h3>
+				      <p style="font-weight: bold;">${followingCount}</p>
+				    </div>
+				  </div>
+				</a>
+
+			
+			  </div>
+			</div>
             <c:if test="${enableEdit == true}">
                 <button type="button" class="editUser w3-row w3-button w3-section boton-relevante"
                         data-username="${user.username}"><i class="fa fa-user-plus"></i> &nbsp;Edit

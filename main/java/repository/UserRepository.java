@@ -288,6 +288,70 @@ public class UserRepository extends BaseRepository {
 		}
 		return Optional.empty();
 	}
+    
+    //followers user
+    public Optional<List<User>> findFollowers(Integer id, Integer start, Integer end) {
+        String query = "SELECT u.id, u.username, u.picture " +
+                       "FROM Users u, FollowUser f " +
+                       "WHERE u.id = f.user_id AND f.followed_id = ? " +
+                       "ORDER BY u.username LIMIT ?, ?;";
+
+        try (PreparedStatement statement = db.prepareStatement(query)) {
+            statement.setInt(1, id);
+            statement.setInt(2, start);
+            statement.setInt(3, end);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                List<User> users = new ArrayList<>();
+                while (rs.next()) {
+                    User user = new User();
+                    user.setId(rs.getInt("id"));
+                    user.setUsername(rs.getString("username"));
+                    user.setPicture(rs.getString("picture"));
+                    users.add(user);
+                }
+                return Optional.of(users);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
+    //Numero de seguidores
+    public int countFollowers(Integer id) {
+        String query = "SELECT COUNT(*) AS total FROM FollowUser WHERE followed_id = ?";
+
+        try (PreparedStatement statement = db.prepareStatement(query)) {
+            statement.setInt(1, id);
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("total");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+  //Numero de siguiendo
+    public int countFollowing(Integer id) {
+        String query = "SELECT COUNT(*) AS total FROM FollowUser WHERE user_id = ?";
+
+        try (PreparedStatement statement = db.prepareStatement(query)) {
+            statement.setInt(1, id);
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("total");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
     public Optional<List<User>> findNotFollowed(Integer id, Integer start, Integer end) {
 		String query = "SELECT id,username,picture FROM Users WHERE id NOT IN (SELECT id FROM Users,FollowUser WHERE id = followed_id AND user_id = ?) AND id <> ? ORDER BY username LIMIT ?,?;";
 		try (PreparedStatement statement = db.prepareStatement(query)) {

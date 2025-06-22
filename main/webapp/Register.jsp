@@ -63,8 +63,22 @@
                 <option value="${polisOption.id}" ${user.polis.id == polisOption.id ? 'selected' : ''}>${polisOption.name}</option>
             </c:forEach>
         </select>
-
     </div>
+    <label>Choose a profile picture:</label>
+	<div id="profile-picture-selection" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+	    <label class="avatar-option">
+	        <input type="radio" name="picturePath" value="hombreAvatar.png" required>
+	        <img src="assets/hombreAvatar.png" alt="Avatar 1">
+	    </label>
+	    <label class="avatar-option">
+	        <input type="radio" name="picturePath" value="mujerAvatar.png">
+	        <img src="assets/mujerAvatar.png" alt="Avatar 2">
+	    </label>
+	    <label class="avatar-option">
+	        <input type="radio" name="picturePath" value="robotAvatar.png">
+	        <img src="assets/robotAvatar.png" alt="Avatar 3">
+	    </label>
+	</div>
 
     <br/>
     <button type="submit" class="w3-btn w3-theme"> Register</button>

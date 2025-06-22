@@ -154,7 +154,7 @@ public class UserService {
         return validate(user, null);
     }
 
-    public Map<String, String> register(User user, Part filePart) throws IOException {
+    public Map<String, String> register(User user) throws IOException {
         Map<String, String> errors = validate(user);
         if (errors.isEmpty()) {
             userRepository.save(user);
@@ -207,6 +207,22 @@ public class UserService {
     public List<User> getFollowedUsers(Integer id, Integer start, Integer end) {
         Optional<List<User>> users = userRepository.findFollowed(id, start, end);
         return users.orElse(Collections.emptyList());
+    }
+    
+ // Get user followers
+    public List<User> getUserFollowers(Integer id, Integer start, Integer end) {
+        Optional<List<User>> users = userRepository.findFollowers(id, start, end);
+        return users.orElse(Collections.emptyList());
+    }
+    
+    // Get Follower Num
+    public int getFollowerCount(Integer userId) {
+        return userRepository.countFollowers(userId);
+    }
+    
+ // Get Follower Num
+    public int getFollowingCount(Integer userId) {
+        return userRepository.countFollowing(userId);
     }
 
     // Get unfollowed users
