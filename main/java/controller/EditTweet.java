@@ -71,7 +71,7 @@ public class EditTweet extends HttpServlet {
 				UserService userService = new UserService(userRepository);
 				// Check if the user exists
 				if (!userService.isAdmin(currentUser.getUsername()) && tweet.getUid() != currentUser.getId()) {
-					response.sendError(HttpServletResponse.SC_FORBIDDEN, "Only admins can edit users.");
+					response.sendError(HttpServletResponse.SC_FORBIDDEN, "Only admins can edit tweets.");
 					return;
 				}
 			}
