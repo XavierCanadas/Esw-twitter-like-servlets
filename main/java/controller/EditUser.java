@@ -51,31 +51,36 @@ public class EditUser extends HttpServlet {
             String username = request.getParameter("username");
             User currentUser = (User) session.getAttribute("user"); // change to enable admins to edit any user
 
-
-
             if (currentUser == null) {
                 response.sendRedirect("login.jsp");
                 return;
             }
 
-            // If is not an admin, only allow editing of the current user
-            /*
-            if (!currentUser.isAdmin() && (username == null || !username.equals(currentUser.getUsername()))) {
-                response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Operation not allowed");
+            if (username == null || username.isEmpty()) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Username parameter is required.");
                 return;
-             */
+            }
+
+            // If is not an admin, only allow editing of the current user
+            if (!userService.isAdmin(currentUser.getUsername()) && !currentUser.getUsername().equals(username)) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Only admins can edit users.");
+                return;
+            }
 
             // get the user to edit based on the username parameter. If the parameter is equal to the current user's
             // username, then is not necessary get the user from the database, just use the current user
             User userToEdit = currentUser;
 
-            if (username != null && !username.isEmpty() && !username.equals(currentUser.getUsername())) {
+            if (!username.equals(currentUser.getUsername())) {
                 userToEdit = userService.findByUsername(username);
                 if (userToEdit == null) {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found");
                     return;
                 }
             }
+
+
+
             request.setAttribute("user", userToEdit);
             request.setAttribute("editing", true);
 

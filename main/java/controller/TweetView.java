@@ -72,6 +72,14 @@ public class TweetView extends HttpServlet {
             return;
         }
 
+        // get and set editing tweet
+        String isEditing = request.getParameter("isEditing");
+        if (isEditing != null && isEditing.equals("true")) {
+            request.setAttribute("isEditing", true);
+        } else {
+            request.setAttribute("isEditing", false);
+        }
+
         // send
         request.setAttribute("user", currentUser);
         request.getRequestDispatcher("TweetView.jsp").forward(request, response);
