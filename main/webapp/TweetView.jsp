@@ -29,26 +29,54 @@
     </div>
     <br>
     <hr class="w3-clear">
-    <p> ${tweet.content} </p>
+    <c:choose>
+        <c:when test="${isEditing}">
+            <div id="editContent" contenteditable="true" class="w3-border w3-padding" style="min-height:40px;">
+                    ${tweet.content}
+            </div>
+        </c:when>
+        <c:otherwise>
+            <p>${tweet.content}</p>
+        </c:otherwise>
+    </c:choose>
     <br>
-    <button type="button" data-current-tweet-id="${tweet.id}"
-            class="likeTweet w3-button w3-theme w3-margin-bottom${tweet.likedByCurrentUser ? ' liked' : ''}">
-        <i class="fa fa-thumbs-up"></i> &nbsp;
-        <c:choose>
-            <c:when test="${tweet.likedByCurrentUser}">
-                Liked
-            </c:when>
-            <c:otherwise>
-                Like
-            </c:otherwise>
-        </c:choose>
-        <span>(${tweet.likesCount})</span>
-    </button>
-    <c:if test="${user.isAdmin || user.id == tweet.uid}">
-        <button type="button" data-current-tweet-id="${tweet.id}" class="delTweet w3-button w3-red w3-margin-bottom">
-            <i class="fa fa-trash"></i> &nbsp;Delete
-        </button>
-    </c:if>
+
+    <c:choose>
+        <c:when test="${isEditing}">
+            <div>
+                <button data-current-tweet-id="${tweet.id}" data-user-id="${tweet.uid}" class="saveEdit w3-button w3-green w3-margin-right">Save</button>
+                <button data-current-tweet-id="${tweet.id}" data-user-id="${tweet.uid}" class="cancelEdit w3-button w3-grey">Cancel</button>
+            </div>
+        </c:when>
+        <c:otherwise>
+
+            <button type="button"
+                    data-current-tweet-id="${tweet.id}" data-user-id="${tweet.uid}"
+                    class="likeTweet w3-button w3-theme w3-margin-bottom${tweet.likedByCurrentUser ? ' liked' : ''}">
+                <i class="fa fa-thumbs-up"></i> &nbsp;
+                <c:choose>
+                    <c:when test="${tweet.likedByCurrentUser}">
+                        Liked
+                    </c:when>
+                    <c:otherwise>
+                        Like
+                    </c:otherwise>
+                </c:choose>
+                <span>(${tweet.likesCount})</span>
+            </button>
+
+            <c:if test="${user.isAdmin || user.id == tweet.uid}">
+                <button type="button" data-current-tweet-id="${tweet.id}" class="editTweet w3-button w3-blue w3-margin-bottom">
+                    <i class="fa fa-edit"></i> &nbsp;Edit
+                </button>
+
+                <button type="button" data-current-tweet-id="${tweet.id}" class="delTweet w3-button w3-red w3-margin-bottom">
+                    <i class="fa fa-trash"></i> &nbsp;Delete
+                </button>
+            </c:if>
+        </c:otherwise>
+    </c:choose>
+
 </div>
 <br>
 

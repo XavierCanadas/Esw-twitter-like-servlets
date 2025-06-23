@@ -100,6 +100,53 @@
                 event.preventDefault();
             });
 
+            /* Edit tweet */
+            $(document).on("click", ".editTweet", function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+
+                var tweetId = $(this).data("current-tweet-id");
+
+                $('#content').load('TweetView?tweetId=' + encodeURIComponent(tweetId) + '&isEditing=true', function () {
+                    // check If I need to do something after loading
+                });
+            });
+
+            /* Save edited tweet */
+            $(document).on("click", ".saveEdit", function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                var tweetId = $(this).data("current-tweet-id");
+                var editedContent = $("#editContent").text();
+                var userId = $(this).data("user-id");
+
+                $.post(
+                    "EditTweet",
+                    {
+                        id: tweetId,
+                        content: editedContent,
+                        uid: userId
+                    },
+                    function (response) {
+                        // Reload the tweet view with the updated content
+                        $('#content').load('TweetView?tweetId=' + encodeURIComponent(tweetId));
+                    }
+                );
+            });
+
+            /* Cancel edit tweet */
+            $(document).on("click", ".cancelEdit", function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                var tweetId = $(this).data("current-tweet-id");
+
+                // Reload the tweet view without editing
+                $('#content').load('TweetView?tweetId=' + encodeURIComponent(tweetId));
+            });
+
             /* Delete tweet */
             $(document).on("click", ".delTweet", function (event) {
                 event.preventDefault();
@@ -116,8 +163,6 @@
 
                 // from the timeline, timeline = 1 if polis, timeline = 2 if following
                 var timelineOption = $(this).closest("#iterator").data("timeline-option");
-
-
 
 
                 var tweet = $(this).parent();
@@ -167,7 +212,7 @@
                     parentTweetId: parentTweetId,
                     profileUsername: profileUsername,
                     timelineOption: timelineOption
-                },function () {
+                }, function () {
                     // Reload the appropriate content after liking
                     if (currentTweetId) {
                         console.log("Reloading TweetView for tweet ID:", currentTweetId); // Debug
@@ -212,20 +257,20 @@
 
             });
             /* Delete user */
-			$(document).on("click", ".deleteUser", function(event) {
-			    event.preventDefault();
-			    event.stopPropagation();
-			
-			    const username = $(this).data("username");
-			
-			    // Confirmación opcional
-			    if (!confirm("Are you sure you want to delete this user?")) return;
-			
-			    $.post("DeleteUser", { username: username }, function() {
-			        // Una vez borrado, limpiamos el panel derecho (o recargamos algo)
-			        $('#content').load('Users');
-			    });
-			});
+            $(document).on("click", ".deleteUser", function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                const username = $(this).data("username");
+
+                // Confirmación opcional
+                if (!confirm("Are you sure you want to delete this user?")) return;
+
+                $.post("DeleteUser", {username: username}, function () {
+                    // Una vez borrado, limpiamos el panel derecho (o recargamos algo)
+                    $('#content').load('Users');
+                });
+            });
 
 
             /* Show user info */
@@ -324,10 +369,10 @@
                 // Load the parent tweet comment
                 $('#content').load('TweetView?tweetId=' + encodeURIComponent(parentId));
             });
-            
-            
+
+
             /* Show user profile in lcolumn for editing */
-            $(document).on("click", ".showUser", function(event) {
+            $(document).on("click", ".showUser", function (event) {
                 event.preventDefault();
 
                 const username = $(this).data("username");

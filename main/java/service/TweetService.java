@@ -83,4 +83,8 @@ public class TweetService {
             }
         }
     }
+
+    public void update(Tweet tweet) {
+        tweetRepository.update(tweet);
+    }
 }

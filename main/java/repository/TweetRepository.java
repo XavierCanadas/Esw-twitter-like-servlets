@@ -49,6 +49,18 @@ public class TweetRepository extends BaseRepository {
         }
     }
 
+    public void update(Tweet tweet) {
+        String query = "UPDATE Tweet SET content = ? WHERE id = ? AND user_id = ?";
+        try (PreparedStatement statement = db.prepareStatement(query)) {
+            statement.setString(1, tweet.getContent());
+            statement.setInt(2, tweet.getId());
+            statement.setInt(3, tweet.getUid());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     /* Get tweets from a user given start and end */
     public Optional<List<Tweet>> findByUser(Integer uid, Integer start, Integer end) {
         List<Tweet> tweets = new ArrayList<Tweet>();
@@ -310,6 +322,7 @@ public class TweetRepository extends BaseRepository {
         }
         return Optional.empty();
     }
+
 
 }
 
