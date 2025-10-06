@@ -21,9 +21,19 @@
 ## Setup Instructions
 1. Open Docker Desktop and ensure it is running.
 2. Run the build script to clean the maven project and build the package:
+ - **Linux/MacOS**:
    ```bash
    ./build.sh
    ```
+ - **Windows**:
+   ```bash
+   build.bat
+   ```
+ - Manually:   
+   - clean the maven project: call maven clean
+   - create the .war file: call maven package
+   - the .war file should be located in the `target` folder.
+
 3. Start the Docker containers using Docker Compose:
    ```bash
    docker-compose up --build 
