@@ -17,6 +17,7 @@
   <a href="Timeline" class="menu w3-button w3-margin-bottom"><i class="fa fa-newspaper-o fa-fw" style="margin-right: 8px" ></i>Posts</a>
   <a href="" class="menu w3-button w3-margin-bottom"><i class="fa fa-gamepad fa-fw" style="margin-right: 8px"></i>Juegos</a>
   <a href="" class="menu w3-button "><i class="	fa fa-bank fa-fw" style="margin-right: 8px"></i>Gobierno</a>
+    <a href="Search" class="menu w3-button w3-margin-bottom"><i class="fa fa-search fa-fw" style="margin-right: 8px"></i>Buscar</a>
 </div>
 </c:otherwise>
 </c:choose>

@@ -1,0 +1,47 @@
+name: esw-labs
+
+services:
+  mysql:
+    image: mysql:9.0.1
+    container_name: esw-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: prac
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: prac
+      MYSQL_DATABASE: epaw
+    ports:
+      - "3306:3306"
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./src/ESW-grup5/main/resources/database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - esw-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "mysql", "-pprac" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  tomcat:
+    image: tomcat:11-jdk21
+    container_name: esw-tomcat
+    ports:
+      - "8080:8080"  # Web access
+      - "8000:8000"  # Debugging
+    environment:
+      - CATALINA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000
+      - DB_HOST=esw-mysql
+    volumes:
+      - ./target/Esw-labs-1.0-SNAPSHOT.war:/usr/local/tomcat/webapps/ROOT.war
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - esw-network
+networks:
+  esw-network:
+    driver: bridge
+
+volumes:
+  mysql_data:

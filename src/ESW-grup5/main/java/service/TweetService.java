@@ -20,7 +20,9 @@ public class TweetService {
     }
 
     public void add(Tweet tweet) {
-        tweetRepository.save(tweet);
+        int id = tweetRepository.save(tweet);
+        tweet.setId(id);
+        saveWordTweet(tweet);
     }
 
     public void addComment(Tweet tweet) {
@@ -86,5 +88,24 @@ public class TweetService {
 
     public void update(Tweet tweet) {
         tweetRepository.update(tweet);
+    }
+
+    public void saveWordTweet(Tweet tweet) {
+        if (tweet.getContent() == null || tweet.getContent().isEmpty()) {
+            return;
+        }
+        String[] words = tweet.getContent().toLowerCase().replaceAll("[^a-zA-Z0-9 ]", "").split("\\s+");
+
+        tweetRepository.saveWordTweet(words, tweet.getId());
+    }
+
+    public List<Tweet> searchTweetsByWord(String word, Integer currentUserId, int start, int end, HttpServletRequest request) {
+        Optional<List<Tweet>> tweets = tweetRepository.searchTweetsByWord(word, currentUserId, start, end);
+        if (tweets.isPresent()) {
+            for (Tweet tweet : tweets.get()) {
+                tweet.setProfilePictureUrl(Common.setPictureUrl(tweet.getProfilePictureUrl(), request));
+            }
+        }
+        return tweets.orElse(Collections.emptyList());
     }
 }

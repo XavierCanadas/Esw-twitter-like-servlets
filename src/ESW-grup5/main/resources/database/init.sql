@@ -72,14 +72,34 @@ CREATE TABLE IF NOT EXISTS LikeTweet
     FOREIGN KEY (tweet_id) REFERENCES Tweet (id) ON DELETE CASCADE
 );
 
+-- reverse indexes for full-text search
+CREATE TABLE IF NOT EXISTS WordTweet
+(
+    id      INT NOT NULL AUTO_INCREMENT,
+    word    VARCHAR(20) NOT NULL,
+    tweet_id INT NOT NULL,
+
+    PRIMARY KEY (id),
+    FOREIGN KEY (tweet_id) REFERENCES Tweet (id) ON DELETE CASCADE
+);
+
 
 
 INSERT INTO Polis (name)
 VALUES ('Atenas');
 
-INSERT INTO Users (username, password, email, gender, birthday, polis_id)
-Values ('olivia.rodrigo', 'Aaee1122@', 'olivia.rodrigo@example.com', 'female', '2002-02-18', 1),
-       ('gracie.abrams', 'Aaee1122@', 'gracie.abrams@example.com', 'female', '1999-09-07', 1);
+INSERT INTO Users (username, password, email, gender, birthday, is_admin, polis_id)
+Values ('olivia.rodrigo', 'Aaee1122@', 'olivia.rodrigo@example.com', 'female', '2002-02-18', true , 1),
+       ('gracie.abrams', 'Aaee1122@', 'gracie.abrams@example.com', 'female', '1999-09-07', false, 1);
+
+SELECT id INTO @olivia_id
+FROM Users
+WHERE username = 'olivia.rodrigo';
+
+INSERT INTO Tweet (user_id, post_datetime, content, parent_id)
+VALUES (@olivia_id, '2023-10-01 10:00:00', 'Just released my new single! Check it out!', NULL),
+       (@olivia_id, '2023-10-02 12:30:00', 'Had an amazing time at the concert last night!', NULL),
+       (@olivia_id, '2023-10-03 15:45:00', 'Feeling grateful for all the support from my fans.', NULL);
 
 SELECT *
 FROM Polis;
@@ -92,3 +112,6 @@ FROM Tweet;
 
 SELECT *
 FROM LikeTweet;
+
+SELECT *
+FROM WordTweet;

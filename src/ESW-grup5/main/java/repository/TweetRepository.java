@@ -12,16 +12,23 @@ import model.Tweet;
 
 public class TweetRepository extends BaseRepository {
 
-    public void save(Tweet tweet) {
+    public int save(Tweet tweet) {
         String query = "INSERT INTO Tweet (user_id, post_datetime, content) VALUES (?,?,?)";
         try (PreparedStatement statement = db.prepareStatement(query)) {
             statement.setInt(1, tweet.getUid());
             statement.setTimestamp(2, tweet.getPostDateTime());
             statement.setString(3, tweet.getContent());
             statement.executeUpdate();
+
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return -1; // Return -1 if insertion fails
     }
 
     public void saveComment(Tweet tweet) {
@@ -323,6 +330,72 @@ public class TweetRepository extends BaseRepository {
         return Optional.empty();
     }
 
+
+    public void saveWordTweet(String[] words, Integer tweetId) {
+        String query = "INSERT INTO WordTweet (word, tweet_id) VALUES (?, ?)";
+        try (PreparedStatement statement = db.prepareStatement(query)) {
+            for (String word : words) {
+                statement.setString(1, word);
+                statement.setInt(2, tweetId);
+                statement.addBatch();
+            }
+            statement.executeBatch();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Optional<List<Tweet>> searchTweetsByWord(String word, Integer currentUserId, int start, int end) {
+        List<Tweet> tweets = new ArrayList<>();
+        String query = "SELECT " +
+                "t.id, " +
+                "t.user_id, " +
+                "t.post_datetime, " +
+                "t.content, " +
+                "t.parent_id, " +
+                "u.username, " +
+                "u.picture as user_picture, " +
+                "COUNT(lt_all.user_id) AS like_count, " +
+                "EXISTS ( " +
+                "    SELECT 1 " +
+                "    FROM LikeTweet lt_user " +
+                "    WHERE lt_user.tweet_id = t.id " +
+                "      AND lt_user.user_id = ? " +
+                ") AS liked_by_current_user " +
+                "FROM Tweet t " +
+                "JOIN WordTweet twi ON t.id = twi.tweet_id " +
+                "INNER JOIN Users u ON t.user_id = u.id " +
+                "LEFT JOIN LikeTweet lt_all ON lt_all.tweet_id = t.id " +
+                "WHERE twi.word = ? " +
+                "GROUP BY t.id, u.username, t.user_id, t.post_datetime, t.content " +
+                "ORDER BY t.post_datetime DESC " +
+                "LIMIT ?, ?;";
+        try (PreparedStatement statement = db.prepareStatement(query)) {
+            statement.setString(1, word.toLowerCase());
+            statement.setInt(2, currentUserId);
+            statement.setInt(3, start);
+            statement.setInt(4, end);
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    Tweet tweet = new Tweet();
+                    tweet.setId(rs.getInt("id"));
+                    tweet.setUid(rs.getInt("user_id"));
+                    tweet.setPostDateTime(rs.getTimestamp("post_datetime"));
+                    tweet.setContent(rs.getString("content"));
+                    tweet.setUsername(rs.getString("username"));
+                    tweet.setLikesCount(rs.getInt("like_count"));
+                    tweet.setParentId(rs.getObject("parent_id", Integer.class));
+                    tweet.setLikedByCurrentUser(rs.getBoolean("liked_by_current_user"));
+                    tweet.setProfilePictureUrl(rs.getString("user_picture"));
+                    tweets.add(tweet);
+                }
+                return Optional.of(tweets);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
 
 }
 

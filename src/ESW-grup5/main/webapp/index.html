@@ -380,6 +380,30 @@
                 $('#content').load("Profile?username=" + encodeURIComponent(username));
             });
 
+            /* search tweets */
+            $(document).on("click", "#search-input", function (event) {
+                event.preventDefault();
+                var query = $("#word-query").text().trim();
+
+                $.post("Comments", {
+                    parent: parentId,
+                    content: commentContent
+                }, function (response) {
+                    $('#content').load('TweetView?tweetId=' + encodeURIComponent(parentId));
+                });
+
+                $.post("SearchTweets", {
+                    query: query
+                }, function (response) {
+
+                    // get the tweets and load Tweets.jsp in #iterator
+                    $('#iterator').html(response);
+
+                }).fail(function (error) {
+                    console.error("Error:", error);
+                });
+            });
+
 
         };
 
