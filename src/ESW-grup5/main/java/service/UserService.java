@@ -258,6 +258,10 @@ public class UserService {
     	userRepository.deleteUserFromUsername(username);
     }
 
+    //check if user is following another user
+    public boolean isFollowing(Integer userId, Integer followedId) {
+        return userRepository.isFollowing(userId, followedId);
+    }
+
 
 }
-

@@ -68,26 +68,42 @@
 
             /* Follow user */
             $(document).on("click", ".followUser", function (event) {
-                var user = $(this).parent();
-                $.post("Follow", {
-                    id: $(this).parent().attr("id")
-                }, function (event) {
-                    $("#content").load("Followed");
-                    $("#lcolumn").load("NotFollowed");
-                });
                 event.preventDefault();
+                var userId = $(this).data("user-id") || $(this).parent().attr("id");
+                var profileContainer = $(this).closest(".w3-container[data-username]");
+                var username = profileContainer.data("username");
+
+                $.post("Follow", {
+                    id: userId
+                }, function () {
+                    // Check if we're on a profile page
+                    if (username) {
+                        $("#content").load("Profile?username=" + encodeURIComponent(username));
+                    } else {
+                        $("#content").load("Followed");
+                        $("#lcolumn").load("NotFollowed");
+                    }
+                });
             });
 
             /* UnFollow user */
             $(document).on("click", ".unfollowUser", function (event) {
-                var user = $(this).parent();
-                $.post("Unfollow", {
-                    id: $(this).parent().attr("id")
-                }, function (event) {
-                    $("#content").load("Followed");
-                    $("#lcolumn").load("NotFollowed");
-                });
                 event.preventDefault();
+                var userId = $(this).data("user-id") || $(this).parent().attr("id");
+                var profileContainer = $(this).closest(".w3-container[data-username]");
+                var username = profileContainer.data("username");
+
+                $.post("Unfollow", {
+                    id: userId
+                }, function () {
+                    // Check if we're on a profile page
+                    if (username) {
+                        $("#content").load("Profile?username=" + encodeURIComponent(username));
+                    } else {
+                        $("#content").load("Followed");
+                        $("#lcolumn").load("NotFollowed");
+                    }
+                });
             });
 
             /* Add tweet */

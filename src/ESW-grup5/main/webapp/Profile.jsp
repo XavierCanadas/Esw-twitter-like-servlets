@@ -11,7 +11,7 @@
 
 <c:choose>
     <c:when test="${user != null}">
-        <div id="${user.id}" class="w3-container w3-card w3-round w3-white w3-section w3-center">
+        <div id="${user.id}" class="w3-container w3-card w3-round w3-white w3-section w3-center" data-username="${user.username}">
             <h4 style="font-weight: bold;">${user.username}</h4>
             <p><img src="${user.picture}" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
             <hr>
@@ -53,6 +53,20 @@
                 <button type="button" class="deleteUser w3-row w3-button w3-section boton-relevante"
                         data-username="${user.username}"><i class="fa fa-user-times"></i> &nbsp;Delete
                 </button>
+            </c:if>
+            <c:if test="${enableFollowButtons == true}">
+                <c:choose>
+                    <c:when test="${isFollowing == true}">
+                        <button type="button" class="unfollowUser w3-row w3-button w3-section w3-red"
+                                data-user-id="${user.id}"><i class="fa fa-user-times"></i> &nbsp;Unfollow
+                        </button>
+                    </c:when>
+                    <c:otherwise>
+                        <button type="button" class="followUser w3-row w3-button w3-section w3-theme"
+                                data-user-id="${user.id}"><i class="fa fa-user-plus"></i> &nbsp;Follow
+                        </button>
+                    </c:otherwise>
+                </c:choose>
             </c:if>
         </div>
         <br>

@@ -424,4 +424,21 @@ public class UserRepository extends BaseRepository {
             e.printStackTrace();
         }
     }
+
+    /*check if user is following another user*/
+    public boolean isFollowing(Integer userId, Integer followedId) {
+        String query = "SELECT COUNT(*) FROM FollowUser WHERE user_id = ? AND followed_id = ?";
+        try (PreparedStatement statement = db.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            statement.setInt(2, followedId);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
+

@@ -68,6 +68,14 @@ public class Profile extends HttpServlet {
 			boolean enableDelete = (userService.isAdmin(currentUser.getUsername()) /*||  currentUser.getUsername().equals(username)*/);
 			request.setAttribute("enableDelete", enableDelete);
 			
+			// Check if the current user is following this profile user
+			boolean isFollowing = userService.isFollowing(currentUser.getId(), user.getId());
+			request.setAttribute("isFollowing", isFollowing);
+
+			// Enable follow/unfollow buttons only if viewing someone else's profile
+			boolean enableFollowButtons = !currentUser.getUsername().equals(username);
+			request.setAttribute("enableFollowButtons", enableFollowButtons);
+
 			// Añadimos la cantidad de seguidores
 	        int followerCount = userService.getFollowerCount(user.getId());
 	        request.setAttribute("followerCount", followerCount);
