@@ -24,8 +24,8 @@ video, canvas {
 
 /*Fuentes de letra*/
 @font-face {
-    font-family: 'Cinzel';
-    src: url('../fonts/Cinzel.ttf') format('truetype');
+    font-family: 'Alegreya';
+    src: url('../fonts/Alegreya.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -36,8 +36,9 @@ video, canvas {
     font-style: normal;
 }
 body, h1, h2, h3, h4, h5, h6, div, p, span, button {
-    font-family: 'Cinzel', sans-serif;
+    font-family: 'Alegreya', sans-serif;
     color: #103957 !important;
+    font-size: 18px;
 }
 
 /*Icono Home*/

@@ -40,6 +40,15 @@
             User ${user.username} has been correctly registered. Please login.
         </div>
     </c:if>
+
+    <div class="tip-section">
+        <p><strong>Tip:</strong> Use the following credentials for testing:</p>
+        <ul>
+            <li><strong>Username:</strong> gracie.abrams</li>
+            <li><strong>Password:</strong> Aaee1122@</li>
+        </ul>
+    </div>
+
 </form>
 
 <script>
